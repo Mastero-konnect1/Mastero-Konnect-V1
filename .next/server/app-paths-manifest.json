@@ -1,8 +1,0 @@
-{
-  "/mentor/[id]/page": "app/mentor/[id]/page.js",
-  "/connect-mentor/[id]/page": "app/connect-mentor/[id]/page.js",
-  "/feedback-rewards/[id]/page": "app/feedback-rewards/[id]/page.js",
-  "/page": "app/page.js",
-  "/profile-building/page": "app/profile-building/page.js",
-  "/ai-assessment/page": "app/ai-assessment/page.js"
-}
