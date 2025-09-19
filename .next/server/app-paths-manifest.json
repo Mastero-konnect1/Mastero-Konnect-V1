@@ -1,0 +1,6 @@
+{
+  "/page": "app/page.js",
+  "/ai-assessment/page": "app/ai-assessment/page.js",
+  "/profile-building/page": "app/profile-building/page.js",
+  "/account-settings/page": "app/account-settings/page.js"
+}
