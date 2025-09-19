@@ -1,73 +1,294 @@
-# Welcome to your Lovable project
+# Mastero Konnect
 
-## Project info
+A next-generation mentorship platform that connects aspiring professionals with industry experts through AI-powered matching and personalized guidance.
 
-**URL**: https://lovable.dev/projects/d9f2da2e-7303-4200-96a8-c1c7ee43adb1
+## Table of Contents
 
-## How can I edit this code?
+- [About the Project](#about-the-project)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Setup](#environment-setup)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
 
-There are several ways of editing your application.
+## About the Project
 
-**Use Lovable**
+Mastero Konnect is a comprehensive mentorship platform designed to bridge the gap between ambitious learners and experienced professionals. The platform leverages artificial intelligence to create meaningful mentor-mentee relationships, providing personalized guidance, structured learning paths, and professional development opportunities.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d9f2da2e-7303-4200-96a8-c1c7ee43adb1) and start prompting.
+### What Makes Us Different
 
-Changes made via Lovable will be committed automatically to this repo.
+- **AI-Powered Matching**: Our intelligent system analyzes profiles, goals, and preferences to suggest optimal mentor-mentee pairs
+- **Comprehensive Assessment**: Multi-stage evaluation process to understand individual strengths and growth areas
+- **Flexible Mentorship Models**: Support for various mentorship formats including one-on-one sessions, group mentoring, and project-based guidance
+- **Progress Tracking**: Built-in tools to monitor development and celebrate milestones
+- **Professional Network Building**: Connect with industry professionals across different domains and experience levels
 
-**Use your preferred IDE**
+## Key Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### For Mentees
+- Personalized profile building with skills assessment
+- AI-driven mentor recommendations based on goals and preferences
+- Structured mentorship programs with clear objectives
+- Session scheduling and calendar integration
+- Progress tracking and feedback collection
+- Rewards system to acknowledge achievements
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### For Mentors
+- Professional profile showcase with expertise highlights
+- Flexible availability management
+- Session management tools
+- Mentee progress monitoring
+- Community recognition and impact metrics
 
-Follow these steps:
+### Platform Features
+- Secure authentication and user management
+- Real-time messaging and video integration
+- Advanced search and filtering capabilities
+- Mobile-responsive design for all devices
+- Analytics dashboard for performance insights
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Technology Stack
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Frontend
+- **Next.js 14**: React framework with App Router for optimal performance
+- **TypeScript**: Type-safe development environment
+- **Tailwind CSS**: Utility-first CSS framework for rapid styling
+- **Shadcn/ui**: Modern, accessible component library
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Authentication & Security
+- **Clerk**: Complete authentication solution with social login support
+- **Role-based Access Control**: Secure user permissions and data access
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Development Tools
+- **ESLint**: Code quality and consistency enforcement
+- **Prettier**: Automated code formatting
+- **Husky**: Git hooks for quality assurance
+
+## Getting Started
+
+These instructions will help you set up the project on your local machine for development and testing purposes.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+- **Node.js** (version 18.0 or higher)
+- **npm** (version 9.0 or higher) or **yarn** (version 1.22 or higher)
+- **Git** for version control
+
+To verify your installations, run:
+```bash
+node --version
+npm --version
+git --version
 ```
 
-**Edit a file directly in GitHub**
+## Installation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-organization/mastero-konnect.git
+   cd mastero-konnect
+   ```
 
-**Use GitHub Codespaces**
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+   or if you prefer yarn:
+   ```bash
+   yarn install
+   ```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Environment Setup
 
-## What technologies are used for this project?
+1. **Create environment file**
+   ```bash
+   cp .env.example .env.local
+   ```
 
-This project is built with:
+2. **Configure environment variables**
+   
+   Open `.env.local` and add the following required variables:
+   ```env
+   # Clerk Authentication
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+   # Application Settings
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   
+   # Database (if applicable)
+   DATABASE_URL=your_database_connection_string
+   
+   # Additional API Keys
+   NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
+   ```
 
-## How can I deploy this project?
+3. **Obtain API Keys**
+   - Visit [Clerk Dashboard](https://dashboard.clerk.dev) to get authentication keys
+   - Sign up for a free account and create a new application
+   - Copy the publishable key and secret key to your environment file
 
-Simply open [Lovable](https://lovable.dev/projects/d9f2da2e-7303-4200-96a8-c1c7ee43adb1) and click on Share -> Publish.
+## Running the Application
 
-## Can I connect a custom domain to my Lovable project?
+1. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   or with yarn:
+   ```bash
+   yarn dev
+   ```
 
-Yes, you can!
+2. **Access the application**
+   
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+3. **Verify installation**
+   
+   You should see the Mastero Konnect homepage with the navigation menu and landing sections.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Project Structure
+
+```
+mastero-konnect/
+├── app/                    # Next.js App Router pages and layouts
+│   ├── (auth)/            # Authentication pages (sign-in, sign-up)
+│   ├── ai-assessment/     # AI-powered profile assessment
+│   ├── ai-recommendation/ # Mentor recommendation system
+│   ├── connect-mentor/    # Mentor connection and scheduling
+│   ├── find-mentor/       # Mentor discovery and search
+│   ├── feedback-rewards/  # Feedback collection and rewards
+│   ├── mentor/           # Mentor profile pages
+│   ├── profile-building/ # User profile creation flow
+│   ├── globals.css       # Global styles and CSS variables
+│   ├── layout.tsx        # Root application layout
+│   └── page.tsx          # Homepage
+├── components/            # Reusable React components
+│   ├── ui/               # Shadcn/ui component library
+│   └── layout/           # Layout-specific components
+├── features/             # Feature-based component organization
+│   ├── landing/          # Homepage sections and components
+│   └── auth/             # Authentication-related components
+├── lib/                  # Utility functions and configurations
+├── public/              # Static assets (images, icons, etc.)
+├── next.config.js       # Next.js configuration
+├── tailwind.config.ts   # Tailwind CSS configuration
+├── tsconfig.json        # TypeScript configuration
+└── package.json         # Project dependencies and scripts
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server on http://localhost:3000 |
+| `npm run build` | Create production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint for code quality checks |
+| `npm run type-check` | Run TypeScript compiler checks |
+
+## Deployment
+
+### Development Deployment
+The application is configured for easy deployment on modern hosting platforms:
+
+**Vercel (Recommended)**
+1. Connect your GitHub repository to Vercel
+2. Configure environment variables in Vercel dashboard
+3. Deploy automatically on every push to main branch
+
+**Netlify**
+1. Build command: `npm run build`
+2. Publish directory: `.next`
+3. Set environment variables in Netlify dashboard
+
+**Docker**
+```bash
+# Build Docker image
+docker build -t mastero-konnect .
+
+# Run container
+docker run -p 3000:3000 mastero-konnect
+```
+
+### Production Considerations
+- Configure proper environment variables for production
+- Set up monitoring and error tracking
+- Implement proper backup strategies
+- Configure CDN for static assets
+- Set up SSL certificates for secure connections
+
+## Contributing
+
+We welcome contributions from the community. To contribute:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow TypeScript best practices
+- Maintain consistent code formatting using Prettier
+- Write comprehensive tests for new features
+- Update documentation for significant changes
+- Follow semantic commit message conventions
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Support
+
+### Documentation
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Clerk Authentication Guide](https://clerk.dev/docs)
+
+### Getting Help
+- **Issues**: Report bugs and request features through GitHub Issues
+- **Discussions**: Join community discussions in GitHub Discussions
+- **Email Support**: Contact our team at support@masterokonnect.com
+
+### Troubleshooting
+
+**Common Issues:**
+
+1. **Port already in use**
+   ```bash
+   lsof -ti:3000 | xargs kill -9
+   npm run dev
+   ```
+
+2. **Module not found errors**
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+3. **TypeScript compilation errors**
+   ```bash
+   npm run type-check
+   ```
+
+4. **Environment variables not loading**
+   - Ensure `.env.local` exists in project root
+   - Restart development server after changes
+   - Verify variable names match exactly
+
+---
+
+**Built with passion by the Mastero Konnect team**
+
+Transform Your Journey. Connect with a Mastero.

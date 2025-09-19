@@ -63,6 +63,7 @@ module.exports = {
 				'mastero-text-dark': 'hsl(var(--mastero-text-dark))',
 				'mastero-text-body': 'hsl(var(--mastero-text-body))',
 				'mastero-bg-subtle': 'hsl(var(--mastero-bg-subtle))',
+
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
