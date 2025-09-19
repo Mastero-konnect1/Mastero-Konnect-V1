@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Star, Award, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Star, Award, ArrowRight, Users, Clock, Search, Mic, Filter, SortAsc } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,14 +14,23 @@ interface Mentor {
   rating: number;
   reviewCount: number;
   matchScore: number;
-  tagline: string;
   specialties: string[];
   image: string;
-  whyRecommended: string;
+  menteesCount: number;
+  yearsExperience: number;
+  isAcceptingMentees: boolean;
+  mentorshipDuration: string;
+  price: string;
+  schedule: string;
 }
 
 export default function AIRecommendation() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [sortBy, setSortBy] = useState("matchScore");
 
   const bestMatch: Mentor = {
     id: 1,
@@ -31,10 +40,14 @@ export default function AIRecommendation() {
     rating: 4.9,
     reviewCount: 127,
     matchScore: 96,
-    tagline: "I help designers transition into product management roles",
     specialties: ["Product Strategy", "Design Systems", "Career Transition"],
-    image: "/api/placeholder/120/120",
-    whyRecommended: "Perfect match for your design background and PM aspirations. Sarah has successfully mentored 15+ designers making this exact transition."
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face&auto=format&q=80",
+    menteesCount: 150,
+    yearsExperience: 12,
+    isAcceptingMentees: true,
+    mentorshipDuration: "6 months avg.",
+    price: "$100/hr",
+    schedule: "Mon-Fri, 9 AM-12 PM IST"
   };
 
   const otherMatches: Mentor[] = [
@@ -46,10 +59,14 @@ export default function AIRecommendation() {
       rating: 4.8,
       reviewCount: 89,
       matchScore: 89,
-      tagline: "Technical leadership and team scaling expert",
       specialties: ["Technical Leadership", "Team Building", "Architecture"],
-      image: "/api/placeholder/80/80",
-      whyRecommended: "Strong technical background aligns with your engineering interests"
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 200,
+      yearsExperience: 15,
+      isAcceptingMentees: true,
+      mentorshipDuration: "8 months avg.",
+      price: "$120/hr",
+      schedule: "Tue-Thu, 10 AM-2 PM IST"
     },
     {
       id: 3,
@@ -59,10 +76,14 @@ export default function AIRecommendation() {
       rating: 4.9,
       reviewCount: 156,
       matchScore: 87,
-      tagline: "Design thinking and user experience leadership",
       specialties: ["UX Strategy", "Design Leadership", "User Research"],
-      image: "/api/placeholder/80/80",
-      whyRecommended: "Your design skills match perfectly with Emily's expertise"
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 120,
+      yearsExperience: 10,
+      isAcceptingMentees: false,
+      mentorshipDuration: "5 months avg.",
+      price: "$90/hr",
+      schedule: "Mon-Wed, 1 PM-4 PM IST"
     },
     {
       id: 4,
@@ -72,10 +93,14 @@ export default function AIRecommendation() {
       rating: 4.7,
       reviewCount: 92,
       matchScore: 84,
-      tagline: "Growth strategies and data-driven marketing",
       specialties: ["Growth Hacking", "Analytics", "Marketing"],
-      image: "/api/placeholder/80/80",
-      whyRecommended: "Great for understanding product growth from a PM perspective"
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 100,
+      yearsExperience: 8,
+      isAcceptingMentees: true,
+      mentorshipDuration: "6 months avg.",
+      price: "$80/hr",
+      schedule: "Mon-Fri, 9 AM-11 AM IST"
     },
     {
       id: 5,
@@ -85,30 +110,81 @@ export default function AIRecommendation() {
       rating: 4.9,
       reviewCount: 203,
       matchScore: 82,
-      tagline: "Technical strategy and engineering excellence",
       specialties: ["Tech Strategy", "Engineering Management", "Innovation"],
-      image: "/api/placeholder/80/80",
-      whyRecommended: "Excellent for understanding the technical side of product decisions"
+      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 300,
+      yearsExperience: 18,
+      isAcceptingMentees: true,
+      mentorshipDuration: "7 months avg.",
+      price: "$150/hr",
+      schedule: "Mon-Fri, 2 PM-5 PM IST"
+    },
+    {
+      id: 6,
+      name: "Aisha Patel",
+      title: "Senior Data Scientist",
+      company: "Meta",
+      rating: 4.8,
+      reviewCount: 110,
+      matchScore: 85,
+      specialties: ["Data Science", "Machine Learning", "Analytics"],
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 180,
+      yearsExperience: 11,
+      isAcceptingMentees: true,
+      mentorshipDuration: "6 months avg.",
+      price: "$110/hr",
+      schedule: "Tue-Thu, 11 AM-2 PM IST"
+    },
+    {
+      id: 7,
+      name: "Rajesh Kumar",
+      title: "Chief Marketing Officer",
+      company: "Amazon",
+      rating: 4.7,
+      reviewCount: 95,
+      matchScore: 83,
+      specialties: ["Digital Marketing", "Brand Strategy", "Campaigns"],
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 140,
+      yearsExperience: 13,
+      isAcceptingMentees: false,
+      mentorshipDuration: "5 months avg.",
+      price: "$130/hr",
+      schedule: "Wed-Fri, 10 AM-1 PM IST"
+    },
+    {
+      id: 8,
+      name: "Sophie Lee",
+      title: "Head of Product",
+      company: "Dropbox",
+      rating: 4.9,
+      reviewCount: 130,
+      matchScore: 86,
+      specialties: ["Product Management", "User Experience", "Roadmapping"],
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      menteesCount: 220,
+      yearsExperience: 14,
+      isAcceptingMentees: true,
+      mentorshipDuration: "7 months avg.",
+      price: "$95/hr",
+      schedule: "Mon-Thu, 9 AM-12 PM IST"
     }
   ];
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.ceil(otherMatches.length / 3));
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(filteredMatches.length / 3));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.ceil(otherMatches.length / 3)) % Math.ceil(otherMatches.length / 3));
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(filteredMatches.length / 3)) % Math.ceil(filteredMatches.length / 3));
   };
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, index) => (
       <Star
         key={index}
-        className={`w-4 h-4 ${
-          index < Math.floor(rating)
-            ? 'fill-yellow-400 text-yellow-400'
-            : 'text-gray-300'
-        }`}
+        className={`w-4 h-4 ${index < Math.floor(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
       />
     ));
   };
@@ -119,13 +195,67 @@ export default function AIRecommendation() {
     return 'text-orange-600 bg-orange-100';
   };
 
-  const visibleMatches = otherMatches.slice(currentSlide * 3, (currentSlide + 1) * 3);
+  // Filter and sort mentors with search functionality
+  const filteredMatches = otherMatches.filter(mentor => {
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = mentor.name.toLowerCase().includes(searchLower) ||
+                         mentor.title.toLowerCase().includes(searchLower) ||
+                         mentor.company.toLowerCase().includes(searchLower) ||
+                         mentor.specialties.some(specialty => specialty.toLowerCase().includes(searchLower));
+    if (filter === "accepting") return mentor.isAcceptingMentees && matchesSearch;
+    if (filter === "notAccepting") return !mentor.isAcceptingMentees && matchesSearch;
+    return matchesSearch;
+  }).sort((a, b) => {
+    if (sortBy === "rating") return b.rating - a.rating;
+    if (sortBy === "matchScore") return b.matchScore - a.matchScore;
+    if (sortBy === "experience") return b.yearsExperience - a.yearsExperience;
+    return 0;
+  });
+
+  const visibleMatches = filteredMatches.slice(currentSlide * 3, (currentSlide + 1) * 3);
+
+  // Debug: Log the image URL
+  console.log('Best match image URL:', bestMatch.image);
+
+  // Voice Recognition Setup
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.log("Speech Recognition API not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+      const speechResult = event.results[0][0].transcript.toLowerCase();
+      setSearchQuery(speechResult);
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    if (isListening) {
+      recognition.start();
+    }
+
+    return () => {
+      recognition.stop();
+    };
+  }, [isListening]);
 
   return (
     <div
       className="min-h-screen"
       style={{
-        backgroundImage: 'linear-gradient(180deg, rgba(47,107,174,0.18), rgba(255,255,255,1), rgba(90,141,200,0.18))'
+        backgroundImage: 'linear-gradient(180deg, rgba(47,107,174,0.3), rgba(255,255,255,0.8), rgba(90,141,200,0.1))'
       }}
     >
       <div className="container mx-auto px-4 py-8">
@@ -137,214 +267,262 @@ export default function AIRecommendation() {
               Curated Just For You
             </span>
           </h1>
-          <p className="text-mastero-text-medium">
-            Based on your profile and goals, here are the mentors who can best guide your journey
-          </p>
         </div>
 
-        {/* Best Match Card */}
-        <div className="mb-12">
-          <Card className="relative overflow-hidden border-2 border-mastero-blue shadow-xl">
-            {/* Best Match Badge */}
-            <div className="absolute top-4 right-4 z-10">
-              <Badge className="bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white px-3 py-1">
-                <Award className="w-4 h-4 mr-1" />
-                Best Match
-              </Badge>
-            </div>
-
-            <CardContent className="p-8">
-              <div className="flex flex-col lg:flex-row gap-8">
-                {/* Left: Mentor Info */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-mastero-blue to-mastero-blue-end rounded-full flex items-center justify-center text-white font-bold text-2xl">
-                      {bestMatch.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-mastero-dark">{bestMatch.name}</h2>
-                      <p className="text-mastero-text-medium font-medium">{bestMatch.title}</p>
-                      <p className="text-mastero-text-light">{bestMatch.company}</p>
-                    </div>
-                  </div>
-
-                  {/* Rating & Match Score */}
-                  <div className="flex items-center gap-6 mb-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex">{renderStars(bestMatch.rating)}</div>
-                      <span className="font-medium">{bestMatch.rating}</span>
-                      <span className="text-mastero-text-light">({bestMatch.reviewCount} reviews)</span>
-                    </div>
-                    <div className={`px-3 py-1 rounded-full font-semibold ${getMatchScoreColor(bestMatch.matchScore)}`}>
-                      {bestMatch.matchScore}% Match
-                    </div>
-                  </div>
-
-                  {/* Tagline */}
-                  <p className="text-mastero-text-medium mb-4 text-lg">
-                    {bestMatch.tagline}
-                  </p>
-
-                  {/* Why Recommended */}
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-mastero-dark mb-2">Why we recommend Sarah:</h3>
-                    <p className="text-mastero-text-medium">{bestMatch.whyRecommended}</p>
-                  </div>
-
-                  {/* Specialties */}
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-mastero-dark mb-2">Specialties:</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {bestMatch.specialties.map((specialty, index) => (
-                        <Badge key={index} variant="outline" className="border-mastero-blue text-mastero-blue">
-                          {specialty}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA */}
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white"
-                  >
-                    Connect with Sarah
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
+        {/* Search, Filter, and Sort Section */}
+        <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-5xl mx-auto">
+          {/* Search Bar */}
+          <div className="flex-1 relative group">
+            <div className="relative bg-white rounded-2xl shadow-md overflow-hidden border-2 border-gradient-to-r from-teal-400 to-purple-500 transform group-hover:scale-[1.02] transition-all duration-300">
+              <div className="flex items-center px-4 py-3">
+                <div className="pr-3">
+                  <Search className="w-6 h-6 text-gray-500" />
                 </div>
+                <input
+                  type="text"
+                  placeholder="Search by name, title, or skill..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 py-2 pr-4 text-gray-800 placeholder-gray-500 bg-transparent outline-none text-base font-medium focus:ring-2 focus:ring-teal-400 transition-all duration-200"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200"
+                  >
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    if (!isListening) {
+                      setIsListening(true);
+                    } else {
+                      setIsListening(false);
+                    }
+                  }}
+                  className={`ml-2 p-2 rounded-full ${isListening ? 'bg-red-200' : 'bg-gray-100'} hover:bg-gray-200 transition-all duration-200`}
+                >
+                  <Mic className={`w-5 h-5 ${isListening ? 'text-red-600' : 'text-gray-600'}`} />
+                </button>
+              </div>
+            </div>
+          </div>
 
-                {/* Right: Visual Elements */}
-                <div className="lg:w-80">
-                  <div className="bg-gradient-to-br from-mastero-bg-subtle to-blue-50 rounded-xl p-6 h-full flex flex-col justify-center items-center">
-                    <div className="text-center mb-4">
-                      <div className="text-4xl font-bold text-mastero-blue mb-2">96%</div>
-                      <div className="text-mastero-text-medium">Perfect Match</div>
-                    </div>
-                    
-                    {/* Match indicators */}
-                    <div className="space-y-3 w-full">
-                      <div className="flex justify-between text-sm">
-                        <span>Career Goals</span>
-                        <span className="font-medium text-green-600">Perfect</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Skills Alignment</span>
-                        <span className="font-medium text-green-600">Excellent</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Experience Level</span>
-                        <span className="font-medium text-mastero-blue">Great</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Industry Focus</span>
-                        <span className="font-medium text-green-600">Perfect</span>
-                      </div>
-                    </div>
-                  </div>
+          {/* Filter and Sort Section */}
+          <div className="flex gap-2">
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 m-1"
+            >
+              <option value="">All Mentors</option>
+              <option value="accepting">Accepting Mentees</option>
+              <option value="notAccepting">Not Accepting Mentees</option>
+            </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 m-1"
+            >
+              <option value="matchScore">Match Score</option>
+              <option value="rating">Rating</option>
+              <option value="experience">Experience</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Best Match Card with Separate Image */}
+        <div className="mb-12">
+          <Card className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-[0_4px_6px_rgba(0,0,0,0.1)] bg-white">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+              {/* Image Card */}
+              <div className="relative w-full h-[420px]">
+                <img 
+                  src={bestMatch.image}
+                  alt={bestMatch.name}
+                  className="w-full h-full object-cover rounded-lg shadow-md"
+                  onError={(e) => {
+                    console.log('Image failed to load:', bestMatch.image);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+                <div className="absolute top-4 right-4 z-10">
+                  <Badge className="bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white px-3 py-1">
+                    <Award className="w-4 h-4 mr-1" /> Best Match
+                  </Badge>
                 </div>
               </div>
-            </CardContent>
+              {/* Content Card */}
+              <CardContent className="p-0 flex flex-col justify-end">
+                <div className="mb-8">
+                  <div className="mb-4">
+                    <h2 className="text-3xl font-bold text-white"><strong>{bestMatch.name}</strong></h2>
+                    <p className="text-xl text-gray-100 mb-2"><strong>{bestMatch.title}</strong></p>
+                    <p className="text-md text-gray-200">{bestMatch.company}</p>
+                  </div>
+                  <div className="mb-6">
+                    <p className="text-base text-gray-100">Available: <span className="font-semibold text-white">{bestMatch.schedule}</span></p>
+                    <p className="text-base text-gray-100">Role: <span className="font-semibold text-white"><strong>{bestMatch.specialties.join(", ").toLowerCase()}</strong></span></p>
+                  </div>
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-2">
+                      <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-lg font-semibold text-white">{bestMatch.rating}</span>
+                      <span className="text-sm text-gray-200">({bestMatch.reviewCount})</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5 text-white" />
+                      <span className="text-sm text-gray-200">{bestMatch.menteesCount} Mentees</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-white" />
+                      <span className="text-sm text-gray-200">{bestMatch.yearsExperience} Years</span>
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  size="lg"
+                  className={`bg-mastero-blue text-white hover:bg-mastero-blue-dark w-full py-3 transition-all duration-300 ${
+                    hoveredButton === bestMatch.id ? 'scale-105' : ''
+                  }`}
+                  onMouseEnter={() => setHoveredButton(bestMatch.id)}
+                  onMouseLeave={() => setHoveredButton(null)}
+                >
+                  Get In Touch
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Other Great Matches */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-mastero-dark">Other Great Matches</h2>
-            <div className="flex gap-2">
+            <h2 className="text-2xl font-bold text-mastero-dark">
+              {searchQuery ? `Search Results (${filteredMatches.length})` : "Browse All Mentors"}
+            </h2>
+            {filteredMatches.length > 0 && (
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={prevSlide}
+                  disabled={currentSlide === 0}
+                  className="border-mastero-blue text-mastero-blue flex items-center gap-1"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" /> Prev
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={nextSlide}
+                  disabled={currentSlide >= Math.ceil(filteredMatches.length / 3) - 1}
+                  className="border-mastero-blue text-mastero-blue flex items-center gap-1"
+                >
+                  Next <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {filteredMatches.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <Search className="w-16 h-16 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No mentors found</h3>
+              <p className="text-gray-500">
+                Try adjusting your search terms or browse all mentors
+              </p>
               <Button
                 variant="outline"
-                size="sm"
-                onClick={prevSlide}
-                disabled={currentSlide === 0}
+                className="mt-4 border-mastero-blue text-mastero-blue"
+                onClick={() => setSearchQuery("")}
               >
-                <ChevronLeft className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={nextSlide}
-                disabled={currentSlide >= Math.ceil(otherMatches.length / 3) - 1}
-              >
-                <ChevronRight className="w-4 h-4" />
+                Clear Search
               </Button>
             </div>
-          </div>
-
-          {/* Carousel */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleMatches.map((mentor) => (
-              <Card key={mentor.id} className="group hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-mastero-blue to-mastero-blue-end rounded-full flex items-center justify-center text-white font-semibold">
-                      {mentor.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-mastero-dark">{mentor.name}</h3>
-                      <p className="text-sm text-mastero-text-medium">{mentor.title}</p>
-                      <p className="text-xs text-mastero-text-light">{mentor.company}</p>
-                    </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {visibleMatches.map((mentor) => (
+                <Card key={mentor.id} className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-md h-[420px]">
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gray-300"
+                    style={{
+                      backgroundImage: `url(${mentor.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50" />
+                  <div className="absolute top-4 left-4 text-white">
+                    <h3 className="text-2xl font-bold text-shadow-lg mb-1">{mentor.name}</h3>
+                    <p className="text-lg text-gray-100 text-shadow mb-2">{mentor.title}</p>
+                    <p className="text-md text-gray-200 text-shadow">{mentor.company}</p>
                   </div>
-
-                  {/* Match Score */}
-                  <div className="mb-3">
-                    <div className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${getMatchScoreColor(mentor.matchScore)}`}>
-                      Match Score: {mentor.matchScore}%
+                  <div className="relative z-10 h-full flex flex-col justify-end p-4 text-white">
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="text-center space-y-2">
+                        <p className="text-base text-gray-100 text-shadow">Available: <span className="font-semibold text-white">{mentor.schedule}</span></p>
+                        <p className="text-base text-gray-100 text-shadow">Role: <span className="font-semibold text-white">{mentor.specialties.join(", ").toLowerCase()}</span></p>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex">{renderStars(mentor.rating)}</div>
-                    <span className="text-sm font-medium">{mentor.rating}</span>
-                    <span className="text-xs text-mastero-text-light">({mentor.reviewCount})</span>
-                  </div>
-
-                  {/* Tagline */}
-                  <p className="text-mastero-text-medium mb-3 text-sm">
-                    {mentor.tagline}
-                  </p>
-
-                  {/* Why Recommended */}
-                  <p className="text-xs text-mastero-text-light mb-4">
-                    {mentor.whyRecommended}
-                  </p>
-
-                  {/* Specialties */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-1">
-                      {mentor.specialties.slice(0, 2).map((specialty, index) => (
-                        <Badge key={index} variant="outline" className="text-xs border-mastero-blue text-mastero-blue">
-                          {specialty}
-                        </Badge>
-                      ))}
-                      {mentor.specialties.length > 2 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{mentor.specialties.length - 2}
-                        </Badge>
-                      )}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                          <span className="text-lg font-semibold text-white text-shadow">{mentor.rating}</span>
+                          <span className="text-sm text-gray-200 text-shadow">({mentor.reviewCount})</span>
+                        </div>
+                        <span className="text-white border-l border-white h-6"></span>
+                        <div className="flex items-center gap-2">
+                          <Users className="w-5 h-5 text-white" />
+                          <span className="text-sm text-gray-200 text-shadow">{mentor.menteesCount} Mentees</span>
+                        </div>
+                        <span className="text-white border-l border-white h-6"></span>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-5 h-5 text-white" />
+                          <span className="text-sm text-gray-200 text-shadow">{mentor.yearsExperience}y</span>
+                        </div>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <div className={`inline-block px-3 py-1.5 rounded-full font-semibold text-base ${
+                          mentor.matchScore >= 90 ? 'bg-green-600' : 
+                          mentor.matchScore >= 80 ? 'bg-blue-600' : 'bg-orange-600'
+                        } text-white shadow-md`}>
+                          {mentor.matchScore}% Match
+                        </div>
+                      </div>
                     </div>
+                    <Button
+                      size="lg"
+                      className={`bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white hover:from-mastero-blue-dark hover:to-mastero-blue-dark w-full py-4 transition-all duration-300 ${
+                        hoveredButton === mentor.id ? 'scale-105' : ''
+                      }`}
+                      onMouseEnter={() => setHoveredButton(mentor.id)}
+                      onMouseLeave={() => setHoveredButton(null)}
+                    >
+                      Get In Touch
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
                   </div>
-
-                  {/* CTA */}
-                  <Button
-                    variant="outline"
-                    className="w-full border-mastero-blue text-mastero-blue hover:bg-mastero-blue hover:text-white"
-                    size="sm"
-                  >
-                    View Profile
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Navigation to Find More */}
         <div className="text-center">
-          <Button variant="outline" size="lg" className="border-mastero-blue text-mastero-blue">
+          <Button
+            variant="outline"
+            size="lg"
+            className="bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white rounded-full px-8 py-3 hover:opacity-90 transition-all duration-300"
+          >
             Browse All Mentors
           </Button>
         </div>
