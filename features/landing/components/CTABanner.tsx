@@ -1,100 +1,360 @@
-import Link from 'next/link'
-import { ArrowRight, Sparkles } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import React from "react";
+import { Sparkles, ArrowRight, Users, TrendingUp, Heart } from "lucide-react";
+import Link from "next/link";
 
-export default function CTABanner() {
+const CTABanner = () => {
+  const styles = {
+    heroGradient: {
+      background:
+        "linear-gradient(135deg, hsl(195, 100%, 50%), hsl(243, 75%, 59%))",
+    },
+    glassCard: {
+      background: "rgba(255, 255, 255, 0.1)",
+      backdropFilter: "blur(20px)",
+      border: "1px solid rgba(255, 255, 255, 0.2)",
+      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+    },
+    btnHero: {
+      background: "white",
+      color: "hsl(243, 75%, 59%)",
+      border: "none",
+      padding: "1rem 2.5rem",
+      borderRadius: "0.75rem",
+      fontSize: "1.125rem",
+      fontWeight: "600",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "0.5rem",
+      cursor: "pointer",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      boxShadow: "0 4px 14px 0 rgba(0, 0, 0, 0.1)",
+      flexShrink: 0,
+    },
+    btnHeroOutline: {
+      background: "transparent",
+      color: "white",
+      border: "2px solid rgba(255, 255, 255, 0.3)",
+      padding: "1rem 2.5rem",
+      borderRadius: "0.75rem",
+      fontSize: "1.125rem",
+      fontWeight: "600",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "0.5rem",
+      cursor: "pointer",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      backdropFilter: "blur(10px)",
+      flexShrink: 0,
+    },
+    gradientText: {
+      background: "linear-gradient(to right, white, hsl(210, 40%, 85%))",
+      backgroundClip: "text",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    },
+    fadeIn: {
+      animation: "fadeIn 1s ease-out",
+    },
+  };
+
   return (
-    <section className="py-20 bg-gradient-mastero text-white relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 opacity-10">
-          <Sparkles className="h-24 w-24" />
-        </div>
-        <div className="absolute bottom-10 right-10 opacity-10">
-          <Sparkles className="h-32 w-32" />
-        </div>
-        <div className="absolute top-1/2 left-1/3 opacity-5">
-          <div className="h-40 w-40 rounded-full border-2 border-white"></div>
-        </div>
-        <div className="absolute top-1/4 right-1/4 opacity-5">
-          <div className="h-24 w-24 rounded-full border-2 border-white"></div>
-        </div>
-      </div>
+    <>
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 mb-6">
-          <Sparkles className="h-4 w-4" />
-          <span className="text-sm font-medium">Join 50,000+ Success Stories</span>
-        </div>
+        .btn-hero:hover {
+          background: hsl(0, 0%, 95%) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15) !important;
+        }
 
-        {/* Main Heading */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-          Ready to Accelerate Your Career?
-        </h2>
-        
-        {/* Subtitle */}
-        <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto leading-relaxed">
-          Start your personalized mentorship journey today and unlock your full potential with expert guidance.
-        </p>
+        .btn-hero:hover .arrow {
+          transform: translateX(4px);
+        }
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-          <Button 
-            size="lg" 
-            asChild 
-            className="bg-white text-mastero-blue-start hover:bg-white/90 text-lg px-8 py-6 shadow-xl"
+        .btn-hero-outline:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+          border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .arrow {
+          transition: transform 0.3s ease;
+        }
+
+        /* Star animations */
+        @keyframes starTwinkle {
+          0%, 100% { opacity: 0.25; transform: scale(1) rotate(0deg); }
+          50% { opacity: 0.9; transform: scale(1.05) rotate(5deg); }
+        }
+        @keyframes starFloat {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+          100% { transform: translateY(0); }
+        }
+        .star { opacity: 0.6; filter: drop-shadow(0 2px 6px rgba(255,255,255,0.25)); }
+        .star--twinkle { animation: starTwinkle 3s ease-in-out infinite; }
+        .star--float { animation: starFloat 6s ease-in-out infinite; }
+
+        /* Responsive fixes */
+        @media (max-width: 768px) {
+          .hero-title {
+            font-size: 2.5rem !important;
+          }
+          .hero-subtitle {
+            font-size: 1rem !important;
+          }
+          .cta-buttons {
+            flex-direction: column !important;
+            width: 100%;
+          }
+          .cta-buttons button {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+          }
+        }
+      `}</style>
+
+      <div
+        style={{
+          ...styles.heroGradient,
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Background decorations */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), transparent, rgba(147, 51, 234, 0.1))",
+          }}
+        />
+        {/* Stars */}
+        <svg width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <symbol id="mk-star" viewBox="0 0 100 100">
+              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="white" />
+            </symbol>
+          </defs>
+        </svg>
+        {/* Top-left star */}
+        <svg className="star star--twinkle" width="96" height="96" style={{ position: 'absolute', top: '2.5rem', left: '1.25rem', opacity: 0.25 }}>
+          <use href="#mk-star" />
+        </svg>
+        {/* Mid-right small stars */}
+        <svg className="star star--float" width="40" height="40" style={{ position: 'absolute', top: '35%', right: '4rem', opacity: 0.35 }}>
+          <use href="#mk-star" />
+        </svg>
+        <svg className="star star--twinkle" width="28" height="28" style={{ position: 'absolute', top: '28%', right: '7.5rem', opacity: 0.35 }}>
+          <use href="#mk-star" />
+        </svg>
+        {/* Bottom-right larger star */}
+        <svg className="star star--twinkle" width="110" height="110" style={{ position: 'absolute', bottom: '4.5rem', right: '2rem', opacity: 0.25 }}>
+          <use href="#mk-star" />
+        </svg>
+        <div
+          style={{
+            position: "absolute",
+            top: "5rem",
+            left: "2.5rem",
+            width: "18rem",
+            height: "18rem",
+            borderRadius: "50%",
+            filter: "blur(3rem)",
+            background: "rgba(255, 255, 255, 0.05)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "5rem",
+            right: "2.5rem",
+            width: "24rem",
+            height: "24rem",
+            borderRadius: "50%",
+            filter: "blur(3rem)",
+            background: "rgba(255, 255, 255, 0.05)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "92vh",
+            padding: "3rem 1rem",
+            maxWidth: "80rem",
+            margin: "0 auto",
+          }}
+        >
+          {/* Badge */}
+          <div style={{ marginBottom: "2rem", ...styles.fadeIn }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.75rem 1.5rem",
+                borderRadius: "9999px",
+                color: "white",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                ...styles.glassCard,
+              }}
+            >
+              <Sparkles style={{ width: "1rem", height: "1rem" }} />
+              Join 50,000+ Success Stories
+            </div>
+          </div>
+
+          {/* Heading */}
+          <div style={{ textAlign: "center", maxWidth: "60rem", margin: "0 auto 2rem" }}>
+            <h1
+              className="hero-title"
+              style={{
+                fontSize: "clamp(3rem, 6vw, 4.5rem)",
+                fontWeight: "bold",
+                color: "white",
+                marginBottom: "1.5rem",
+                lineHeight: "1.1",
+              }}
+            >
+              Ready to Accelerate Your{" "}
+              <span style={styles.gradientText}>Career?</span>
+            </h1>
+            <p
+              className="hero-subtitle"
+              style={{
+                fontSize: "clamp(1.125rem, 3vw, 1.5rem)",
+                color: "rgba(255, 255, 255, 0.9)",
+                lineHeight: "1.6",
+                maxWidth: "42rem",
+                margin: "0 auto",
+              }}
+            >
+              Start your personalized mentorship journey today and unlock your
+              full potential with expert guidance.
+            </p>
+          </div>
+
+          {/* Buttons */}
+          <div
+            className="cta-buttons"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "1rem",
+              justifyContent: "center",
+              marginBottom: "2rem",
+              flexWrap: "wrap",
+            }}
           >
-            <Link href="/ai-assessment" className="flex items-center gap-2">
+            <Link href="/ai-assessment"  className="btn-hero" style={styles.btnHero}>
               Start Your AI Assessment
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight
+                style={{ width: "1.25rem", height: "1.25rem" }}
+                className="arrow"
+              />
             </Link>
-          </Button>
-          
-          <Button 
-            size="lg" 
-            variant="outline" 
-            asChild 
-            className="border-white text-white hover:bg-white/10 text-lg px-8 py-6"
+            <Link href="/find-mentor" className="btn-hero-outline" style={styles.btnHeroOutline}>
+              Browse Mentors
+            </Link>
+          </div>
+
+          {/* Trust Indicators */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "2rem",
+              color: "rgba(255, 255, 255, 0.8)",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+              marginBottom: "2rem",
+            }}
           >
-            <Link href="/find-mentor">Browse Mentors</Link>
-          </Button>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm opacity-80">
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 bg-green-400 rounded-full"></div>
-            <span>14-day free trial</span>
-          </div>
-          <div className="hidden sm:block h-1 w-1 bg-white/50 rounded-full"></div>
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 bg-green-400 rounded-full"></div>
-            <span>No credit card required</span>
-          </div>
-          <div className="hidden sm:block h-1 w-1 bg-white/50 rounded-full"></div>
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 bg-green-400 rounded-full"></div>
-            <span>Cancel anytime</span>
+            {["14-day free trial", "No credit card required", "Cancel anytime"].map(
+              (text, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <div
+                    style={{
+                      width: "0.5rem",
+                      height: "0.5rem",
+                      background: "white",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  {text}
+                </div>
+              )
+            )}
           </div>
         </div>
 
-        {/* Additional Statistics */}
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-          <div className="text-center">
-            <div className="text-2xl font-bold mb-1">5,000+</div>
-            <div className="text-sm opacity-80">Expert Mentors</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold mb-1">3.2x</div>
-            <div className="text-sm opacity-80">Faster Career Growth</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold mb-1">95%</div>
-            <div className="text-sm opacity-80">Satisfaction Rate</div>
+        {/* Stats Section */}
+        <div style={{ padding: "0 1rem 2rem", marginTop: "-1.5rem" }}>
+          <div style={{ maxWidth: "70rem", margin: "0 auto" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "1.5rem",
+              }}
+            >
+              {[
+                { icon: <Users />, number: "5,000+", label: "Expert Mentors" },
+                {
+                  icon: <TrendingUp />,
+                  number: "3.2x",
+                  label: "Faster Career Growth",
+                },
+                { icon: <Heart />, number: "95%", label: "Satisfaction Rate" },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  style={{
+                    ...styles.glassCard,
+                    borderRadius: "1rem",
+                    padding: "2rem",
+                    textAlign: "center",
+                    color: "white",
+                    gap: 0
+                  }}
+                >
+                  <div style={{ marginBottom: "0.75rem",  justifyItems:"center" }}>{stat.icon}</div>
+                  <div style={{ fontSize: "2.25rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                    {stat.number}
+                  </div>
+                  <div style={{ color: "rgba(255, 255, 255, 0.8)", fontWeight: "500" }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </section>
-  )
-}
+    </>
+  );
+};
+
+export default CTABanner;

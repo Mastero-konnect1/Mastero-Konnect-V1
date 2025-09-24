@@ -1,121 +1,57 @@
 import Link from 'next/link'
-import { Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import { Twitter, Linkedin,Youtube, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-mastero-dark text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo and Tagline */}
-          <div className="col-span-1 md:col-span-1">
-            <div className="text-2xl font-bold text-gradient mb-4">
-              Mastero Konnect
+    <footer className="bg-gradient-to-r from-sky-600 to-indigo-700 text-white mt-12">
+          <div className="max-w-7xl mx-auto px-6 py-16">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-2xl font-semibold">InnovKaro</h3>
+                <p className="mt-4 text-sm opacity-90">Connecting mentors and mentees for meaningful professional growth and career development.</p>
+                <div className="flex gap-4 mt-4">
+                  <a href="https://x.com/KonnectMas86897" target='_blank' className="hover:text-sky-200 hover:scale-105 transition-transform"><Twitter/></a>
+                  <a href="https://www.linkedin.com/company/innov-karo/" target='_blank' className="hover:text-sky-200 hover:scale-105 transition-transform"><Linkedin /></a>
+                  <a href="https://www.youtube.com/@Innovkaro" target='_blank' className="hover:text-sky-200 hover:scale-105 transition-transform"><Youtube/></a>
+                  <a href=" https://www.facebook.com/profile.php?id=61581066593207" target='_blank' className="hover:text-sky-200 hover:scale-105 transition-transform"><Facebook/></a>
+                  <a href="https://www.instagram.com/innovkaro/" target='_blank' className="hover:text-sky-200 hover:scale-105 transition-transform"><Instagram/></a>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-3">Quick Links</h4>
+                <ul className="text-sm space-y-2">
+                  <li><Link href="/find-mentor" className="hover:underline hover:text-sky-400 transition">Find Mentors</Link></li>
+                  <li><Link href="/ai-assessment" className="hover:underline hover:text-sky-400 transition">AI Assessment</Link></li>
+                  <li><Link href="/profile-building" className="hover:underline hover:text-sky-400 transition">Build Profile</Link></li>
+                  <li><Link href="/auth/sign-up" className="hover:underline hover:text-sky-400 transition">Become a Mentor</Link></li>
+                </ul>
+              </div>
+
+             <div>
+                <h4 className="font-semibold mb-3">About Us</h4>
+                <ul className="text-sm space-y-2">
+                  <li><a href="#mission" className="hover:underline hover:text-sky-400 transition">Our Mission</a></li>
+                  <li><a href="#how-it-works" className="hover:underline hover:text-sky-400 transition">How It Works</a></li>
+                  <li><a href="#success" className="hover:underline hover:text-sky-400 transition">Success Stories</a></li>
+                  <li><a href="#blog" className="hover:underline hover:text-sky-400 transition">Blog</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-3">Contact</h4>
+                <p className="text-sm">Email: hello@masterokonnect.com</p>
+                <p className="text-sm mt-2">Phone: +1 (555) 123-4567</p>
+                <ul className="text-sm space-y-2 mt-4">
+                  <li><a href="#support" className="hover:underline hover:text-sky-400 transition">Support Center</a></li>
+                  <li><a href="#privacy" className="hover:underline hover:text-sky-400 transition">Privacy Policy</a></li>
+                </ul>
+              </div>
             </div>
-            <p className="text-mastero-text-light mb-6">
-              Connecting mentors and mentees for meaningful professional growth and career development.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                <Linkedin size={20} />
-              </a>
-              <a href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                <Github size={20} />
-              </a>
-              <a href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                <Mail size={20} />
-              </a>
-            </div>
-          </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/find-mentor" className="text-mastero-text-light hover:text-white transition-colors">
-                  Find Mentors
-                </Link>
-              </li>
-              <li>
-                <Link href="/ai-assessment" className="text-mastero-text-light hover:text-white transition-colors">
-                  AI Assessment
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile-building" className="text-mastero-text-light hover:text-white transition-colors">
-                  Build Profile
-                </Link>
-              </li>
-              <li>
-                <Link href="/auth/sign-up" className="text-mastero-text-light hover:text-white transition-colors">
-                  Become a Mentor
-                </Link>
-              </li>
-            </ul>
+            <hr className="my-8 border-white/20" />
+            <div className="text-center text-sm opacity-80">© 2024 Mastero Konnect. All rights reserved. Built with ❤️ for professional growth.</div>
           </div>
-
-          {/* About Us */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">About Us</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  Our Mission
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  Success Stories
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  Blog
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-2">
-              <li className="text-mastero-text-light">
-                Email: hello@masterokonnect.com
-              </li>
-              <li className="text-mastero-text-light">
-                Phone: +1 (555) 123-4567
-              </li>
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  Support Center
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-mastero-text-light hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="border-t border-mastero-text-medium mt-8 pt-8 text-center">
-          <p className="text-mastero-text-light">
-            © 2024 Mastero Konnect. All rights reserved. Built with ❤️ for professional growth.
-          </p>
-        </div>
-      </div>
-    </footer>
+        </footer>
   )
 }
