@@ -1,4 +1,4 @@
-// File: D:\Projects\Mastero-Konnect-V1\app\layout.tsx
+// File: C:\Users\harsh\OneDrive\Desktop\mk\Mastero-Konnect-V1\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
