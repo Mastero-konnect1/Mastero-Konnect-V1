@@ -3,7 +3,7 @@ import { Twitter, Linkedin,Youtube, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-sky-600 to-indigo-700 text-white mt-12">
+    <footer className="bg-gradient-to-r from-sky-600 to-indigo-700 text-white">
           <div className="max-w-7xl mx-auto px-6 py-16">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div>
@@ -40,8 +40,8 @@ export default function Footer() {
 
               <div>
                 <h4 className="font-semibold mb-3">Contact</h4>
-                <p className="text-sm">Email: hello@masterokonnect.com</p>
-                <p className="text-sm mt-2">Phone: +1 (555) 123-4567</p>
+                <p className="text-sm hover:underline hover:text-sky-400 transition">Email: connect@innovkaro.com</p>
+                <p className="text-sm mt-2 hover:underline hover:text-sky-400 transition">Phone: +91  7382987332</p>
                 <ul className="text-sm space-y-2 mt-4">
                   <li><a href="#support" className="hover:underline hover:text-sky-400 transition">Support Center</a></li>
                   <li><a href="#privacy" className="hover:underline hover:text-sky-400 transition">Privacy Policy</a></li>
@@ -50,7 +50,7 @@ export default function Footer() {
             </div>
 
             <hr className="my-8 border-white/20" />
-            <div className="text-center text-sm opacity-80">© 2024 Mastero Konnect. All rights reserved. Built with ❤️ for professional growth.</div>
+            <div className="text-center text-sm opacity-80">© 2024 InnovKaro. All rights reserved. Built with ❤️ for professional growth.</div>
           </div>
         </footer>
   )

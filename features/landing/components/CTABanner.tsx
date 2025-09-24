@@ -18,9 +18,9 @@ const CTABanner = () => {
       background: "white",
       color: "hsl(243, 75%, 59%)",
       border: "none",
-      padding: "1rem 2.5rem",
+      padding: "0.875rem 2rem",
       borderRadius: "0.75rem",
-      fontSize: "1.125rem",
+      fontSize: "1rem",
       fontWeight: "600",
       display: "inline-flex",
       alignItems: "center",
@@ -35,9 +35,9 @@ const CTABanner = () => {
       background: "transparent",
       color: "white",
       border: "2px solid rgba(255, 255, 255, 0.3)",
-      padding: "1rem 2.5rem",
+      padding: "0.875rem 2rem",
       borderRadius: "0.75rem",
-      fontSize: "1.125rem",
+      fontSize: "1rem",
       fontWeight: "600",
       display: "inline-flex",
       alignItems: "center",
@@ -106,6 +106,17 @@ const CTABanner = () => {
         .star--twinkle { animation: starTwinkle 3s ease-in-out infinite; }
         .star--float { animation: starFloat 6s ease-in-out infinite; }
 
+        /* Stats card hover (match button hover feel) */
+        .stats-card {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stats-card:hover {
+          background: rgba(255, 255, 255, 0.12) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.35) !important;
+        }
+
         /* Responsive fixes */
         @media (max-width: 768px) {
           .hero-title {
@@ -129,7 +140,7 @@ const CTABanner = () => {
       <div
         style={{
           ...styles.heroGradient,
-          minHeight: "100vh",
+          minHeight: "88vh",
           position: "relative",
           overflow: "hidden",
         }}
@@ -152,18 +163,18 @@ const CTABanner = () => {
           </defs>
         </svg>
         {/* Top-left star */}
-        <svg className="star star--twinkle" width="96" height="96" style={{ position: 'absolute', top: '2.5rem', left: '1.25rem', opacity: 0.25 }}>
+        <svg className="star star--twinkle" width="80" height="80" style={{ position: 'absolute', top: '2.5rem', left: '1.25rem', opacity: 0.25 }}>
           <use href="#mk-star" />
         </svg>
         {/* Mid-right small stars */}
-        <svg className="star star--float" width="40" height="40" style={{ position: 'absolute', top: '35%', right: '4rem', opacity: 0.35 }}>
+        <svg className="star star--float" width="32" height="32" style={{ position: 'absolute', top: '35%', right: '4rem', opacity: 0.35 }}>
           <use href="#mk-star" />
         </svg>
-        <svg className="star star--twinkle" width="28" height="28" style={{ position: 'absolute', top: '28%', right: '7.5rem', opacity: 0.35 }}>
+        <svg className="star star--twinkle" width="22" height="22" style={{ position: 'absolute', top: '28%', right: '7.5rem', opacity: 0.35 }}>
           <use href="#mk-star" />
         </svg>
         {/* Bottom-right larger star */}
-        <svg className="star star--twinkle" width="110" height="110" style={{ position: 'absolute', bottom: '4.5rem', right: '2rem', opacity: 0.25 }}>
+        <svg className="star star--twinkle" width="92" height="92" style={{ position: 'absolute', bottom: '4.5rem', right: '2rem', opacity: 0.25 }}>
           <use href="#mk-star" />
         </svg>
         <div
@@ -199,28 +210,28 @@ const CTABanner = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            minHeight: "92vh",
-            padding: "3rem 1rem",
-            maxWidth: "80rem",
+            minHeight: "80vh",
+            padding: "2.5rem 1rem",
+            maxWidth: "90rem",
             margin: "0 auto",
           }}
         >
           {/* Badge */}
-          <div style={{ marginBottom: "2rem", ...styles.fadeIn }}>
+          <div style={{ marginBottom: "1.5rem", ...styles.fadeIn }}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                padding: "0.75rem 1.5rem",
+                padding: "0.625rem 1.25rem",
                 borderRadius: "9999px",
                 color: "white",
-                fontSize: "0.875rem",
+                fontSize: "0.8125rem",
                 fontWeight: "500",
                 ...styles.glassCard,
               }}
             >
-              <Sparkles style={{ width: "1rem", height: "1rem" }} />
+              <Sparkles style={{ width: "0.9rem", height: "0.9rem" }} />
               Join 50,000+ Success Stories
             </div>
           </div>
@@ -230,10 +241,10 @@ const CTABanner = () => {
             <h1
               className="hero-title"
               style={{
-                fontSize: "clamp(3rem, 6vw, 4.5rem)",
+                fontSize: "clamp(2.5rem, 5vw, 3.75rem)",
                 fontWeight: "bold",
                 color: "white",
-                marginBottom: "1.5rem",
+                marginBottom: "1.25rem",
                 lineHeight: "1.1",
               }}
             >
@@ -243,7 +254,7 @@ const CTABanner = () => {
             <p
               className="hero-subtitle"
               style={{
-                fontSize: "clamp(1.125rem, 3vw, 1.5rem)",
+                fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
                 color: "rgba(255, 255, 255, 0.9)",
                 lineHeight: "1.6",
                 maxWidth: "42rem",
@@ -261,16 +272,16 @@ const CTABanner = () => {
             style={{
               display: "flex",
               flexDirection: "row",
-              gap: "1rem",
+              gap: "0.75rem",
               justifyContent: "center",
-              marginBottom: "2rem",
+              marginBottom: "1.5rem",
               flexWrap: "wrap",
             }}
           >
             <Link href="/ai-assessment"  className="btn-hero" style={styles.btnHero}>
               Start Your AI Assessment
               <ArrowRight
-                style={{ width: "1.25rem", height: "1.25rem" }}
+                style={{ width: "1.1rem", height: "1.1rem" }}
                 className="arrow"
               />
             </Link>
@@ -285,11 +296,11 @@ const CTABanner = () => {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: "2rem",
+              gap: "1.5rem",
               color: "rgba(255, 255, 255, 0.8)",
-              fontSize: "0.875rem",
+              fontSize: "0.85rem",
               fontWeight: "500",
-              marginBottom: "2rem",
+              marginBottom: "1.5rem",
             }}
           >
             {["14-day free trial", "No credit card required", "Cancel anytime"].map(
@@ -311,13 +322,13 @@ const CTABanner = () => {
         </div>
 
         {/* Stats Section */}
-        <div style={{ padding: "0 1rem 2rem", marginTop: "-1.5rem" }}>
-          <div style={{ maxWidth: "70rem", margin: "0 auto" }}>
+        <div style={{ padding: "0 1rem 1.5rem", marginTop: "-1rem" }}>
+          <div style={{ maxWidth: "72rem", margin: "0 auto" }}>
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "1.5rem",
+                gap: "1.25rem",
               }}
             >
               {[
@@ -334,14 +345,15 @@ const CTABanner = () => {
                   style={{
                     ...styles.glassCard,
                     borderRadius: "1rem",
-                    padding: "2rem",
+                    padding: "1.5rem",
                     textAlign: "center",
                     color: "white",
                     gap: 0
                   }}
+                  className="stats-card"
                 >
                   <div style={{ marginBottom: "0.75rem",  justifyItems:"center" }}>{stat.icon}</div>
-                  <div style={{ fontSize: "2.25rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+                  <div style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
                     {stat.number}
                   </div>
                   <div style={{ color: "rgba(255, 255, 255, 0.8)", fontWeight: "500" }}>
