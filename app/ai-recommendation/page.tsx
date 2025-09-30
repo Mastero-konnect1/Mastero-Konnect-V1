@@ -143,7 +143,7 @@ export default function AIRecommendation() {
       company: "Amazon",
       rating: 4.7,
       reviewCount: 95,
-      matchScore: 83,
+      matchScore: 73,
       specialties: ["Digital Marketing", "Brand Strategy", "Campaigns"],
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
       menteesCount: 140,
@@ -255,7 +255,7 @@ export default function AIRecommendation() {
     <div
       className="min-h-screen"
       style={{
-        backgroundImage: 'linear-gradient(180deg, rgba(47,107,174,0.3), rgba(255,255,255,0.8), rgba(90,141,200,0.1))'
+        backgroundImage: 'linear-gradient(180deg, rgba(47,107,174,0.3), rgba(255,255,255,1), rgba(90,141,200,0.3))'
       }}
     >
       <div className="container mx-auto px-4 py-8">
@@ -339,7 +339,7 @@ export default function AIRecommendation() {
           <Card className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-[0_4px_6px_rgba(0,0,0,0.1)] bg-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
               {/* Image Card */}
-              <div className="relative w-full h-[420px]">
+              <div className="relative w-full h-80">
                 <img 
                   src={bestMatch.image}
                   alt={bestMatch.name}
@@ -359,27 +359,27 @@ export default function AIRecommendation() {
               <CardContent className="p-0 flex flex-col justify-end">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <h2 className="text-3xl font-bold text-white"><strong>{bestMatch.name}</strong></h2>
-                    <p className="text-xl text-gray-100 mb-2"><strong>{bestMatch.title}</strong></p>
-                    <p className="text-md text-gray-200">{bestMatch.company}</p>
+                    <h2 className="text-3xl font-bold"><strong>{bestMatch.name}</strong></h2>
+                    <p className="text-xl mb-2"><strong>{bestMatch.title}</strong></p>
+                    <p className="text-md">{bestMatch.company}</p>
                   </div>
                   <div className="mb-6">
-                    <p className="text-base text-gray-100">Available: <span className="font-semibold text-white">{bestMatch.schedule}</span></p>
-                    <p className="text-base text-gray-100">Role: <span className="font-semibold text-white"><strong>{bestMatch.specialties.join(", ").toLowerCase()}</strong></span></p>
+                    <p className="text-base">Available: <span className="font-medium">{bestMatch.schedule}</span></p>
+                    <p className="text-base">Role: <span className="font-medium"><strong>{bestMatch.specialties.join(", ").toLowerCase()}</strong></span></p>
                   </div>
                   <div className="flex items-center justify-between mt-4">
                     <div className="flex items-center gap-2">
                       <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-lg font-semibold text-white">{bestMatch.rating}</span>
-                      <span className="text-sm text-gray-200">({bestMatch.reviewCount})</span>
+                      <span className="text-lg font-semibold">{bestMatch.rating}</span>
+                      <span className="text-sm">({bestMatch.reviewCount})</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users className="w-5 h-5 text-white" />
-                      <span className="text-sm text-gray-200">{bestMatch.menteesCount} Mentees</span>
+                      <Users className="w-5 h-5" />
+                      <span className="text-sm">{bestMatch.menteesCount} Mentees</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-white" />
-                      <span className="text-sm text-gray-200">{bestMatch.yearsExperience} Years</span>
+                      <Clock className="w-5 h-5" />
+                      <span className="text-sm">{bestMatch.yearsExperience} Years</span>
                     </div>
                   </div>
                 </div>
@@ -449,7 +449,7 @@ export default function AIRecommendation() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {visibleMatches.map((mentor) => (
-                <Card key={mentor.id} className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-md h-[420px]">
+                <Card key={mentor.id} className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-md h-[30rem]">
                   <div 
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gray-300"
                     style={{
@@ -461,55 +461,71 @@ export default function AIRecommendation() {
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-50" />
                   <div className="absolute top-4 left-4 text-white">
-                    <h3 className="text-2xl font-bold text-shadow-lg mb-1">{mentor.name}</h3>
-                    <p className="text-lg text-gray-100 text-shadow mb-2">{mentor.title}</p>
-                    <p className="text-md text-gray-200 text-shadow">{mentor.company}</p>
+                    <h3 className="text-xl font-bold mb-1">{mentor.name}</h3>
+                    <p className="text-lg opacity-90 mb-2">{mentor.title}</p>
+                    <p className="text-sm opacity-75">{mentor.company}</p>
                   </div>
                   <div className="relative z-10 h-full flex flex-col justify-end p-4 text-white">
                     <div className="flex items-center justify-center mb-6">
                       <div className="text-center space-y-2">
-                        <p className="text-base text-gray-100 text-shadow">Available: <span className="font-semibold text-white">{mentor.schedule}</span></p>
-                        <p className="text-base text-gray-100 text-shadow">Role: <span className="font-semibold text-white">{mentor.specialties.join(", ").toLowerCase()}</span></p>
+                        <p className="text-base opacity-90">Available: <span className="font-medium">{mentor.schedule}</span></p>
+                        <p className="text-sm opacity-90">Role: <span className="font-medium">{mentor.specialties.join(", ").toLowerCase()}</span></p>
                       </div>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-center gap-6">
                         <div className="flex items-center gap-2">
-                          <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                          <span className="text-lg font-semibold text-white text-shadow">{mentor.rating}</span>
-                          <span className="text-sm text-gray-200 text-shadow">({mentor.reviewCount})</span>
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-base font-medium">{mentor.rating}</span>
+                          <span className="text-sm opacity-75">({mentor.reviewCount})</span>
                         </div>
-                        <span className="text-white border-l border-white h-6"></span>
+                        <span className="text-white border-2 border-white h-4"></span>
                         <div className="flex items-center gap-2">
-                          <Users className="w-5 h-5 text-white" />
-                          <span className="text-sm text-gray-200 text-shadow">{mentor.menteesCount} Mentees</span>
+                          <Users className="w-4 h-4" />
+                          <span className="text-sm">{mentor.menteesCount} Mentees</span>
                         </div>
-                        <span className="text-white border-l border-white h-6"></span>
+                        <span className="text-white border-2 border-white h-4"></span>
                         <div className="flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-white" />
-                          <span className="text-sm text-gray-200 text-shadow">{mentor.yearsExperience}y</span>
+                          <Clock className="w-4 h-4" />
+                          <span className="text-sm">{mentor.yearsExperience}y</span>
                         </div>
                       </div>
                       <div className="absolute top-4 right-4">
-                        <div className={`inline-block px-3 py-1.5 rounded-full font-semibold text-base ${
-                          mentor.matchScore >= 90 ? 'bg-green-600' : 
+                        <div className={`inline-block px-2 py-1 rounded-full font-semibold text-sm ${
+                          mentor.matchScore > 85 ? 'bg-green-600' : 
                           mentor.matchScore >= 80 ? 'bg-blue-600' : 'bg-orange-600'
-                        } text-white shadow-md`}>
+                        } text-white`}>
                           {mentor.matchScore}% Match
                         </div>
                       </div>
                     </div>
-                    <Button
-                      size="lg"
-                      className={`bg-gradient-to-r from-mastero-blue to-mastero-blue-end text-white hover:from-mastero-blue-dark hover:to-mastero-blue-dark w-full py-4 transition-all duration-300 ${
-                        hoveredButton === mentor.id ? 'scale-105' : ''
-                      }`}
-                      onMouseEnter={() => setHoveredButton(mentor.id)}
-                      onMouseLeave={() => setHoveredButton(null)}
-                    >
-                      Get In Touch
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
+                   <Button
+                  variant="outline"
+                  size="lg"
+                  onMouseEnter={() => setHoveredButton(mentor.id)}
+                  onMouseLeave={() => setHoveredButton(null)}
+                  className={`flex items-center justify-center gap-2 
+                    bg-white text-mastero-blue font-medium 
+                    rounded-full shadow-sm w-full py-3 
+                    hover:bg-gray-100 hover:shadow-md 
+                    transition-all duration-300 
+                    ${hoveredButton === mentor.id ? 'scale-105' : ''}`}
+>
+              {/* Envelope Icon (inline SVG) */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4h16v16H4z" fill="none" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M22 6l-10 7L2 6" />
+              </svg>
+              Get In Touch
+            </Button>
+
                   </div>
                 </Card>
               ))}
