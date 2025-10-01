@@ -1,4 +1,4 @@
-# Mastero Konnect
+# Innov Karo
 
 A next-generation mentorship platform that connects aspiring professionals with industry experts through AI-powered matching and personalized guidance.
 
@@ -21,7 +21,7 @@ A next-generation mentorship platform that connects aspiring professionals with 
 
 ## About the Project
 
-Mastero Konnect is a comprehensive mentorship platform designed to bridge the gap between ambitious learners and experienced professionals. The platform leverages artificial intelligence to create meaningful mentor-mentee relationships, providing personalized guidance, structured learning paths, and professional development opportunities.
+Innov Karo is a comprehensive mentorship platform designed to bridge the gap between ambitious learners and experienced professionals. The platform leverages artificial intelligence to create meaningful mentor-mentee relationships, providing personalized guidance, structured learning paths, and professional development opportunities.
 
 ### What Makes Us Different
 
@@ -155,7 +155,7 @@ git --version
 
 3. **Verify installation**
    
-   You should see the Mastero Konnect homepage with the navigation menu and landing sections.
+   You should see the Innov Karo homepage with the navigation menu and landing sections.
 
 ## Project Structure
 
@@ -289,6 +289,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-**Built with passion by the Mastero Konnect team**
+**Built with passion by the Innov Karo team**
 
 Transform Your Journey. Connect with a Mastero.
