@@ -275,9 +275,9 @@ body {
   }
 }
 
-/* Enhanced CTA Section Styling */
+/* Enhanced CTA Section Styling - Aligned with CTABanner theme */
 .faq-cta-section {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, hsl(195, 100%, 50%), hsl(243, 75%, 59%));
   position: relative;
   overflow: hidden;
 }
@@ -340,12 +340,21 @@ body {
 }
 
 .faq-cta-button {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 2px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: white;
+  color: hsl(243, 75%, 59%);
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
 }
@@ -357,44 +366,159 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.2), 
+    rgba(255, 255, 255, 0.6), 
+    rgba(139, 92, 246, 0.2), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: inherit;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 .faq-cta-button:hover::before {
   left: 100%;
 }
 
+/* Star sparkle animation for buttons */
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0; 
+    transform: scale(0) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1) rotate(180deg); 
+  }
+}
+
+.faq-cta-button::after {
+  content: '✨';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px;
+  opacity: 0;
+  animation: sparkle 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.faq-cta-button:hover::after {
+  opacity: 1;
+  animation: sparkle 1s ease-in-out infinite;
+}
+
+/* Cosmic glow animation */
+@keyframes cosmicGlow {
+  0%, 100% { 
+    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% { 
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15), 0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.4);
+  }
+}
+
 .faq-cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 10px 15px -3px rgba(59, 130, 246, 0.2),
-    0 4px 6px -2px rgba(139, 92, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.4);
+  background: hsl(0, 0%, 95%);
+  transform: translateY(-2px) scale(1.02);
+  animation: cosmicGlow 2s ease-in-out infinite;
+}
+
+/* Star twinkle animation for primary button */
+@keyframes starTwinkle {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05) rotate(5deg); 
+  }
 }
 
 .faq-cta-button-primary {
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
-  border-color: #3b82f6;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.faq-cta-button-primary::before {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    rgba(255, 255, 255, 0.8), 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+}
+
+.faq-cta-button-primary::after {
+  content: '⭐';
+  animation: starTwinkle 3s ease-in-out infinite;
 }
 
 .faq-cta-button-primary:hover {
   background: linear-gradient(135deg, #2563eb, #7c3aed);
-  border-color: #2563eb;
   color: white;
+  transform: translateY(-2px) scale(1.02);
+  animation: cosmicGlow 2s ease-in-out infinite;
+}
+
+.faq-cta-button-primary:hover::after {
+  animation: starTwinkle 1s ease-in-out infinite;
+}
+
+/* Cosmic pulse animation for secondary button */
+@keyframes cosmicPulse {
+  0%, 100% { 
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2);
+  }
+  50% { 
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+  }
 }
 
 .faq-cta-button-secondary {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
   color: #3b82f6;
-  border-color: rgba(59, 130, 246, 0.3);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.faq-cta-button-secondary::before {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.2), 
+    rgba(139, 92, 246, 0.4), 
+    rgba(59, 130, 246, 0.2), 
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.faq-cta-button-secondary::after {
+  content: '🌟';
+  animation: sparkle 2.5s ease-in-out infinite;
 }
 
 .faq-cta-button-secondary:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.9));
   color: #8b5cf6;
   border-color: rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px) scale(1.02);
+  animation: cosmicPulse 2s ease-in-out infinite;
+}
+
+.faq-cta-button-secondary:hover::after {
+  animation: sparkle 1.2s ease-in-out infinite;
 }
 
 /* Enhanced FAQ Card Hover Effects */

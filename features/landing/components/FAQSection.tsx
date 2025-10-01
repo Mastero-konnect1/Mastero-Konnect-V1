@@ -445,14 +445,14 @@ export default function FAQSection() {
       <div className="flex gap-3 max-w-sm mx-auto">
         <a 
           href="mailto:support@masterokonnect.com"
-          className="flex-1 flex items-center justify-center gap-2 bg-mastero-blue-start text-white py-3 px-4 rounded-xl font-medium"
+          className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-blue-700 transition-all"
         >
           <Mail className="h-4 w-4" />
           Email
         </a>
         <a 
           href="#"
-          className="flex-1 flex items-center justify-center gap-2 bg-mastero-bg-subtle text-mastero-dark py-3 px-4 rounded-xl font-medium border border-border"
+          className="flex-1 flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-medium border border-gray-200 hover:bg-gray-200 transition-all"
         >
           <MessageCircle className="h-4 w-4" />
           Chat
