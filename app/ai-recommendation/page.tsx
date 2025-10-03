@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Star, Award, ArrowRight, Users, Clock, Search, Mic, Filter, SortAsc } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { ChevronLeft, ChevronRight, Star, Award, ArrowRight, Users, Clock, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,12 +26,28 @@ interface Mentor {
 }
 
 export default function AIRecommendation() {
+  const searchParams = useSearchParams();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isListening, setIsListening] = useState(false);
   const [filter, setFilter] = useState("");
   const [sortBy, setSortBy] = useState("matchScore");
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [aiRecommendations, setAiRecommendations] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Get user profile from URL params
+  useEffect(() => {
+    const profileParam = searchParams.get('profile');
+    if (profileParam) {
+      try {
+        const profile = JSON.parse(decodeURIComponent(profileParam));
+        setUserProfile(profile);
+      } catch (error) {
+        console.error('Failed to parse profile:', error);
+      }
+    }
+  }, [searchParams]);
 
   const bestMatch: Mentor = {
     id: 1,
@@ -214,43 +231,6 @@ export default function AIRecommendation() {
 
   const visibleMatches = filteredMatches.slice(currentSlide * 3, (currentSlide + 1) * 3);
 
-  // Debug: Log the image URL
-  console.log('Best match image URL:', bestMatch.image);
-
-  // Voice Recognition Setup
-  useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      console.log("Speech Recognition API not supported in this browser.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.onresult = (event) => {
-      const speechResult = event.results[0][0].transcript.toLowerCase();
-      setSearchQuery(speechResult);
-      setIsListening(false);
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
-
-    if (isListening) {
-      recognition.start();
-    }
-
-    return () => {
-      recognition.stop();
-    };
-  }, [isListening]);
-
   return (
     <div
       className="min-h-screen"
@@ -259,6 +239,39 @@ export default function AIRecommendation() {
       }}
     >
       <div className="container mx-auto px-4 py-8">
+        {/* User Profile Summary */}
+        {userProfile && (
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-mastero-dark mb-4">Your Career Profile</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {userProfile.interests && (
+                <div>
+                  <p className="text-sm text-gray-600">Interests</p>
+                  <p className="font-semibold text-gray-800">{userProfile.interests}</p>
+                </div>
+              )}
+              {userProfile.careerGoal && (
+                <div>
+                  <p className="text-sm text-gray-600">Career Goal</p>
+                  <p className="font-semibold text-gray-800">{userProfile.careerGoal}</p>
+                </div>
+              )}
+              {userProfile.learningStyle && (
+                <div>
+                  <p className="text-sm text-gray-600">Learning Style</p>
+                  <p className="font-semibold text-gray-800">{userProfile.learningStyle}</p>
+                </div>
+              )}
+              {userProfile.challenge && (
+                <div>
+                  <p className="text-sm text-gray-600">Current Challenge</p>
+                  <p className="font-semibold text-gray-800">{userProfile.challenge}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-mastero-dark mb-2">
@@ -295,18 +308,6 @@ export default function AIRecommendation() {
                     </svg>
                   </button>
                 )}
-                <button
-                  onClick={() => {
-                    if (!isListening) {
-                      setIsListening(true);
-                    } else {
-                      setIsListening(false);
-                    }
-                  }}
-                  className={`ml-2 p-2 rounded-full ${isListening ? 'bg-red-200' : 'bg-gray-100'} hover:bg-gray-200 transition-all duration-200`}
-                >
-                  <Mic className={`w-5 h-5 ${isListening ? 'text-red-600' : 'text-gray-600'}`} />
-                </button>
               </div>
             </div>
           </div>
