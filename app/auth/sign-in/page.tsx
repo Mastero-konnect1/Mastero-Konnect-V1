@@ -13,9 +13,9 @@ export default function AuthPage() {
   const [acceptTerms, setAcceptTerms] = useState(false)
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center" style={{ backgroundColor: '#0d47ff' }}>
+    <div className="min-h-screen w-full flex items-center justify-center px-4" style={{ backgroundColor: '#0d47ff' }}>
       <div 
-        className="relative w-[880px] h-[520px] rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-[880px] h-auto md:h-[520px] rounded-xl shadow-2xl overflow-hidden"
         style={{ 
           boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
           transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55)'
@@ -311,17 +311,6 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* Responsive Styles */}
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .w-[880px] {
-            width: 90%;
-            height: auto;
-            min-height: 600px;
-            flex-direction: column;
-          }
-        }
-      `}</style>
     </div>
   )
 }
