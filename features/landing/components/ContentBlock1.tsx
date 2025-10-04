@@ -230,7 +230,7 @@ export default function ContentBlock1() {
   <div
     style={{
       position: 'relative',
-      height: '85%',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: 'white',
