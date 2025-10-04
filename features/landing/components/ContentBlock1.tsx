@@ -9,39 +9,41 @@ const features = [
     icon: Users,
     title: "Personalized Mentorship",
     description: "One-on-one guidance tailored to your unique learning style and career goals",
-    gradient: "from-blue-500 to-blue-600"
+    iconColor: "#7DD3FC" // sky-300
   },
   {
     icon: Award,
     title: "Expert Instructors",
     description: "Learn from certified professionals with proven industry experience",
-    gradient: "from-blue-600 to-blue-700"
+    iconColor: "#FBBF24" // amber-400
   },
   {
     icon: BookOpen,
     title: "Premium Platform",
     description: "Access our cutting-edge online learning environment with advanced tools",
-    gradient: "from-blue-700 to-blue-800"
+    iconColor: "#34D399" // emerald-400
   },
   {
     icon: Clock,
     title: "Flexible Scheduling",
     description: "Study when it works best for your lifestyle and commitments",
-    gradient: "from-blue-800 to-blue-900"
+    iconColor: "#F472B6" // pink-400
   },
   {
     icon: Target,
     title: "Progress Tracking",
     description: "Monitor your advancement with clear milestones and detailed insights",
-    gradient: "from-blue-900 to-indigo-800"
+    iconColor: "#A78BFA" // violet-400
   },
   {
     icon: Sparkles,
     title: "Community Support",
     description: "Connect with fellow learners in our vibrant, supportive community",
-    gradient: "from-indigo-800 to-indigo-900"
+    iconColor: "#22D3EE" // cyan-400
   }
 ]
+
+const scrollingFeatures = [...features, ...features]
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -62,7 +64,7 @@ const cardVariants = {
     opacity: 1, 
     y: 0, 
     scale: 1, 
-    transition: { duration: 0.5, ease: "easeOut" as const }
+    transition: { duration: 0.5, ease: "easeOut" }
   },
   hover: { 
     scale: 1.05,
@@ -71,7 +73,7 @@ const cardVariants = {
     rotateY: 5,
     transition: { 
       duration: 0.3,
-      type: "spring" as const,
+      type: "spring",
       stiffness: 300,
       damping: 20
     }
@@ -82,7 +84,7 @@ const buttonVariants = {
   hover: {
     scale: 1.05,
     boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
-    transition: { type: "spring" as const, stiffness: 300, damping: 20 }
+    transition: { type: "spring", stiffness: 300, damping: 20 }
   },
   tap: { scale: 0.98, transition: { duration: 0.2 } }
 }
@@ -112,109 +114,288 @@ export default function ContentBlock1() {
   }
 
   return (
-    <section className="py-24 bg-mastero-bg-subtle  relative overflow-hidden">
+    <section style={{ paddingTop: '6rem', paddingBottom: '6rem', backgroundColor: '#E6F0FA', position: 'relative', overflow: 'hidden' }}>
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%236368A0" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`, opacity: 0.3 }} />
       
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <div style={{ maxWidth: '80rem', margin: '0 auto', paddingLeft: '1.5rem', paddingRight: '1.5rem',  position: 'relative', zIndex: 10 }}>
         {/* Header Section */}
         <motion.div
-          className="text-center mb-16"
+          style={{ textAlign: 'center', marginBottom: '4rem' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl font-semibold sm:text-5xl lg:text-9xl font-extrabold text-mastero-dark mb-6"
+            style={{ 
+              marginBottom: '1.5rem', 
+              position: 'relative',
+              textAlign: 'center'
+            }}
           >
-            Why Choose Perfect Tutor?
+            <span style={{ 
+              display: 'inline-block', 
+              fontSize: '2.5rem', 
+              fontWeight: 'bold', 
+              background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
+              WebkitBackgroundClip: 'text', 
+              backgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent', 
+              boxShadow: '0 4px 12px rgba(59,130,246,0.4)', 
+              marginBottom: '0.5rem' 
+            }}>
+              Why Choose
+            </span>
+            <br />
+            <span style={{ 
+              fontSize: '3rem', 
+              fontWeight: '900', 
+              background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', 
+              WebkitBackgroundClip: 'text', 
+              backgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent', 
+              boxShadow: '0 6px 16px rgba(99,102,241,0.6)', 
+              letterSpacing: '-0.05em',
+              fontStyle: 'italic'
+            }}>
+              Perfect Tutor?
+            </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
-            className="text-xl sm:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+            style={{ 
+              fontSize: '1.125rem', 
+              lineHeight: '1.75', 
+              letterSpacing: '0.025em', 
+              fontWeight: '300', 
+              color: '#1F2937',
+              maxWidth: '48rem',
+              margin: '0 auto',
+              textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      
+            }}
           >
-            Experience exceptional tutoring designed to help you achieve your goals with confidence and excellence.
+            Experience exceptional tutoring designed to help you <span style={{ 
+              fontWeight: '600', 
+              background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
+              WebkitBackgroundClip: 'text', 
+              backgroundClip: 'text', 
+              WebkitTextFillColor: 'transparent',
+              fontStyle: 'italic'
+            }}>achieve your goals</span> with confidence and excellence.
           </motion.p>
         </motion.div>
 
-        {/* Features Grid - 3 columns, 2 rows */}
+        {/* Features Marquee - Infinite Left-to-Right */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          style={{ position: 'relative', marginBottom: '4rem' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              whileHover="hover"
-              className="group relative"
-              style={{ perspective: "1000px" }}
-            >
-              <div className={`
-                relative h-full p-8 rounded-3xl bg-white/10 backdrop-blur-sm 
-                border-2 border-white/30 hover:border-blue/50 shadow-xl hover:shadow-2xl
-                transition-all duration-500 cursor-pointer rounded-xl overflow-hidden
-                before:absolute before:inset-0 before:bg-gradient-to-br before:${feature.gradient} 
-                before:opacity-0 before:transition-opacity before:duration-300 
-                group-hover:before:opacity-100
-              `}>
-                {/* Card Content */}
-                <div className="relative z-10 h-full flex flex-col">
-                  {/* Logo and Icon */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className={`
-                      w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} 
-                      flex items-center justify-center shadow-lg
-                      group-hover:scale-110 transition-transform duration-300
-                    `}>
-                      <feature.icon className="h- w-6 text-mastero" />
-                    </div>
-                  </div>
+          <div style={{ overflow: 'hidden', borderRadius: '1.5rem', background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)',  }}>
+            <div className="marquee" style={{ display: 'flex', gap: '2rem', width: 'max-content', animation: 'marquee-right 35s linear infinite', willChange: 'transform' }}>
+              {scrollingFeatures.map((feature, index) => (
+                <motion.div
+                  key={`${index}-${feature.title}`}
+                  whileHover="hover"
+                  style={{ 
+                    position: 'relative', 
+                    minWidth: '20rem', 
+                    maxWidth: '23.75rem', 
+                    display: 'inline-block', 
+                    marginLeft: '1rem', 
+                    marginRight: '1rem',
+                    perspective: "1000px"
                   
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-mastero-dark mb-4 group-hover:text-blue-100 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  
-                  {/* Description */}
-                  <p className="text-blue-100 leading-relaxed flex-grow group-hover:text-white transition-colors duration-300">
-                    {feature.description}
-                  </p>
-                  
-                  {/* Hover Indicator */}
-                  <div className="mt-6 flex items-center text-sm font-medium text-blue-200 group-hover:text-white transition-colors duration-300">
-                    <span>Learn more</span>
-                    <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                  </div>
-                </div>
-                
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-pulse pointer-events-none" />
-              </div>
-            </motion.div>
-          ))}
+                  }}
+                >
+               <div
+  style={{
+    position: 'relative',
+    height: '100%',
+    padding: '2rem',
+    borderRadius: '1.5rem',
+    // removed semi-transparent background
+
+    transition: 'all 0.5s ease',
+    cursor: 'pointer',
+    overflow: 'hidden',
+    border: 'none',
+    outline: 'none',
+  }}
+>
+  {/* Card Content */}
+  <div
+    style={{
+      position: 'relative',
+      height: '85%',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: 'white',
+      width: '100%',
+      borderRadius: '1rem',
+      padding: '1.5rem',
+      transition: 'transform 0.3s ease',
+      margin: 0,
+      border: 'none',
+      outline: 'none',
+    }}
+  >
+    {/* Logo and Icon */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', marginBottom: '1.5rem' }}>
+      <div
+        style={{
+          width: '4rem',
+          height: '4rem',
+          borderRadius: '0.75rem',
+          backgroundColor: feature.iconColor || '#1E3A8A',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 0.75rem 3rem rgba(0,0,0,0.3)',
+          transition: 'transform 0.3s ease',
+          border: 'none',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+      >
+        <feature.icon
+          style={{
+            height: '1.75rem',
+            width: '1.75rem',
+            color: 'white',
+            filter: 'drop-shadow(0 0.25rem 0.75rem rgba(0,0,0,0.4))',
+          }}
+        />
+      </div>
+    </div>
+
+    {/* Title */}
+    <h3
+      style={{
+        fontSize: '1.5rem',
+        fontWeight: '900',
+        color: '#1E3A8A',
+        marginBottom: '1rem',
+        transition: 'color 0.3s ease',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = '#2563EB')}
+      onMouseLeave={(e) => (e.currentTarget.style.color = '#1E3A8A')}
+    >
+      {feature.title}
+    </h3>
+
+    {/* Description */}
+    <p
+      style={{
+        color: '#475569',
+        lineHeight: '1.6',
+        flexGrow: 1,
+        transition: 'color 0.3s ease',
+        fontStyle: 'italic',
+        fontWeight: '300',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = '#1E293B')}
+      onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
+    >
+      {feature.description}
+    </p>
+
+    {/* Hover Indicator */}
+    <div
+      style={{
+        marginTop: '1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: '0.875rem',
+        fontWeight: '500',
+        color: '#2563EB',
+        transition: 'color 0.3s ease',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = '#1E3A8A')}
+      onMouseLeave={(e) => (e.currentTarget.style.color = '#2563EB')}
+    >
+      <span>Learn more</span>
+      <ArrowRight
+        style={{
+          height: '1rem',
+          width: '1rem',
+          marginLeft: '0.5rem',
+          transition: 'transform 0.3s ease',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateX(0.25rem)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateX(0)')}
+      />
+    </div>
+  </div>
+
+  {/* Optional shimmer effect — disabled by default */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      opacity: 0,
+      transition: 'opacity 0.3s ease',
+      pointerEvents: 'none',
+    }}
+  />
+</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
         {/* CTA Section */}
         <motion.div 
-          className="text-center"
+          style={{ textAlign: 'center' }}
           variants={itemVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleButtonClick}>
+          <motion.div whileHover="hover" whileTap="tap" onClick={handleButtonClick}>
             <Button
               size="lg"
               asChild
-              className="relative overflow-hidden bg-gradient-to-r from-white to-blue-100 hover:from-blue-50 hover:to-blue-200 text-blue-700 font-bold text-lg px-12 py-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 focus:ring-4 focus:ring-white/50 flex items-center gap-4 mx-auto"
+              style={{ 
+                position: 'relative', 
+                overflow: 'hidden', 
+                background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
+                color: 'white', 
+                fontWeight: 'bold', 
+                fontSize: '1.125rem', 
+                paddingLeft: '3rem', 
+                paddingRight: '3rem', 
+                paddingTop: '1.5rem', 
+                paddingBottom: '1.5rem', 
+                borderRadius: '1rem', 
+                boxShadow: '0 1.25rem 2rem rgba(0,0,0,0.3)', 
+                transition: 'all 0.3s ease',
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '1rem', 
+                margin: '0 auto' 
+              }} onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #2563EB, #4F46E5)';
+                e.currentTarget.style.boxShadow = '0 1.5rem 2.5rem rgba(0,0,0,0.4)';
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #3B82F6, #6366F1)';
+                e.currentTarget.style.boxShadow = '0 1.25rem 2rem rgba(0,0,0,0.3)';
+              }}
             >
-              <Link href="/ai-assessment">
+              <Link href="/ai-assessment" style={{ color: 'white', textDecoration: 'none' }}>
                 Start Your Journey
-                <ArrowRight className="h-6 w-6" />
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 pointer-events-none"></span>
+                <ArrowRight style={{ height: '1.5rem', width: '1.5rem' }} />
+                <span style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', 
+                  opacity: 0, 
+                  transition: 'opacity 0.5s ease',
+                  pointerEvents: 'none' 
+                }} />
               </Link>
             </Button>
           </motion.div>
@@ -225,19 +406,36 @@ export default function ContentBlock1() {
       <AnimatePresence>
         {showRocket && (
           <motion.div
-            className="fixed inset-0 flex items-center justify-center bg-blue-950/80 z-50"
+            style={{ 
+              position: 'fixed', 
+              inset: 0, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              backgroundColor: 'rgba(15, 23, 42, 0.8)', 
+              zIndex: 50 
+            }}
             initial="hidden"
             animate="visible"
             exit="exit"
             variants={rocketVariants}
           >
             <motion.div
-              className="relative"
+              style={{ position: 'relative' }}
               variants={trailVariants}
             >
-              <span className="text-8xl text-blue-400 animate-bounce">🚀</span>
+              <span style={{ fontSize: '5rem', color: '#60A5FA', animation: 'bounce 2s infinite' }}>🚀</span>
               <motion.div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-blue-400 rounded-full"
+                style={{ 
+                  position: 'absolute', 
+                  top: '50%', 
+                  left: '50%', 
+                  transform: 'translate(-50%, -50%)', 
+                  width: '1.5rem', 
+                  height: '1.5rem', 
+                  backgroundColor: '#60A5FA', 
+                  borderRadius: '50%' 
+                }}
                 animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 0] }}
                 transition={{ duration: 1, repeat: Infinity }}
               />
@@ -245,6 +443,31 @@ export default function ContentBlock1() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx>{`
+        .marquee {
+          display: flex;
+          gap: 2rem;
+          width: max-content;
+          animation: marquee-right 35s linear infinite;
+          will-change: transform;
+        }
+        .marquee:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marquee-right {
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+      `}</style>
     </section>
   )
 }
