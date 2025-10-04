@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, Star, Award, ArrowRight, Users, Clock, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ interface Mentor {
   schedule: string;
 }
 
-export default function AIRecommendation() {
+function AIRecommendationContent() {
   const searchParams = useSearchParams();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
@@ -545,5 +545,20 @@ export default function AIRecommendation() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AIRecommendation() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-mastero-blue mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading recommendations...</p>
+        </div>
+      </div>
+    }>
+      <AIRecommendationContent />
+    </Suspense>
   );
 }
