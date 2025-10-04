@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import '../styles/AuthLayout.css'
 
 export default function ResetPasswordPage() {
   const [isClient, setIsClient] = useState(false)
