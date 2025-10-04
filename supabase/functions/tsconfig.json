@@ -3,6 +3,8 @@
     "target": "esnext",
     "lib": ["deno.window"],
     "noImplicitAny": false,
-    "strict": false
-  }
+    "strict": false,
+    "types": ["https://deno.land/x/types/index.d.ts"]
+  },
+  "exclude": []
 }
