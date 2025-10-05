@@ -18,6 +18,7 @@ export default function AIAssessment() {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [quickOptions, setQuickOptions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [userProfile, setUserProfile] = useState({
     interests: "",
@@ -40,13 +41,15 @@ export default function AIAssessment() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!input.trim() || isStreaming) return;
+  const handleSendMessage = async (messageText?: string) => {
+    const textToSend = messageText || input.trim();
+    if (!textToSend || isStreaming) return;
 
-    const userMessage: Message = { role: 'user', content: input };
+    const userMessage: Message = { role: 'user', content: textToSend };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setInput("");
+    setQuickOptions([]);
     setIsStreaming(true);
 
     try {
@@ -62,10 +65,12 @@ export default function AIAssessment() {
       if (!response.ok) {
         if (response.status === 429) {
           toast.error("Rate limit exceeded. Please wait a moment.");
+          setIsStreaming(false);
           return;
         }
         if (response.status === 402) {
           toast.error("Service limit reached. Please contact support.");
+          setIsStreaming(false);
           return;
         }
         throw new Error('Failed to get AI response');
@@ -96,6 +101,7 @@ export default function AIAssessment() {
             const data = line.slice(6);
             if (data === '[DONE]') {
               setIsComplete(checkIfComplete(updatedMessages.length));
+              generateQuickOptions(updatedMessages.length + 1);
               continue;
             }
 
@@ -124,6 +130,23 @@ export default function AIAssessment() {
       toast.error("Failed to get response. Please try again.");
     } finally {
       setIsStreaming(false);
+    }
+  };
+
+  const generateQuickOptions = (messageCount: number) => {
+    // Generate contextual quick options based on question number
+    if (messageCount === 2) {
+      // After first question about interests
+      setQuickOptions(["Technology & AI", "Business & Marketing", "Design & Creativity", "Data & Analytics"]);
+    } else if (messageCount === 4) {
+      // After career goal question
+      setQuickOptions(["Software Engineer", "Product Manager", "Data Scientist", "UI/UX Designer"]);
+    } else if (messageCount === 6) {
+      // After learning style question
+      setQuickOptions(["Hands-on projects", "Structured courses", "Reading & research", "Mentorship & guidance"]);
+    } else if (messageCount === 8) {
+      // After challenge question
+      setQuickOptions(["Lack of experience", "Skills gap", "Career direction", "Networking opportunities"]);
     }
   };
 
@@ -210,6 +233,21 @@ export default function AIAssessment() {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-4 bg-gray-50">
+              {/* Quick Options */}
+              {quickOptions.length > 0 && !isStreaming && (
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {quickOptions.map((option, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSendMessage(option)}
+                      className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition-all duration-200 shadow-sm"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+              
               <div className="flex items-center gap-3">
                 <Input
                   value={input}
@@ -225,7 +263,7 @@ export default function AIAssessment() {
                   className="flex-1 h-12 rounded-full border-gray-200 focus-visible:ring-2 focus-visible:ring-primary/40 bg-white shadow-sm"
                 />
                 <Button
-                  onClick={handleSendMessage}
+                  onClick={() => handleSendMessage()}
                   disabled={isStreaming || !input.trim()}
                   className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 hover:shadow-lg transition-all duration-200 flex items-center justify-center"
                 >

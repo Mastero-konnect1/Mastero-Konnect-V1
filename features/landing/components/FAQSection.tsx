@@ -413,23 +413,6 @@ export default function FAQSection() {
             We're committed to providing you with the best possible experience.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-2xl mx-auto">
-            <a 
-              href="mailto:support@masterokonnect.com"
-              className="flex items-center gap-3 faq-cta-button faq-cta-button-primary px-8 py-4 rounded-2xl font-semibold text-lg min-w-[200px] justify-center"
-            >
-              <Mail className="h-6 w-6" />
-              Email Support
-            </a>
-            
-            <a 
-              href="#"
-              className="flex items-center gap-3 faq-cta-button faq-cta-button-secondary px-8 py-4 rounded-2xl font-semibold text-lg min-w-[200px] justify-center"
-            >
-              <MessageCircle className="h-6 w-6" />
-              Live Chat
-            </a>
-          </div>
           
           {/* Additional info */}
           <div className="mt-8 text-sm text-gray-500">
@@ -440,25 +423,6 @@ export default function FAQSection() {
       </div>
     </section>
     
-    {/* Mobile Sticky CTA */}
-    <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-border sm:hidden z-50 shadow-lg">
-      <div className="flex gap-3 max-w-sm mx-auto">
-        <a 
-          href="mailto:support@masterokonnect.com"
-          className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-blue-700 transition-all"
-        >
-          <Mail className="h-4 w-4" />
-          Email
-        </a>
-        <a 
-          href="#"
-          className="flex-1 flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-medium border border-gray-200 hover:bg-gray-200 transition-all"
-        >
-          <MessageCircle className="h-4 w-4" />
-          Chat
-        </a>
-      </div>
-    </div>
   </>
   )
 }
