@@ -35,6 +35,8 @@ export default function AIAssessment() {
       content: "Hey there! 👋 I'm your AI career guide. I'll ask you just 4-5 quick questions to find your perfect mentor match. Ready to get started? What subject, field, or topic excites you the most right now?"
     };
     setMessages([greeting]);
+    // Preload quick options for the first question
+    setQuickOptions(["Technology & AI", "Business & Marketing", "Design & Creativity", "Data & Analytics"]);
   }, []);
 
   useEffect(() => {
@@ -76,53 +78,96 @@ export default function AIAssessment() {
         throw new Error('Failed to get AI response');
       }
 
-      const reader = response.body?.getReader();
+      const body = response.body;
+      if (!body) {
+        throw new Error('Stream not available');
+      }
+      const reader = body.getReader();
       const decoder = new TextDecoder();
-      let assistantMessage = "";
+      let assistantMessage = '';
 
-      // Add empty assistant message that will be updated
+      // Add empty assistant message that will be updated as we stream
       setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
       if (reader) {
-        let buffer = "";
-        
-        while (true) {
+        let textBuffer = '';
+        let streamDone = false;
+
+        while (!streamDone) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || "";
+          textBuffer += decoder.decode(value, { stream: true });
 
-          for (const line of lines) {
-            if (!line.trim() || line.startsWith(':')) continue;
+          let newlineIndex: number;
+          while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
+            let line = textBuffer.slice(0, newlineIndex);
+            textBuffer = textBuffer.slice(newlineIndex + 1);
+
+            if (line.endsWith('\r')) line = line.slice(0, -1); // handle CRLF
+            if (line.startsWith(':') || line.trim() === '') continue; // SSE comments/keepalive
             if (!line.startsWith('data: ')) continue;
 
-            const data = line.slice(6);
-            if (data === '[DONE]') {
-              setIsComplete(checkIfComplete(updatedMessages.length));
-              generateQuickOptions(updatedMessages.length + 1);
-              continue;
+            const dataStr = line.slice(6).trim();
+            if (dataStr === '[DONE]') {
+              setIsComplete(checkIfComplete(updatedMessages.length + 1));
+              generateQuickOptions([...updatedMessages, { role: 'assistant', content: assistantMessage }]);
+              streamDone = true;
+              break;
             }
 
             try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices?.[0]?.delta?.content;
+              const parsed = JSON.parse(dataStr);
+              const content = parsed.choices?.[0]?.delta?.content as string | undefined;
               if (content) {
                 assistantMessage += content;
                 setMessages(prev => {
                   const newMessages = [...prev];
                   newMessages[newMessages.length - 1] = {
                     role: 'assistant',
-                    content: assistantMessage
+                    content: assistantMessage,
                   };
                   return newMessages;
                 });
               }
-            } catch (e) {
-              // Skip invalid JSON
+            } catch {
+              // Incomplete JSON split across chunks: put it back and wait for more data
+              textBuffer = line + '\n' + textBuffer;
+              break;
             }
           }
+        }
+
+        // Final flush in case remaining buffered lines arrived without trailing newline
+        if (textBuffer.trim()) {
+          for (let raw of textBuffer.split('\n')) {
+            if (!raw) continue;
+            if (raw.endsWith('\r')) raw = raw.slice(0, -1);
+            if (raw.startsWith(':') || raw.trim() === '') continue;
+            if (!raw.startsWith('data: ')) continue;
+            const dataStr = raw.slice(6).trim();
+            if (dataStr === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(dataStr);
+              const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+              if (content) {
+                assistantMessage += content;
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  newMessages[newMessages.length - 1] = {
+                    role: 'assistant',
+                    content: assistantMessage,
+                  };
+                  return newMessages;
+                });
+              }
+            } catch {
+              // ignore partial leftovers
+            }
+          }
+          // After final flush, ensure quick options are generated
+          generateQuickOptions([...updatedMessages, { role: 'assistant', content: assistantMessage }]);
+          setIsComplete(checkIfComplete(updatedMessages.length + 1));
         }
       }
     } catch (error) {
@@ -133,21 +178,49 @@ export default function AIAssessment() {
     }
   };
 
-  const generateQuickOptions = (messageCount: number) => {
-    // Generate contextual quick options based on question number
-    if (messageCount === 2) {
-      // After first question about interests
-      setQuickOptions(["Technology & AI", "Business & Marketing", "Design & Creativity", "Data & Analytics"]);
-    } else if (messageCount === 4) {
-      // After career goal question
-      setQuickOptions(["Software Engineer", "Product Manager", "Data Scientist", "UI/UX Designer"]);
-    } else if (messageCount === 6) {
-      // After learning style question
-      setQuickOptions(["Hands-on projects", "Structured courses", "Reading & research", "Mentorship & guidance"]);
-    } else if (messageCount === 8) {
-      // After challenge question
-      setQuickOptions(["Lack of experience", "Skills gap", "Career direction", "Networking opportunities"]);
+  const generateQuickOptions = (allMessages: Message[]) => {
+    const userMessages = allMessages.filter((m) => m.role === 'user');
+    const step = userMessages.length; // 0: interests, 1: goal, 2: style, 3: challenge, 4: mentor pref
+    const interest = (userMessages[0]?.content || '').toLowerCase();
+
+    const set = (opts: string[]) => setQuickOptions(opts);
+
+    if (step === 0) {
+      set(["Technology & AI", "Business & Marketing", "Design & Creativity", "Data & Analytics"]);
+      return;
     }
+
+    if (step === 1) {
+      if (interest.includes('data') || interest.includes('analytics')) {
+        set(["Data Scientist", "Data Analyst", "ML Engineer", "BI Analyst"]);
+      } else if (interest.includes('design') || interest.includes('ux') || interest.includes('ui')) {
+        set(["UI/UX Designer", "Product Designer", "UX Researcher", "Design Strategist"]);
+      } else if (interest.includes('business') || interest.includes('marketing')) {
+        set(["Product Manager", "Growth Marketer", "Brand Strategist", "BizOps Analyst"]);
+      } else if (interest.includes('ai') || interest.includes('software') || interest.includes('code') || interest.includes('tech') || interest.includes('engineering')) {
+        set(["Software Engineer", "AI Engineer", "Full-Stack Dev", "Mobile Developer"]);
+      } else {
+        set(["Product Manager", "Software Engineer", "Data Scientist", "UI/UX Designer"]);
+      }
+      return;
+    }
+
+    if (step === 2) {
+      set(["Hands-on projects", "Structured courses", "Reading & research", "Mentorship & guidance"]);
+      return;
+    }
+
+    if (step === 3) {
+      set(["Lack of experience", "Skills gap", "Career direction", "Networking opportunities"]);
+      return;
+    }
+
+    if (step === 4) {
+      set(["Industry experience mentor", "Academic background mentor"]);
+      return;
+    }
+
+    setQuickOptions([]);
   };
 
   const checkIfComplete = (messageCount: number) => {
