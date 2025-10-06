@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/page": [
+    "/find-mentor/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/find-mentor/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -16,15 +16,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/ai-recommendation/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/ai-recommendation/page.js"
-    ],
-    "/find-mentor/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/find-mentor/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

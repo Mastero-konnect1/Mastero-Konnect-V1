@@ -54,7 +54,7 @@ export default function MentorProfile() {
         `}
       </style>
 
-      <section className="mkp-hero">
+      <section className="mkp-hero mt-10">
         <div className="mkp-avatar" aria-hidden>SC</div>
         <div>
           <div className="mkp-name">Sarah Chen</div>

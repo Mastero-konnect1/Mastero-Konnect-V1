@@ -1,4 +1,3 @@
 {
-  "/page": "app/page.js",
-  "/ai-recommendation/page": "app/ai-recommendation/page.js"
+  "/find-mentor/page": "app/find-mentor/page.js"
 }
