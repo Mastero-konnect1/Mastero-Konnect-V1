@@ -18,8 +18,8 @@ export default function HomePage() {
       <ServicesSection />
       <ContentBlock1 />
       <PricingSection />
-      <FAQSection />
       <TestimonialsSection />
+      <FAQSection />
       <CTABanner />
       <Footer />
     </div>

@@ -402,10 +402,10 @@ export default function FAQSection() {
     </section> */}
     
     {/* Enhanced CTA Section */}
-    <section className="py-20 faq-cta-section mt-12">
-      <div className="faq-container mx-auto">
-        <div className="p-8 md:p-16 rounded-3xl text-center faq-cta-container relative">
-          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 faq-cta-title">
+    <section className="py-20 faq-cta-section">
+      <div className="faq-container mt-12 mb-12 mx-auto">
+        <div className="p-16 md:p-16 height-full rounded-3xl text-center faq-cta-container relative">
+          <h3 className="text-3xl mt-12 mb-12 md:text-4xl lg:text-5xl font-bold mb-6 faq-cta-title">
             Still have questions?
           </h3>
           <p className="text-xl md:text-2xl mb-12 faq-cta-subtitle max-w-3xl mx-auto leading-relaxed">
@@ -415,7 +415,7 @@ export default function FAQSection() {
           
           
           {/* Additional info */}
-          <div className="mt-8 text-sm text-gray-500">
+          <div className="mt-8 mb-12 text-sm text-gray-500">
             <p>💬 Response time: Usually within 2 hours</p>
             <p>🕒 Support hours: Monday - Friday, 9 AM - 6 PM EST</p>
           </div>

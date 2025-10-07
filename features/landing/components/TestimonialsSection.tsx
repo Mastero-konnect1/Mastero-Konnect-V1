@@ -15,8 +15,8 @@ export default function OurCommunitySection() {
           100% { transform: translateY(0); }
         }
         @keyframes starGlow {
-          0%, 100% { filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3)); }
-          50% { filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.6)); }
+          0%, 100% { filter: drop-shadow(0 0 4px rgba(98, 86, 237, 0.3)); }
+          50% { filter: drop-shadow(0 0 12px rgba(98, 86, 237, 0.6)); }
         }
         .star { opacity: 0.7; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1)); }
         .star--twinkle { animation: starTwinkle 3s ease-in-out infinite; }
@@ -43,8 +43,8 @@ export default function OurCommunitySection() {
       <section className="py-20 testimonials-section relative overflow-hidden testimonials-gradient">
         {/* Enhanced animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30"></div>
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0" style={{background:'linear-gradient(to bottom right, rgba(107,80,235,0.1), transparent, rgba(85,93,239,0.1))'}}></div>
           
           {/* Blurred orbs */}
           <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-2xl animate-pulse"></div>
@@ -61,13 +61,13 @@ export default function OurCommunitySection() {
         <svg width="0" height="0" style={{ position: "absolute" }}>
           <defs>
             <symbol id="community-star" viewBox="0 0 100 100">
-              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#3B82F6" />
+              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#6B50EB" />
             </symbol>
             <symbol id="community-star-purple" viewBox="0 0 100 100">
-              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#8B5CF6" />
+              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#6256ED" />
             </symbol>
             <symbol id="community-star-cyan" viewBox="0 0 100 100">
-              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#06B6D4" />
+              <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#555DEF" />
             </symbol>
           </defs>
         </svg>
@@ -121,12 +121,12 @@ export default function OurCommunitySection() {
         </svg>
         
         {/* Floating particles */}
-        <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-blue-400/60 rounded-full floating-particle" style={{animationDelay: '0s'}}></div>
-        <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-purple-400/70 rounded-full floating-particle" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 bg-cyan-400/60 rounded-full floating-particle" style={{animationDelay: '4s'}}></div>
-        <div className="absolute top-1/4 right-1/2 w-1 h-1 bg-blue-500/50 rounded-full floating-particle" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-1/2 right-1/4 w-1.5 h-1.5 bg-purple-500/40 rounded-full floating-particle" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-2/3 left-1/3 w-1 h-1 bg-cyan-500/50 rounded-full floating-particle" style={{animationDelay: '5s'}}></div>
+        <div className="absolute top-1/3 left-1/2 w-2 h-2 rounded-full floating-particle" style={{animationDelay: '0s', background:'#6B50EB99'}}></div>
+        <div className="absolute top-2/3 right-1/3 w-1 h-1 rounded-full floating-particle" style={{animationDelay: '2s', background:'#6256EDB3'}}></div>
+        <div className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 rounded-full floating-particle" style={{animationDelay: '4s', background:'#555DEF99'}}></div>
+        <div className="absolute top-1/4 right-1/2 w-1 h-1 rounded-full floating-particle" style={{animationDelay: '1s', background:'#6B50EB80'}}></div>
+        <div className="absolute bottom-1/2 right-1/4 w-1.5 h-1.5 rounded-full floating-particle" style={{animationDelay: '3s', background:'#6256ED66'}}></div>
+        <div className="absolute top-2/3 left-1/3 w-1 h-1 rounded-full floating-particle" style={{animationDelay: '5s', background:'#555DEF80'}}></div>
         
         <div className="testimonials-content relative z-10">
         
@@ -144,8 +144,8 @@ export default function OurCommunitySection() {
           {/* Additional Subheading */}
           <div className="testimonials-main-content animate-fade-in-up" style={{animationDelay: '0.6s'}}>
             <h3 className="testimonials-cta-text cursor-default transform hover:scale-105 transition-all duration-500">
-              <span className="text-blue-600 hover:text-blue-700 transition-colors duration-300">Get ready to </span>
-              <span className="text-blue-600 hover:text-blue-700 testimonials-cta-highlight transition-all duration-300">
+              <span className="transition-colors duration-300" style={{background:'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent'}}>Get ready to </span>
+              <span className="testimonials-cta-highlight transition-all duration-300" style={{background:'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', WebkitBackgroundClip:'text', backgroundClip:'text', WebkitTextFillColor:'transparent'}}>
                 book your session
               </span>
             </h3>
@@ -161,9 +161,9 @@ export default function OurCommunitySection() {
           
           {/* Animated decorative elements */}
           <div className="flex justify-center items-center gap-4 mt-8 animate-fade-in-up" style={{animationDelay: '0.9s'}}>
-            <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-ping" style={{animationDelay: '0.2s'}}></div>
-            <div className="w-3 h-3 bg-cyan-500 rounded-full animate-ping" style={{animationDelay: '0.4s'}}></div>
+            <div className="w-3 h-3 rounded-full animate-ping" style={{background:'#6B50EB'}}></div>
+            <div className="w-2 h-2 rounded-full animate-ping" style={{animationDelay: '0.2s', background:'#6256ED'}}></div>
+            <div className="w-3 h-3 rounded-full animate-ping" style={{animationDelay: '0.4s', background:'#555DEF'}}></div>
           </div>
         </div>
       </div>

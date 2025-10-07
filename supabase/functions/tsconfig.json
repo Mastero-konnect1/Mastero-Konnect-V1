@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["deno.window"],
+    "lib": ["esnext", "dom"],
     "noImplicitAny": false,
     "strict": false,
-    "types": ["https://deno.land/x/types/index.d.ts"]
+    "noEmit": true
   },
+  "include": ["./**/*.ts"],
   "exclude": []
 }

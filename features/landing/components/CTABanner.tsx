@@ -6,7 +6,7 @@ const CTABanner = () => {
   const styles = {
     heroGradient: {
       background:
-        "linear-gradient(135deg, hsl(195, 100%, 50%), hsl(243, 75%, 59%))",
+        "linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)",
     },
     glassCard: {
       background: "rgba(255, 255, 255, 0.1)",
@@ -16,7 +16,7 @@ const CTABanner = () => {
     },
     btnHero: {
       background: "white",
-      color: "hsl(243, 75%, 59%)",
+      color: "#6256ED",
       border: "none",
       padding: "0.875rem 2rem",
       borderRadius: "0.75rem",
@@ -34,7 +34,7 @@ const CTABanner = () => {
     btnHeroOutline: {
       background: "transparent",
       color: "white",
-      border: "2px solid rgba(255, 255, 255, 0.3)",
+      border: "2px solid rgba(255, 255, 255, 0.35)",
       padding: "0.875rem 2rem",
       borderRadius: "0.75rem",
       fontSize: "1rem",
@@ -49,7 +49,7 @@ const CTABanner = () => {
       flexShrink: 0,
     },
     gradientText: {
-      background: "linear-gradient(to right, white, hsl(210, 40%, 85%))",
+      background: "linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)",
       backgroundClip: "text",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
@@ -102,7 +102,7 @@ const CTABanner = () => {
           50% { transform: translateY(-6px); }
           100% { transform: translateY(0); }
         }
-        .star { opacity: 0.6; filter: drop-shadow(0 2px 6px rgba(255,255,255,0.25)); }
+        .star { opacity: 0.6; filter: drop-shadow(0 2px 6px rgba(98,86,237,0.25)); }
         .star--twinkle { animation: starTwinkle 3s ease-in-out infinite; }
         .star--float { animation: starFloat 6s ease-in-out infinite; }
 
@@ -151,7 +151,7 @@ const CTABanner = () => {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), transparent, rgba(147, 51, 234, 0.1))",
+              "linear-gradient(to bottom right, rgba(107, 80, 235, 0.12), transparent, rgba(98, 86, 237, 0.12))",
           }}
         />
         {/* Stars */}
