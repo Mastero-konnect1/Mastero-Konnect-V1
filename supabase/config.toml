@@ -1,0 +1,7 @@
+project_id = "wsrjqulfcyyqzffgntwt"
+
+[functions.ai-assessment]
+verify_jwt = false
+
+[functions.ai-recommendation]
+verify_jwt = false

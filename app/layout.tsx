@@ -1,4 +1,3 @@
-import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/layout/Navigation'
@@ -15,19 +14,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-
-  if (!publishableKey) {
-    throw new Error('Missing Publishable Key. Please add NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY to your .env.local file.')
-  }
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <Navigation/>
-        <ClerkProvider publishableKey={publishableKey}>
+        {/* <ClerkProvider publishableKey={publishableKey}> */}
           {children}
-        </ClerkProvider>
+        {/* </ClerkProvider> */}
       </body>
     </html>
   )
