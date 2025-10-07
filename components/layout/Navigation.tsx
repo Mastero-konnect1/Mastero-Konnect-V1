@@ -43,7 +43,7 @@ export default function PremiumNavigation() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-lg border-b border-gray-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
@@ -51,7 +51,7 @@ export default function PremiumNavigation() {
               {/* <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
                 Mastero Konnect
               </span> */}
-              <img src={'/logoo.png'} className='h-20'></img>
+              <img src={'/logoo.png'} className='h-14'></img>
             </Link>
 
             {/* Desktop Navigation */}
@@ -72,8 +72,8 @@ export default function PremiumNavigation() {
             </div>
 
             {/* Desktop CTA Buttons */}
-            <div className="hidden md:flex items-center space-x-4">
-              <Button variant="ghost" asChild>
+            <div className="hidden md:flex items-center space-x-4 ">
+              <Button variant="ghost" asChild className='border border-black'>
                 <Link href="/auth/sign-up">Become a Mentor</Link>
               </Button>
               <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-shadow">
