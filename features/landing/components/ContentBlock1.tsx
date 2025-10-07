@@ -9,37 +9,37 @@ const features = [
     icon: Users,
     title: "Personalized Mentorship",
     description: "One-on-one guidance tailored to your unique learning style and career goals",
-    iconColor: "#7DD3FC" // sky-300
+    iconColor: "#6B50EB" // brand start
   },
   {
     icon: Award,
     title: "Expert Instructors",
     description: "Learn from certified professionals with proven industry experience",
-    iconColor: "#FBBF24" // amber-400
+    iconColor: "#6256ED" // brand mid
   },
   {
     icon: BookOpen,
     title: "Premium Platform",
     description: "Access our cutting-edge online learning environment with advanced tools",
-    iconColor: "#34D399" // emerald-400
+    iconColor: "#555DEF" // brand end
   },
   {
     icon: Clock,
     title: "Flexible Scheduling",
     description: "Study when it works best for your lifestyle and commitments",
-    iconColor: "#F472B6" // pink-400
+    iconColor: "#6B50EB" // brand start
   },
   {
     icon: Target,
     title: "Progress Tracking",
     description: "Monitor your advancement with clear milestones and detailed insights",
-    iconColor: "#A78BFA" // violet-400
+    iconColor: "#6256ED" // brand mid
   },
   {
     icon: Sparkles,
     title: "Community Support",
     description: "Connect with fellow learners in our vibrant, supportive community",
-    iconColor: "#22D3EE" // cyan-400
+    iconColor: "#555DEF" // brand end
   }
 ]
 
@@ -138,28 +138,29 @@ export default function ContentBlock1() {
               display: 'inline-block', 
               fontSize: '2.5rem', 
               fontWeight: 'bold', 
-              background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
+              background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
               WebkitBackgroundClip: 'text', 
               backgroundClip: 'text', 
               WebkitTextFillColor: 'transparent', 
-              boxShadow: '0 4px 12px rgba(59,130,246,0.4)', 
-              marginBottom: '0.5rem' 
+              marginBottom: '0.5rem' ,
+              marginRight: '0.5rem',
             }}>
-              Why Choose
+              Choose your
             </span>
-            <br />
+            
             <span style={{ 
               fontSize: '3rem', 
-              fontWeight: '900', 
-              background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', 
+              fontWeight: '800', 
+              background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
               WebkitBackgroundClip: 'text', 
               backgroundClip: 'text', 
               WebkitTextFillColor: 'transparent', 
-              boxShadow: '0 6px 16px rgba(99,102,241,0.6)', 
-              letterSpacing: '-0.05em',
-              fontStyle: 'italic'
+              // boxShadow: '0 6px 16px rgba(85,93,239,0.45)', 
+              letterSpacing: '0.05em',
+              marginRight: '0.5rem',
+              
             }}>
-              Perfect Tutor?
+               Perfect Tutor
             </span>
           </motion.h2>
           <motion.p
@@ -167,7 +168,7 @@ export default function ContentBlock1() {
             style={{ 
               fontSize: '1.125rem', 
               lineHeight: '1.75', 
-              letterSpacing: '0.025em', 
+              
               fontWeight: '300', 
               color: '#1F2937',
               maxWidth: '48rem',
@@ -178,7 +179,7 @@ export default function ContentBlock1() {
           >
             Experience exceptional tutoring designed to help you <span style={{ 
               fontWeight: '600', 
-              background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
+              background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', 
               WebkitBackgroundClip: 'text', 
               backgroundClip: 'text', 
               WebkitTextFillColor: 'transparent',

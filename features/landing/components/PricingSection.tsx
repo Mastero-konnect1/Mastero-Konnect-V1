@@ -93,25 +93,25 @@ export default function PricingSection() {
       <div style={{ position: 'absolute', inset: '0', background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)', backgroundSize: '200% 200%', animation: 'background-move 15s ease infinite' }}></div>
 
       {/* Big rounded gradient hero container */}
-      <div style={{ position: 'relative', margin: '0 auto', maxWidth: '72rem', borderRadius: '2rem', border: '1px solid rgba(147, 197, 253, 0.3)', background: 'linear-gradient(to bottom, #0a5bec, #2a69ff)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
+      <div style={{ position: 'relative', margin: '0 auto', maxWidth: '95rem', borderRadius: '2rem', border: '1px solid rgba(98, 86, 237, 0.3)', background: 'linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
         {/* Layered rounded rectangles in the header background */}
         <div style={{ pointerEvents: 'none', position: 'absolute', inset: '0', overflow: 'hidden', borderRadius: '2rem' }}>
-          <div style={{ position: 'absolute', left: '1.5rem', right: '1.5rem', top: '1.5rem', height: '15rem', borderRadius: '2rem', background: 'rgba(147, 197, 253, 0.05)', backdropFilter: 'blur(0.5rem)' }}></div>
-          <div style={{ position: 'absolute', left: '2.5rem', right: '2.5rem', top: '2.5rem', height: '13.125rem', borderRadius: '1.75rem', background: 'rgba(147, 197, 253, 0.075)', backdropFilter: 'blur(0.5rem)', animation: 'float-slow 8s ease-in-out infinite' }}></div>
-          <div style={{ position: 'absolute', left: '4rem', right: '4rem', top: '3.5rem', height: '11.25rem', borderRadius: '1.5rem', background: 'rgba(147, 197, 253, 0.1)', backdropFilter: 'blur(1rem)', animation: 'float-slow 12s ease-in-out infinite' }}></div>
+          <div style={{ position: 'absolute', left: '1.5rem', right: '1.5rem', top: '1.5rem', height: '15rem', borderRadius: '2rem', background: 'rgba(98, 86, 237, 0.05)', backdropFilter: 'blur(0.5rem)' }}></div>
+          <div style={{ position: 'absolute', left: '2.5rem', right: '2.5rem', top: '2.5rem', height: '13.125rem', borderRadius: '1.75rem', background: 'rgba(98, 86, 237, 0.075)', backdropFilter: 'blur(0.5rem)', animation: 'float-slow 8s ease-in-out infinite' }}></div>
+          <div style={{ position: 'absolute', left: '4rem', right: '4rem', top: '3.5rem', height: '11.25rem', borderRadius: '1.5rem', background: 'rgba(98, 86, 237, 0.1)', backdropFilter: 'blur(1rem)', animation: 'float-slow 12s ease-in-out infinite' }}></div>
 
           {/* Blobs */}
-          <div style={{ position: 'absolute', left: '-2.5rem', top: '-2.5rem', height: '15rem', width: '15rem', borderRadius: '50%', background: 'rgba(147, 197, 253, 0.15)', filter: 'blur(3rem)', animation: 'blob 10s infinite' }}></div>
-          <div style={{ position: 'absolute', right: '-4rem', top: '1.5rem', height: '14rem', width: '14rem', borderRadius: '50%', background: 'rgba(34, 197, 94, 0.2)', filter: 'blur(3rem)', animation: 'blob 10s infinite', animationDelay: '2s' }}></div>
-          <div style={{ position: 'absolute', left: '33%', bottom: '-0.75rem', height: '16rem', width: '16rem', borderRadius: '50%', background: 'rgba(99, 102, 241, 0.2)', filter: 'blur(3rem)', animation: 'blob 10s infinite', animationDelay: '4s' }}></div>
+          <div style={{ position: 'absolute', left: '-2.5rem', top: '-2.5rem', height: '15rem', width: '15rem', borderRadius: '50%', background: 'rgba(107, 80, 235, 0.15)', filter: 'blur(3rem)', animation: 'blob 10s infinite' }}></div>
+          <div style={{ position: 'absolute', right: '-4rem', top: '1.5rem', height: '14rem', width: '14rem', borderRadius: '50%', background: 'rgba(98, 86, 237, 0.2)', filter: 'blur(3rem)', animation: 'blob 10s infinite', animationDelay: '2s' }}></div>
+          <div style={{ position: 'absolute', left: '33%', bottom: '-0.75rem', height: '16rem', width: '16rem', borderRadius: '50%', background: 'rgba(85, 93, 239, 0.2)', filter: 'blur(3rem)', animation: 'blob 10s infinite', animationDelay: '4s' }}></div>
 
           {/* Shimmer line */}
-          <div style={{ position: 'absolute', left: '0', right: '0', top: '16.25rem', height: '1px', background: 'linear-gradient(to right, transparent, rgba(147, 197, 253, 0.6), transparent)', animation: 'shimmer 3.2s ease-in-out infinite' }}></div>
+          <div style={{ position: 'absolute', left: '0', right: '0', top: '16.25rem', height: '1px', background: 'linear-gradient(to right, transparent, rgba(98, 86, 237, 0.6), transparent)', animation: 'shimmer 3.2s ease-in-out infinite' }}></div>
         </div>
 
         {/* Content inside hero */}
         <div style={{ position: 'relative', paddingLeft: '1.5rem', paddingRight: '1.5rem', paddingTop: '3.5rem', paddingBottom: '2.5rem', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderRadius: '9999px', border: '1px solid rgba(147, 197, 253, 0.25)', background: 'rgba(59, 130, 246, 0.1)', padding: '0.25rem 0.75rem', color: 'rgba(239, 246, 255, 0.9)', backdropFilter: 'blur(0.5rem)', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderRadius: '9999px', border: '1px solid rgba(98, 86, 237, 0.25)', background: 'rgba(107, 80, 235, 0.1)', padding: '0.25rem 0.75rem', color: 'rgba(239, 246, 255, 0.9)', backdropFilter: 'blur(0.5rem)', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
             <span style={{ height: '0.375rem', width: '0.375rem', borderRadius: '50%', background: '#86efac', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}></span>
             <span style={{ fontSize: '0.75rem', fontWeight: '500', letterSpacing: '0.05em' }}>No hidden fees — cancel anytime</span>
           </div>
@@ -208,7 +208,7 @@ export default function PricingSection() {
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.3, delay: 0.2 }}
                         >
-                        <Badge className="rounded-full bg-blue-600 px-3 py-1 text-blue-50 shadow-md">
+                        <Badge className="rounded-full px-3 py-1 text-blue-50 shadow-md" style={{background:'#6256ED'}}>
                             Most Popular
                         </Badge>
                         </motion.div>
@@ -274,7 +274,7 @@ export default function PricingSection() {
                           <Button
                             asChild
                             size="lg"
-                            style={{ width: '100%', borderRadius: '0.75rem', paddingTop: '1.25rem', paddingBottom: '1.25rem', fontWeight: '600', transition: 'all 0.3s', borderWidth: '2px', background: plan.popular ? 'linear-gradient(to right, #2563eb, #3730a3)' : '#eff6ff', color: plan.popular ? '#eff6ff' : '#2563eb', borderColor: plan.popular ? '#2563eb' : '#2563eb', boxShadow: plan.popular ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none' }}
+                            style={{ width: '100%', borderRadius: '0.75rem', paddingTop: '1.25rem', paddingBottom: '1.25rem', fontWeight: '600', transition: 'all 0.3s', borderWidth: '2px', background: plan.popular ? 'linear-gradient(to right, #6B50EB, #6256ED, #555DEF)' : '#eff6ff', color: plan.popular ? '#eff6ff' : '#6256ED', borderColor: plan.popular ? '#6256ED' : '#6256ED', boxShadow: plan.popular ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none' }}
                           >
                             <Link href={plan.href}>{plan.cta}</Link>
                           </Button>

@@ -55,11 +55,23 @@ export default function AIAssessment() {
     setIsStreaming(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-assessment`, {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string | undefined;
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
+
+      if (!supabaseUrl || !supabaseAnonKey) {
+        toast.error("Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+        setIsStreaming(false);
+        return;
+      }
+
+      const endpoint = `${supabaseUrl}/functions/v1/ai-assessment`;
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          'Accept': 'text/event-stream',
+          'Authorization': `Bearer ${supabaseAnonKey}`,
         },
         body: JSON.stringify({ messages: updatedMessages }),
       });

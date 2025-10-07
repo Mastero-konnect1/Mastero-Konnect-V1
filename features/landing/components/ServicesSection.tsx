@@ -6,28 +6,28 @@ const services = [
     title: "AI-Powered Matching",
     description: "Advanced AI analyzes your goals, skills, and preferences to find the perfect mentor match.",
     features: ["Smart compatibility scoring", "Continuous learning", "Instant recommendations"],
-    iconBg: "linear-gradient(135deg, #8B5CF6, #A855F7)"
+    iconBg: "linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)"
   },
   {
     icon: Users,
     title: "Expert Mentors",
     description: "Connect with industry leaders, executives, and specialists across 50+ fields and industries.",
     features: ["Verified professionals", "Industry expertise", "Proven track records"],
-    iconBg: "linear-gradient(135deg, #3B82F6, #2563EB)"
+    iconBg: "linear-gradient(135deg, #6256ED, #6B50EB)"
   },
   {
     icon: Target,
     title: "Goal-Oriented Sessions",
     description: "Structured mentorship programs designed to help you achieve specific career and personal goals.",
     features: ["Custom roadmaps", "Progress tracking", "Milestone celebrations"],
-    iconBg: "linear-gradient(135deg, #10B981, #059669)"
+    iconBg: "linear-gradient(135deg, #555DEF, #6256ED)"
   },
   {
     icon: Zap,
     title: "Flexible Scheduling",
     description: "Book sessions that fit your schedule with easy rescheduling and multiple communication options.",
     features: ["24/7 availability", "Multiple time zones", "Various session formats"],
-    iconBg: "linear-gradient(135deg, #60A5FA, #3B82F6)"
+    iconBg: "linear-gradient(135deg, #6B50EB, #6256ED)"
   }
 ]
 
@@ -35,9 +35,10 @@ export default function ServicesSection() {
   return (
     <section style={{
       padding: '0',
-      background: 'linear-gradient(135deg, #F8FAFC, #F1F5F9)',
+      background: '#ffffff',
       minHeight: '100vh'
     }}>
+      
       <div style={{
         maxWidth: '1280px',
         margin: '0 auto',
@@ -62,14 +63,14 @@ export default function ServicesSection() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
-             we are
+             we are ?
             </span>{' '}
            
           </h2>
           <div style={{
             width: '64px',
             height: '4px',
-            background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+            background: 'linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)',
             margin: '0 auto 32px auto',
             borderRadius: '2px'
           }}></div>
