@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback, memo } from "react";
-import { ArrowRight, Camera, Check, Key, User, CreditCard, History, Database, Lock, Plus, X, Home as HomeIcon, Search, Bot, Menu, Sparkles, Shield, Eye, EyeOff, Mail, Phone, MapPin, GraduationCap, Briefcase } from "lucide-react";
+import { ArrowRight, Camera, Check, Key, User, CreditCard, History, Database, Lock, Plus, X, Mail, Phone, MapPin, GraduationCap, Briefcase, Shield, Eye, EyeOff, ChevronRight } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 // Define FormData interface
 interface FormData {
@@ -12,7 +13,7 @@ interface FormData {
   education: string;
   interests: string;
   skills: string[];
-  profilePicture: File | null;
+  profilePictureDataUrl: string | null; // Changed to Data URL for saving
   twoFactorEnabled: boolean;
   password: string;
   confirmPassword: string;
@@ -22,6 +23,26 @@ interface FormData {
 }
 
 type Section = "personal" | "security" | "data" | "payments" | "history";
+
+// Type guard for metadata
+const hasAccountSettingsMetadata = (metadata: any): metadata is {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  education?: string;
+  interests?: string;
+  skills?: string[];
+  profilePictureDataUrl?: string;
+  twoFactorEnabled?: boolean;
+  dataPreferences?: { shareData: boolean; receiveEmails: boolean };
+  paymentMethod?: string;
+  skillInput?: string;
+  showPasswordFields?: boolean;
+  activeTab?: Section;
+} => {
+  return metadata && typeof metadata === 'object';
+};
 
 const InputField = memo(({ label, field, type = "text", value, onChange, placeholder, error, showPassword, onTogglePassword }: {
   label: string;
@@ -36,14 +57,12 @@ const InputField = memo(({ label, field, type = "text", value, onChange, placeho
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Restore focus after state update
   useEffect(() => {
     if (inputRef.current && document.activeElement === inputRef.current) {
       inputRef.current.focus();
     }
   }, [value]);
 
-  // Map field to icon
   const getIconForField = (field: keyof FormData) => {
     switch (field) {
       case "name": return User;
@@ -118,12 +137,102 @@ const InputField = memo(({ label, field, type = "text", value, onChange, placeho
   );
 });
 
+const ProfileDisplay = ({ formData, previewUrl, onEdit }: { formData: FormData; previewUrl: string | null; onEdit: () => void }) => (
+  <div className="p-8 space-y-6">
+    <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+      <User className="w-6 h-6 text-cyan-600" />
+      Your Profile
+    </h3>
+    <div className="flex flex-col items-center mb-8">
+      <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-600 p-1 shadow-xl">
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt="Profile picture"
+            className="w-full h-full rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+            <Camera className="w-8 h-8 text-gray-400" />
+          </div>
+        )}
+      </div>
+      <p className="mt-3 text-sm text-gray-600">Your profile picture</p>
+    </div>
+    <div className="grid md:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <User className="w-4 h-4 text-cyan-600" /> Full Name
+        </p>
+        <p className="text-gray-900">{formData.name || "Not provided"}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <Mail className="w-4 h-4 text-cyan-600" /> Email Address
+        </p>
+        <p className="text-gray-900">{formData.email || "Not provided"}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <Phone className="w-4 h-4 text-cyan-600" /> Phone Number
+        </p>
+        <p className="text-gray-900">{formData.phone || "Not provided"}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-cyan-600" /> Address
+        </p>
+        <p className="text-gray-900">{formData.address || "Not provided"}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <GraduationCap className="w-4 h-4 text-cyan-600" /> Education
+        </p>
+        <p className="text-gray-900">{formData.education || "Not provided"}</p>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+          <Briefcase className="w-4 h-4 text-cyan-600" /> Career Interests
+        </p>
+        <p className="text-gray-900">{formData.interests || "Not provided"}</p>
+      </div>
+    </div>
+    <div className="space-y-4">
+      <p className="text-sm font-semibold text-gray-800">Your Skills</p>
+      <div className="flex flex-wrap gap-2 min-h-[60px] p-4 bg-gray-50 rounded-xl">
+        {formData.skills.length > 0 ? (
+          formData.skills.map((skill) => (
+            <div
+              key={skill}
+              className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 rounded-full text-sm border border-cyan-200"
+            >
+              {skill}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600">No skills added</p>
+        )}
+      </div>
+    </div>
+    <div className="flex justify-end pt-6">
+      <button
+        onClick={onEdit}
+        className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+      >
+        Edit Profile
+      </button>
+    </div>
+  </div>
+);
+
 export default function AccountSettings() {
   const renderCount = useRef(0);
   renderCount.current += 1;
   console.log(`AccountSettings render count: ${renderCount.current}`);
 
+  const { user, isLoaded } = useUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [formData, setFormData] = useState<FormData>({
     name: "John Doe",
     email: "john.doe@example.com",
@@ -132,7 +241,7 @@ export default function AccountSettings() {
     education: "",
     interests: "",
     skills: ["JavaScript", "React", "Node.js"],
-    profilePicture: null,
+    profilePictureDataUrl: null,
     twoFactorEnabled: false,
     password: "",
     confirmPassword: "",
@@ -160,21 +269,56 @@ export default function AccountSettings() {
   const [notification, setNotification] = useState({ message: "", type: null as "success" | "error" | null });
   const [isSaving, setIsSaving] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<Section>("personal");
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [savedProfile, setSavedProfile] = useState<FormData | null>(null);
 
-  // Handle profile picture preview and cleanup
+  // Load from user.unsafeMetadata
   useEffect(() => {
-    if (formData.profilePicture) {
-      const url = URL.createObjectURL(formData.profilePicture);
-      setPreviewUrl(url);
-      return () => {
-        URL.revokeObjectURL(url);
-      };
+    if (!isLoaded || !user) return;
+
+    const metadata = user.unsafeMetadata;
+    if (hasAccountSettingsMetadata(metadata)) {
+      setFormData({
+        name: metadata.name || "John Doe",
+        email: metadata.email || "john.doe@example.com",
+        phone: metadata.phone || "",
+        address: metadata.address || "",
+        education: metadata.education || "",
+        interests: metadata.interests || "",
+        skills: Array.isArray(metadata.skills) ? metadata.skills : ["JavaScript", "React", "Node.js"],
+        profilePictureDataUrl: metadata.profilePictureDataUrl || null,
+        twoFactorEnabled: metadata.twoFactorEnabled ?? false,
+        password: "",
+        confirmPassword: "",
+        currentPassword: "",
+        dataPreferences: metadata.dataPreferences || { shareData: false, receiveEmails: true },
+        paymentMethod: metadata.paymentMethod || "",
+      });
+      setSkillInput(metadata.skillInput || "");
+      setShowPasswordFields(metadata.showPasswordFields ?? false);
+      setActiveTab((metadata.activeTab || "personal") as Section);
+    }
+  }, [isLoaded, user]);
+
+  // Set preview URL from data URL
+  useEffect(() => {
+    if (formData.profilePictureDataUrl) {
+      setPreviewUrl(formData.profilePictureDataUrl);
     } else {
       setPreviewUrl(null);
     }
-  }, [formData.profilePicture]);
+  }, [formData.profilePictureDataUrl]);
+
+  // Simulate fetching profile data after save
+  useEffect(() => {
+    if (profileSaved) {
+      // Simulate API fetch
+      setTimeout(() => {
+        setSavedProfile({ ...formData });
+      }, 1000);
+    }
+  }, [profileSaved, formData]);
 
   // Generic handler for text inputs
   const handleInputChange = useCallback((field: keyof FormData, value: string) => {
@@ -257,14 +401,8 @@ export default function AccountSettings() {
         newErrors.skills = "";
       }
 
-      if (!formData.profilePicture) {
+      if (!formData.profilePictureDataUrl) {
         newErrors.profilePicture = "Profile picture is required.";
-        isValid = false;
-      } else if (!["image/jpeg", "image/png", "image/gif"].includes(formData.profilePicture.type)) {
-        newErrors.profilePicture = "Only JPEG, PNG, or GIF images are allowed.";
-        isValid = false;
-      } else if (formData.profilePicture.size > 2 * 1024 * 1024) {
-        newErrors.profilePicture = "Image size must not exceed 2MB.";
         isValid = false;
       } else {
         newErrors.profilePicture = "";
@@ -314,10 +452,36 @@ export default function AccountSettings() {
     if (validateSection(section)) {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        if (user) {
+          await user.update({
+            unsafeMetadata: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              address: formData.address,
+              education: formData.education,
+              interests: formData.interests,
+              skills: formData.skills,
+              profilePictureDataUrl: formData.profilePictureDataUrl, // ✅ SAVE IMAGE AS DATA URL
+              twoFactorEnabled: formData.twoFactorEnabled,
+              dataPreferences: formData.dataPreferences,
+              paymentMethod: formData.paymentMethod,
+              skillInput,
+              showPasswordFields,
+              activeTab,
+              // Do not save passwords
+            },
+          });
+        }
+
         setNotification({
           message: `${section.charAt(0).toUpperCase() + section.slice(1)} settings saved successfully!`,
           type: "success",
         });
+        if (section === "personal") {
+          setProfileSaved(true);
+        }
         setTimeout(() => setNotification({ message: "", type: null }), 4000);
       } catch (error) {
         setNotification({
@@ -353,6 +517,7 @@ export default function AccountSettings() {
     setFormData((prev) => ({ ...prev, skills: updatedSkills }));
   };
 
+  // ✅ UPDATED: Save image as Data URL (like profile builder)
   const handleProfileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
@@ -366,33 +531,43 @@ export default function AccountSettings() {
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
-      setFormData({ ...formData, profilePicture: file });
-      setNotification({
-        message: `Image uploaded: ${file.name}`,
-        type: "success",
-      });
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setFormData({ ...formData, profilePictureDataUrl: dataUrl });
+        setNotification({
+          message: `Image uploaded: ${file.name}`,
+          type: "success",
+        });
+        setErrors((prev) => ({ ...prev, profilePicture: "" }));
+      };
+      reader.readAsDataURL(file);
     } else {
-      setFormData({ ...formData, profilePicture: null });
+      setFormData({ ...formData, profilePictureDataUrl: null });
       setNotification({ message: "No file selected.", type: "error" });
     }
     if (fileInputRef.current) fileInputRef.current.value = "";
     setTimeout(() => setNotification({ message: "", type: null }), 3000);
   };
 
-  const TabButton = ({ value, icon: Icon, label, isActive }: { value: Section; icon: React.ElementType; label: string; isActive: boolean }) => (
+  // Sidebar Navigation Item
+  const SidebarItem = ({ value, icon: Icon, label, isActive }: { value: Section; icon: React.ElementType; label: string; isActive: boolean }) => (
     <button
-      onClick={() => setActiveTab(value)}
-      className={`relative flex items-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all duration-300 group ${
-        isActive 
-          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg scale-105' 
-          : 'bg-white/80 text-gray-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-cyan-600 hover:scale-102'
+      onClick={() => {
+        setActiveTab(value);
+        setProfileSaved(false);
+      }}
+      className={`relative flex items-center gap-3 px-4 py-4 w-full text-left rounded-xl transition-all duration-300 group ${
+        isActive
+          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
+          : 'text-gray-600 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-cyan-600'
       }`}
-      aria-current={isActive ? "page" : undefined}
     >
       <Icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
-      <span className="hidden sm:block">{label}</span>
+      <span className="font-semibold">{label}</span>
       {isActive && (
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 opacity-20 animate-pulse" />
+        <ChevronRight className="ml-auto w-5 h-5 opacity-70" />
       )}
     </button>
   );
@@ -416,6 +591,10 @@ export default function AccountSettings() {
     </button>
   );
 
+  if (!isLoaded) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-blue-100 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -430,85 +609,9 @@ export default function AccountSettings() {
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
       }} />
 
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="md:hidden fixed top-6 left-6 z-50 bg-white/90 backdrop-blur-md rounded-full p-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110"
-        aria-label="Toggle mobile menu"
-        aria-expanded={isMobileMenuOpen}
-      >
-        <Menu className="w-6 h-6 text-cyan-600" />
-      </button>
-
-      {/* Mobile Sidebar */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40">
-          <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setIsMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
-          <div className="absolute left-0 top-0 w-72 h-full bg-white/95 backdrop-blur-md shadow-2xl p-6 transform transition-transform duration-300">
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
-              aria-label="Close mobile menu"
-            >
-              <X className="w-6 h-6 text-gray-600" />
-            </button>
-            <div className="mt-12 space-y-4">
-              {[
-                { href: "/", icon: HomeIcon, label: "Home" },
-                { href: "/find-mentor", icon: Search, label: "Find Mentors" },
-                { href: "/ai-assessment", icon: Bot, label: "AI Assessment" },
-                { href: "/profile-building", icon: User, label: "Profile" },
-              ].map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-3 p-3 rounded-xl text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 transition-all duration-200"
-                >
-                  <item.icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:block fixed left-0 top-0 w-64 h-screen bg-white/90 backdrop-blur-md shadow-xl p-6 z-30">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg">
-            <Sparkles className="w-8 h-8 text-white animate-pulse" />
-          </div>
-          <h2 className="text-xl font-extrabold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-            Innvo Karo
-          </h2>
-        </div>
-        <nav className="space-y-2">
-          {[
-            { href: "/", icon: HomeIcon, label: "Home" },
-            { href: "/find-mentor", icon: Search, label: "Find Mentors" },
-            { href: "/ai-assessment", icon: Bot, label: "AI Assessment" },
-            { href: "/profile-building", icon: User, label: "Profile" },
-          ].map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 p-3 rounded-xl text-gray-700 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-cyan-600 transition-all duration-300 hover:scale-105 hover:shadow-md group"
-            >
-              <item.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-              <span className="font-medium">{item.label}</span>
-            </a>
-          ))}
-        </nav>
-      </aside>
-
       {/* Main Content */}
-      <main className="md:ml-64 min-h-screen p-6">
-        <div className="max-w-4xl mx-auto">
+      <main className="min-h-screen p-6">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-5xl font-extrabold bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
@@ -519,7 +622,7 @@ export default function AccountSettings() {
 
           {/* Notification */}
           {notification.message && (
-            <div className={`mb-6 p-4 rounded-xl border-l-4 ${
+            <div className={`mb-6 p-4 rounded-xl border-l-4 mx-auto max-w-4xl ${
               notification.type === "success"
                 ? "bg-green-50/80 text-green-700 border-green-500 backdrop-blur-sm"
                 : "bg-red-50/80 text-red-700 border-red-500 backdrop-blur-sm"
@@ -534,495 +637,511 @@ export default function AccountSettings() {
             </div>
           )}
 
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-2 mb-8 p-2 bg-white/60 backdrop-blur-md rounded-2xl shadow-lg">
-            {[
-              { value: "personal", icon: User, label: "Personal" },
-              { value: "security", icon: Shield, label: "Security" },
-              { value: "data", icon: Database, label: "Data" },
-              { value: "payments", icon: CreditCard, label: "Payments" },
-              { value: "history", icon: History, label: "History" },
-            ].map((tab) => (
-              <TabButton
-                key={tab.value}
-                value={tab.value as Section}
-                icon={tab.icon}
-                label={tab.label}
-                isActive={activeTab === tab.value}
-              />
-            ))}
-          </div>
+          <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+            {/* Sidebar Navigation */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/50 p-6 space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <Key className="w-5 h-5 text-cyan-600" />
+                Settings
+              </h3>
+              <nav className="space-y-1">
+                {[
+                  { value: "personal", icon: User, label: "Personal Info" },
+                  { value: "security", icon: Shield, label: "Security" },
+                  { value: "data", icon: Database, label: "Data" },
+                  { value: "payments", icon: CreditCard, label: "Payments" },
+                  { value: "history", icon: History, label: "History" },
+                ].map((item) => (
+                  <SidebarItem
+                    key={item.value}
+                    value={item.value as Section}
+                    icon={item.icon}
+                    label={item.label}
+                    isActive={activeTab === item.value}
+                  />
+                ))}
+              </nav>
+            </div>
 
-          {/* Tab Content */}
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
-            {/* Personal Tab */}
-            {activeTab === "personal" && (
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                  <User className="w-6 h-6 text-cyan-600" />
-                  Personal Information
-                </h3>
-                
-                {/* Profile Picture Upload */}
-                <div className="flex flex-col items-center mb-8">
-                  <div className="relative group">
-                    <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-600 p-1 shadow-xl">
-                      {previewUrl ? (
-                        <img
-                          src={previewUrl}
-                          alt="Profile picture"
-                          className="w-full h-full rounded-full object-cover"
+            {/* Content Area */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
+              {/* Personal Tab */}
+              {activeTab === "personal" && (
+                profileSaved && savedProfile ? (
+                  <ProfileDisplay
+                    formData={savedProfile}
+                    previewUrl={previewUrl}
+                    onEdit={() => setProfileSaved(false)}
+                  />
+                ) : (
+                  <div className="p-8 space-y-6">
+                    <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+                      <User className="w-6 h-6 text-cyan-600" />
+                      Personal Information
+                    </h3>
+                    
+                    {/* Profile Picture Upload */}
+                    <div className="flex flex-col items-center mb-8">
+                      <div className="relative group">
+                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-600 p-1 shadow-xl">
+                          {previewUrl ? (
+                            <img
+                              src={previewUrl}
+                              alt="Profile picture"
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                              <Camera className="w-8 h-8 text-gray-400" />
+                            </div>
+                          )}
+                        </div>
+                        <label
+                          htmlFor="profile-upload"
+                          className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                        >
+                          <Camera className="w-6 h-6 text-white" />
+                        </label>
+                        <input
+                          ref={fileInputRef}
+                          id="profile-upload"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleProfileUpload}
+                          className="hidden"
                         />
-                      ) : (
-                        <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                          <Camera className="w-8 h-8 text-gray-400" />
+                      </div>
+                      <p className="mt-3 text-sm text-gray-600">Click to upload profile picture</p>
+                      {errors.profilePicture && (
+                        <p className="text-red-600 text-sm flex items-center gap-1 mt-2">
+                          <X className="w-3 h-3" />
+                          {errors.profilePicture}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <InputField
+                        key="name"
+                        label="Full Name"
+                        field="name"
+                        value={formData.name}
+                        onChange={(value) => handleInputChange("name", value)}
+                        placeholder="Enter your full name"
+                        error={errors.name}
+                      />
+                      <InputField
+                        key="email"
+                        label="Email Address"
+                        field="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(value) => handleInputChange("email", value)}
+                        placeholder="your.email@example.com"
+                        error={errors.email}
+                      />
+                      <InputField
+                        key="phone"
+                        label="Phone Number"
+                        field="phone"
+                        value={formData.phone}
+                        onChange={(value) => handleInputChange("phone", value)}
+                        placeholder="1234567890"
+                        error={errors.phone}
+                      />
+                      <InputField
+                        key="address"
+                        label="Address"
+                        field="address"
+                        value={formData.address}
+                        onChange={(value) => handleInputChange("address", value)}
+                        placeholder="Your address"
+                        error={errors.address}
+                      />
+                      <InputField
+                        key="education"
+                        label="Education"
+                        field="education"
+                        value={formData.education}
+                        onChange={(value) => handleInputChange("education", value)}
+                        placeholder="Bachelor's in Computer Science"
+                        error={errors.education}
+                      />
+                      <InputField
+                        key="interests"
+                        label="Career Interests"
+                        field="interests"
+                        value={formData.interests}
+                        onChange={(value) => handleInputChange("interests", value)}
+                        placeholder="Product Management, Tech Leadership"
+                        error={errors.interests}
+                      />
+                    </div>
+
+                    {/* Skills Section */}
+                    <div className="space-y-4">
+                      <label className="block text-sm font-semibold text-gray-700">Your Skills</label>
+                      <div className="flex flex-wrap gap-2 min-h-[60px] p-4 bg-gray-50 rounded-xl">
+                        {formData.skills.map((skill) => (
+                          <div
+                            key={skill}
+                            className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 rounded-full text-sm border border-cyan-200 hover:shadow-md transition-all duration-200 group"
+                          >
+                            {skill}
+                            <button
+                              onClick={() => handleSkillRemove(skill)}
+                              className="text-cyan-600 hover:text-red-500 transition-colors duration-200 group-hover:scale-110"
+                              aria-label={`Remove ${skill} skill`}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          placeholder="Add a skill and press Enter"
+                          value={skillInput}
+                          onChange={(e) => {
+                            setSkillInput(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              handleSkillAdd(skillInput);
+                            }
+                          }}
+                          className="flex-1 px-4 py-3 bg-white border-2 border-gray-400 rounded-xl focus:outline-none focus:border-cyan-600 focus:ring-4 focus:ring-cyan-200 transition-all duration-300 text-gray-900 placeholder:text-gray-400"
+                        />
+                        <button
+                          onClick={() => handleSkillAdd(skillInput)}
+                          className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105"
+                          aria-label="Add skill"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                      {errors.skills && (
+                        <p className="text-red-600 text-sm flex items-center gap-1">
+                          <X className="w-3 h-3" />
+                          {errors.skills}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex justify-end pt-6">
+                      <SaveButton onClick={() => handleSave("personal")} loading={isSaving}>
+                        Save Changes
+                      </SaveButton>
+                    </div>
+                  </div>
+                )
+              )}
+
+              {/* Security Tab */}
+              {activeTab === "security" && (
+                <div className="p-8 space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+                    <Shield className="w-6 h-6 text-cyan-600" />
+                    Security Settings
+                  </h3>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <Lock className="w-5 h-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800">Two-Factor Authentication</p>
+                          <p className="text-sm text-gray-600">Add an extra layer of security</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={formData.twoFactorEnabled}
+                          onChange={(e) => {
+                            setFormData({ ...formData, twoFactorEnabled: e.target.checked });
+                          }}
+                          className="sr-only peer"
+                          aria-label="Toggle two-factor authentication"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
+                      </label>
+                    </div>
+
+                    <div className="space-y-4">
+                      <button
+                        onClick={() => setShowPasswordFields(!showPasswordFields)}
+                        className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-xl hover:border-cyan-500 hover:shadow-md transition-all duration-300"
+                        aria-label={showPasswordFields ? "Cancel password change" : "Change password"}
+                      >
+                        <Key className="w-5 h-5 text-cyan-600" />
+                        {showPasswordFields ? "Cancel Password Change" : "Change Password"}
+                      </button>
+
+                      {showPasswordFields && (
+                        <div className="space-y-4 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+                          <InputField
+                            key="currentPassword"
+                            label="Current Password"
+                            field="currentPassword"
+                            value={formData.currentPassword}
+                            onChange={(value) => handleInputChange("currentPassword", value)}
+                            placeholder="Enter current password"
+                            showPassword={showCurrentPassword}
+                            onTogglePassword={() => setShowCurrentPassword(!showCurrentPassword)}
+                          />
+                          <InputField
+                            key="password"
+                            label="New Password"
+                            field="password"
+                            value={formData.password}
+                            onChange={(value) => handleInputChange("password", value)}
+                            placeholder="Enter new password"
+                            showPassword={showNewPassword}
+                            onTogglePassword={() => setShowNewPassword(!showNewPassword)}
+                          />
+                          <InputField
+                            key="confirmPassword"
+                            label="Confirm New Password"
+                            field="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={(value) => handleInputChange("confirmPassword", value)}
+                            placeholder="Confirm new password"
+                            error={errors.password}
+                            showPassword={showConfirmPassword}
+                            onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+                          />
                         </div>
                       )}
                     </div>
-                    <label
-                      htmlFor="profile-upload"
-                      className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-                    >
-                      <Camera className="w-6 h-6 text-white" />
-                    </label>
-                    <input
-                      ref={fileInputRef}
-                      id="profile-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfileUpload}
-                      className="hidden"
-                    />
                   </div>
-                  <p className="mt-3 text-sm text-gray-600">Click to upload profile picture</p>
-                  {errors.profilePicture && (
-                    <p className="text-red-600 text-sm flex items-center gap-1 mt-2">
-                      <X className="w-3 h-3" />
-                      {errors.profilePicture}
-                    </p>
-                  )}
-                </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <InputField
-                    key="name"
-                    label="Full Name"
-                    field="name"
-                    value={formData.name}
-                    onChange={(value) => handleInputChange("name", value)}
-                    placeholder="Enter your full name"
-                    error={errors.name}
-                  />
-                  <InputField
-                    key="email"
-                    label="Email Address"
-                    field="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(value) => handleInputChange("email", value)}
-                    placeholder="your.email@example.com"
-                    error={errors.email}
-                  />
-                  <InputField
-                    key="phone"
-                    label="Phone Number"
-                    field="phone"
-                    value={formData.phone}
-                    onChange={(value) => handleInputChange("phone", value)}
-                    placeholder="1234567890"
-                    error={errors.phone}
-                  />
-                  <InputField
-                    key="address"
-                    label="Address"
-                    field="address"
-                    value={formData.address}
-                    onChange={(value) => handleInputChange("address", value)}
-                    placeholder="Your address"
-                    error={errors.address}
-                  />
-                  <InputField
-                    key="education"
-                    label="Education"
-                    field="education"
-                    value={formData.education}
-                    onChange={(value) => handleInputChange("education", value)}
-                    placeholder="Bachelor's in Computer Science"
-                    error={errors.education}
-                  />
-                  <InputField
-                    key="interests"
-                    label="Career Interests"
-                    field="interests"
-                    value={formData.interests}
-                    onChange={(value) => handleInputChange("interests", value)}
-                    placeholder="Product Management, Tech Leadership"
-                    error={errors.interests}
-                  />
+                  <div className="flex justify-end pt-6">
+                    <SaveButton onClick={() => handleSave("security")} loading={isSaving}>
+                      Save Security Settings
+                    </SaveButton>
+                  </div>
                 </div>
+              )}
 
-                {/* Skills Section */}
-                <div className="space-y-4">
-                  <label className="block text-sm font-semibold text-gray-700">Your Skills</label>
-                  <div className="flex flex-wrap gap-2 min-h-[60px] p-4 bg-gray-50 rounded-xl">
-                    {formData.skills.map((skill) => (
-                      <div
-                        key={skill}
-                        className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 rounded-full text-sm border border-cyan-200 hover:shadow-md transition-all duration-200 group"
-                      >
-                        {skill}
-                        <button
-                          onClick={() => handleSkillRemove(skill)}
-                          className="text-cyan-600 hover:text-red-500 transition-colors duration-200 group-hover:scale-110"
-                          aria-label={`Remove ${skill} skill`}
-                        >
-                          <X className="w-3 h-3" />
+              {/* Data Tab */}
+              {activeTab === "data" && (
+                <div className="p-8 space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+                    <Database className="w-6 h-6 text-cyan-600" />
+                    Data Preferences
+                  </h3>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                          <Database className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800">Share data with mentors</p>
+                          <p className="text-sm text-gray-600">Help mentors provide better recommendations</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={formData.dataPreferences.shareData}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              dataPreferences: { ...formData.dataPreferences, shareData: e.target.checked },
+                            })
+                          }
+                          className="sr-only peer"
+                          aria-label="Toggle data sharing with mentors"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl border border-green-200">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <Lock className="w-5 h-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800">Email notifications</p>
+                          <p className="text-sm text-gray-600">Receive updates about your account and mentorship opportunities</p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={formData.dataPreferences.receiveEmails}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              dataPreferences: { ...formData.dataPreferences, receiveEmails: e.target.checked },
+                            })
+                          }
+                          className="sr-only peer"
+                          aria-label="Toggle email notifications"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
+                      </label>
+                    </div>
+
+                    <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
+                      <h4 className="font-semibold text-gray-800 mb-2">Data Management</h4>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <p>Control how your data is used and shared within Mastero Konnect.</p>
+                        <button className="flex items-center gap-2 text-cyan-600 hover:text-blue-600 font-semibold transition-colors duration-200 group">
+                          Request Data Export
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                        </button>
+                        <button className="flex items-center gap-2 text-red-600 hover:text-red-700 font-semibold transition-colors duration-200 group">
+                          Delete Account
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                         </button>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <input
-                      placeholder="Add a skill and press Enter"
-                      value={skillInput}
-                      onChange={(e) => {
-                        setSkillInput(e.target.value);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          handleSkillAdd(skillInput);
-                        }
-                      }}
-                      className="flex-1 px-4 py-3 bg-white border-2 border-gray-400 rounded-xl focus:outline-none focus:border-cyan-600 focus:ring-4 focus:ring-cyan-200 transition-all duration-300 text-gray-900 placeholder:text-gray-400"
+
+                  <div className="flex justify-end pt-6">
+                    <SaveButton onClick={() => handleSave("data")} loading={isSaving}>
+                      Save Data Preferences
+                    </SaveButton>
+                  </div>
+                </div>
+              )}
+
+              {/* Payments Tab */}
+              {activeTab === "payments" && (
+                <div className="p-8 space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+                    <CreditCard className="w-6 h-6 text-cyan-600" />
+                    Payment & Billing
+                  </h3>
+                  
+                  <div className="space-y-6">
+                    <InputField
+                      key="paymentMethod"
+                      label="Payment Method"
+                      field="paymentMethod"
+                      value={formData.paymentMethod}
+                      onChange={(value) => handleInputChange("paymentMethod", value)}
+                      placeholder="e.g., Visa ending in 1234"
+                      error={errors.paymentMethod}
                     />
-                    <button
-                      onClick={() => handleSkillAdd(skillInput)}
-                      className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105"
-                      aria-label="Add skill"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-                  {errors.skills && (
-                    <p className="text-red-600 text-sm flex items-center gap-1">
-                      <X className="w-3 h-3" />
-                      {errors.skills}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex justify-end pt-6">
-                  <SaveButton onClick={() => handleSave("personal")} loading={isSaving}>
-                    Save Changes
-                  </SaveButton>
-                </div>
-              </div>
-            )}
-
-            {/* Security Tab */}
-            {activeTab === "security" && (
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                  <Shield className="w-6 h-6 text-cyan-600" />
-                  Security Settings
-                </h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <Lock className="w-5 h-5 text-green-600" />
+                    <div className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <p className="font-semibold text-gray-800">Current Plan</p>
+                          <p className="text-sm text-gray-600">Free Plan - Basic features included</p>
+                        </div>
+                        <div className="px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-sm font-semibold">
+                          Active
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">Two-Factor Authentication</p>
-                        <p className="text-sm text-gray-600">Add an extra layer of security</p>
-                      </div>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.twoFactorEnabled}
-                        onChange={(e) => {
-                          setFormData({ ...formData, twoFactorEnabled: e.target.checked });
-                        }}
-                        className="sr-only peer"
-                        aria-label="Toggle two-factor authentication"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
-                    </label>
-                  </div>
-
-                  <div className="space-y-4">
-                    <button
-                      onClick={() => setShowPasswordFields(!showPasswordFields)}
-                      className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-xl hover:border-cyan-500 hover:shadow-md transition-all duration-300"
-                      aria-label={showPasswordFields ? "Cancel password change" : "Change password"}
-                    >
-                      <Key className="w-5 h-5 text-cyan-600" />
-                      {showPasswordFields ? "Cancel Password Change" : "Change Password"}
-                    </button>
-
-                    {showPasswordFields && (
-                      <div className="space-y-4 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
-                        <InputField
-                          key="currentPassword"
-                          label="Current Password"
-                          field="currentPassword"
-                          value={formData.currentPassword}
-                          onChange={(value) => handleInputChange("currentPassword", value)}
-                          placeholder="Enter current password"
-                          showPassword={showCurrentPassword}
-                          onTogglePassword={() => setShowCurrentPassword(!showCurrentPassword)}
-                        />
-                        <InputField
-                          key="password"
-                          label="New Password"
-                          field="password"
-                          value={formData.password}
-                          onChange={(value) => handleInputChange("password", value)}
-                          placeholder="Enter new password"
-                          showPassword={showNewPassword}
-                          onTogglePassword={() => setShowNewPassword(!showNewPassword)}
-                        />
-                        <InputField
-                          key="confirmPassword"
-                          label="Confirm New Password"
-                          field="confirmPassword"
-                          value={formData.confirmPassword}
-                          onChange={(value) => handleInputChange("confirmPassword", value)}
-                          placeholder="Confirm new password"
-                          error={errors.password}
-                          showPassword={showConfirmPassword}
-                          onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex justify-end pt-6">
-                  <SaveButton onClick={() => handleSave("security")} loading={isSaving}>
-                    Save Security Settings
-                  </SaveButton>
-                </div>
-              </div>
-            )}
-
-            {/* Data Tab */}
-            {activeTab === "data" && (
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                  <Database className="w-6 h-6 text-cyan-600" />
-                  Data Preferences
-                </h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <Database className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">Share data with mentors</p>
-                        <p className="text-sm text-gray-600">Help mentors provide better recommendations</p>
-                      </div>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.dataPreferences.shareData}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            dataPreferences: { ...formData.dataPreferences, shareData: e.target.checked },
-                          })
-                        }
-                        className="sr-only peer"
-                        aria-label="Toggle data sharing with mentors"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
-                    </label>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl border border-green-200">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <Lock className="w-5 h-5 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">Email notifications</p>
-                        <p className="text-sm text-gray-600">Receive updates about your account and mentorship opportunities</p>
-                      </div>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.dataPreferences.receiveEmails}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            dataPreferences: { ...formData.dataPreferences, receiveEmails: e.target.checked },
-                          })
-                        }
-                        className="sr-only peer"
-                        aria-label="Toggle email notifications"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-cyan-500 peer-checked:to-blue-600"></div>
-                    </label>
-                  </div>
-
-                  <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
-                    <h4 className="font-semibold text-gray-800 mb-2">Data Management</h4>
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <p>Control how your data is used and shared within Mastero Konnect.</p>
                       <button className="flex items-center gap-2 text-cyan-600 hover:text-blue-600 font-semibold transition-colors duration-200 group">
-                        Request Data Export
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                      </button>
-                      <button className="flex items-center gap-2 text-red-600 hover:text-red-700 font-semibold transition-colors duration-200 group">
-                        Delete Account
+                        Upgrade to Premium
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                       </button>
                     </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end pt-6">
-                  <SaveButton onClick={() => handleSave("data")} loading={isSaving}>
-                    Save Data Preferences
-                  </SaveButton>
-                </div>
-              </div>
-            )}
-
-            {/* Payments Tab */}
-            {activeTab === "payments" && (
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                  <CreditCard className="w-6 h-6 text-cyan-600" />
-                  Payment & Billing
-                </h3>
-                
-                <div className="space-y-6">
-                  <InputField
-                    key="paymentMethod"
-                    label="Payment Method"
-                    field="paymentMethod"
-                    value={formData.paymentMethod}
-                    onChange={(value) => handleInputChange("paymentMethod", value)}
-                    placeholder="e.g., Visa ending in 1234"
-                    error={errors.paymentMethod}
-                  />
-                  <div className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-200">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <p className="font-semibold text-gray-800">Current Plan</p>
-                        <p className="text-sm text-gray-600">Free Plan - Basic features included</p>
-                      </div>
-                      <div className="px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-sm font-semibold">
-                        Active
+                    <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
+                      <h4 className="font-semibold text-gray-800 mb-2">Billing History</h4>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <p>• No billing history available</p>
+                        <p>• You're currently on the free plan</p>
                       </div>
                     </div>
-                    <button className="flex items-center gap-2 text-cyan-600 hover:text-blue-600 font-semibold transition-colors duration-200 group">
-                      Upgrade to Premium
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                    </button>
                   </div>
-                  <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
-                    <h4 className="font-semibold text-gray-800 mb-2">Billing History</h4>
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <p>• No billing history available</p>
-                      <p>• You're currently on the free plan</p>
-                    </div>
+
+                  <div className="flex justify-end pt-6">
+                    <SaveButton onClick={() => handleSave("payments")} loading={isSaving}>
+                      Save Payment Info
+                    </SaveButton>
                   </div>
                 </div>
+              )}
 
-                <div className="flex justify-end pt-6">
-                  <SaveButton onClick={() => handleSave("payments")} loading={isSaving}>
-                    Save Payment Info
-                  </SaveButton>
-                </div>
-              </div>
-            )}
-
-            {/* History Tab */}
-            {activeTab === "history" && (
-              <div className="p-8 space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
-                  <History className="w-6 h-6 text-cyan-600" />
-                  Activity History
-                </h3>
-                
-                <div className="space-y-4">
-                  <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
-                    <h4 className="font-semibold text-gray-800 mb-4">Recent Mentor Sessions</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
-                            JD
+              {/* History Tab */}
+              {activeTab === "history" && (
+                <div className="p-8 space-y-6">
+                  <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-6">
+                    <History className="w-6 h-6 text-cyan-600" />
+                    Activity History
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+                      <h4 className="font-semibold text-gray-800 mb-4">Recent Mentor Sessions</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
+                              JD
+                            </div>
+                            <div>
+                              <p className="font-medium text-gray-800">John Doe</p>
+                              <p className="text-sm text-gray-600">Product Management Session</p>
+                            </div>
                           </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium text-gray-800">Aug 15, 2024</p>
+                            <p className="text-xs text-gray-500">2 hours</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                              JS
+                            </div>
+                            <div>
+                              <p className="font-medium text-gray-800">Jane Smith</p>
+                              <p className="text-sm text-gray-600">Career Transition Workshop</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium text-gray-800">Jul 20, 2024</p>
+                            <p className="text-xs text-gray-500">1.5 hours</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
+                      <h4 className="font-semibold text-gray-800 mb-4">AI Assessment History</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
                           <div>
-                            <p className="font-medium text-gray-800">John Doe</p>
-                            <p className="text-sm text-gray-600">Product Management Session</p>
+                            <p className="font-medium text-gray-800">Career Path Assessment</p>
+                            <p className="text-sm text-gray-600">Completed with 85% match score</p>
                           </div>
+                          <p className="text-sm font-medium text-gray-800">Sep 10, 2024</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-medium text-gray-800">Aug 15, 2024</p>
-                          <p className="text-xs text-gray-500">2 hours</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                            JS
-                          </div>
+                        <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
                           <div>
-                            <p className="font-medium text-gray-800">Jane Smith</p>
-                            <p className="text-sm text-gray-600">Career Transition Workshop</p>
+                            <p className="font-medium text-gray-800">Skills Assessment</p>
+                            <p className="text-sm text-gray-600">Technical skills evaluation</p>
                           </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-medium text-gray-800">Jul 20, 2024</p>
-                          <p className="text-xs text-gray-500">1.5 hours</p>
+                          <p className="text-sm font-medium text-gray-800">Aug 28, 2024</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200">
-                    <h4 className="font-semibold text-gray-800 mb-4">AI Assessment History</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
-                        <div>
-                          <p className="font-medium text-gray-800">Career Path Assessment</p>
-                          <p className="text-sm text-gray-600">Completed with 85% match score</p>
-                        </div>
-                        <p className="text-sm font-medium text-gray-800">Sep 10, 2024</p>
-                      </div>
-                      <div className="flex items-center justify-between p-3 bg-white/80 rounded-lg">
-                        <div>
-                          <p className="font-medium text-gray-800">Skills Assessment</p>
-                          <p className="text-sm text-gray-600">Technical skills evaluation</p>
-                        </div>
-                        <p className="text-sm font-medium text-gray-800">Aug 28, 2024</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="flex justify-end pt-6">
-                  <SaveButton
-                    onClick={() => {
-                      setNotification({ message: "Exporting history is not yet implemented.", type: "error" });
-                    }}
-                    loading={isSaving}
-                  >
-                    Export History
-                  </SaveButton>
+                  <div className="flex justify-end pt-6">
+                    <SaveButton
+                      onClick={() => {
+                        setNotification({ message: "Exporting history is not yet implemented.", type: "error" });
+                      }}
+                      loading={isSaving}
+                    >
+                      Export History
+                    </SaveButton>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </main>
@@ -1041,10 +1160,6 @@ export default function AccountSettings() {
         
         .animate-slide-down {
           animation: slide-down 0.3s ease-out;
-        }
-        
-        .hover\\:scale-102:hover {
-          transform: scale(1.02);
         }
       `}</style>
     </div>
