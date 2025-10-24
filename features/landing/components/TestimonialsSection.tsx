@@ -40,11 +40,13 @@ export default function OurCommunitySection() {
         }
       `}</style>
       
-      <section className="py-20 testimonials-section relative overflow-hidden testimonials-gradient">
+      <section className="py-20 testimonials-section relative overflow-hidden testimonials-gradient" style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+       minHeight: '100vh',
+    }}>
         {/* Enhanced animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
         {/* Subtle gradient overlay */}
-        <div className="absolute inset-0" style={{background:'linear-gradient(to bottom right, rgba(107,80,235,0.1), transparent, rgba(85,93,239,0.1))'}}></div>
+        <div className="absolute inset-0 bg-white"></div>
           
           {/* Blurred orbs */}
           <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-2xl animate-pulse"></div>
@@ -58,7 +60,7 @@ export default function OurCommunitySection() {
         </div>
         
         {/* Star SVG definitions */}
-        <svg width="0" height="0" style={{ position: "absolute" }}>
+        {/* <svg width="0" height="0" style={{ position: "absolute" }}>
           <defs>
             <symbol id="community-star" viewBox="0 0 100 100">
               <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#6B50EB" />
@@ -70,10 +72,10 @@ export default function OurCommunitySection() {
               <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="#555DEF" />
             </symbol>
           </defs>
-        </svg>
+        </svg> */}
         
         {/* Animated stars */}
-        <svg className="star star--twinkle" width="60" height="60" style={{ position: 'absolute', top: '3rem', left: '2rem', opacity: 0.6 }}>
+        {/* <svg className="star star--twinkle" width="60" height="60" style={{ position: 'absolute', top: '3rem', left: '2rem', opacity: 0.6 }}>
           <use href="#community-star" />
         </svg>
         <svg className="star star--float" width="40" height="40" style={{ position: 'absolute', top: '25%', right: '3rem', opacity: 0.5 }}>
@@ -93,10 +95,10 @@ export default function OurCommunitySection() {
         </svg>
         <svg className="star star--twinkle" width="45" height="45" style={{ position: 'absolute', top: '15%', left: '12rem', opacity: 0.45 }}>
           <use href="#community-star-purple" />
-        </svg>
+        </svg> */}
         
         {/* Additional stars around content boundaries */}
-        <svg className="star star--float" width="20" height="20" style={{ position: 'absolute', top: '30%', left: '22%', opacity: 0.4 }}>
+        {/* <svg className="star star--float" width="20" height="20" style={{ position: 'absolute', top: '30%', left: '22%', opacity: 0.4 }}>
           <use href="#community-star-cyan" />
         </svg>
         <svg className="star star--glow" width="28" height="28" style={{ position: 'absolute', top: '25%', right: '27%', opacity: 0.5 }}>
@@ -110,15 +112,15 @@ export default function OurCommunitySection() {
         </svg>
         <svg className="star star--glow" width="25" height="25" style={{ position: 'absolute', top: '75%', left: '25%', opacity: 0.4 }}>
           <use href="#community-star" />
-        </svg>
+        </svg> */}
         
         {/* Additional stars on the right side */}
-        <svg className="star star--twinkle" width="24" height="24" style={{ position: 'absolute', top: '40%', right: '18%', opacity: 0.45 }}>
+        {/* <svg className="star star--twinkle" width="24" height="24" style={{ position: 'absolute', top: '40%', right: '18%', opacity: 0.45 }}>
           <use href="#community-star-purple" />
         </svg>
         <svg className="star star--float" width="26" height="26" style={{ position: 'absolute', top: '60%', right: '15%', opacity: 0.4 }}>
           <use href="#community-star-cyan" />
-        </svg>
+        </svg> */}
         
         {/* Floating particles */}
         <div className="absolute top-1/3 left-1/2 w-2 h-2 rounded-full floating-particle" style={{animationDelay: '0s', background:'#6B50EB99'}}></div>
@@ -155,7 +157,7 @@ export default function OurCommunitySection() {
             
             {/* Call-to-action hint */}
             <p className="testimonials-benefits animate-fade-in-up" style={{animationDelay: '0.8s'}}>
-              ✨ Early access • Priority booking • Exclusive benefits
+              • Early access • Priority booking • Exclusive benefits
             </p>
           </div>
           

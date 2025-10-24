@@ -402,10 +402,13 @@ export default function FAQSection() {
     </section> */}
     
     {/* Enhanced CTA Section */}
-    <section className="py-20 faq-cta-section">
-      <div className="faq-container mt-12 mb-12 mx-auto">
+    <section className="py-20 faq-cta-section flex items-center justify-center" style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+       minHeight: '100vh',
+      
+      }}>
+      <div className=" mt-12 mb-12 mx-auto"> 
         <div className="p-16 md:p-16 height-full rounded-3xl text-center faq-cta-container relative">
-          <h3 className="text-3xl mt-12 mb-12 md:text-4xl lg:text-5xl font-bold mb-6 faq-cta-title">
+          <h3 className="text-3xl mt-12 mb-12 md:text-4xl lg:text-5xl font-bold  faq-cta-title">
             Still have questions?
           </h3>
           <p className="text-xl md:text-2xl mb-12 faq-cta-subtitle max-w-3xl mx-auto leading-relaxed">

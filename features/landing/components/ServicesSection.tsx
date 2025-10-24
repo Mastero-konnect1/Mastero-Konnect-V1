@@ -6,28 +6,32 @@ const services = [
     title: "AI-Powered Matching",
     description: "Advanced AI analyzes your goals, skills, and preferences to find the perfect mentor match.",
     features: ["Smart compatibility scoring", "Continuous learning", "Instant recommendations"],
-    iconBg: "linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)"
+    iconBg: "#E6F0FF",
+    iconColor:"#5183F0"
   },
   {
     icon: Users,
     title: "Expert Mentors",
     description: "Connect with industry leaders, executives, and specialists across 50+ fields and industries.",
     features: ["Verified professionals", "Industry expertise", "Proven track records"],
-    iconBg: "linear-gradient(135deg, #6256ED, #6B50EB)"
+    iconBg: "#E8FFF3",
+    iconColor:"#7BDCB9"
   },
   {
     icon: Target,
     title: "Goal-Oriented Sessions",
     description: "Structured mentorship programs designed to help you achieve specific career and personal goals.",
     features: ["Custom roadmaps", "Progress tracking", "Milestone celebrations"],
-    iconBg: "linear-gradient(135deg, #555DEF, #6256ED)"
+    iconBg: "#FFECEF",
+    iconColor:"#E6639B"
   },
   {
     icon: Zap,
     title: "Flexible Scheduling",
     description: "Book sessions that fit your schedule with easy rescheduling and multiple communication options.",
     features: ["24/7 availability", "Multiple time zones", "Various session formats"],
-    iconBg: "linear-gradient(135deg, #6B50EB, #6256ED)"
+    iconBg: "#FFF5E6",
+    iconColor:"#FB9851"
   }
 ]
 
@@ -35,10 +39,17 @@ export default function ServicesSection() {
   return (
     <section style={{
       padding: '0',
-      background: '#ffffff',
-      minHeight: '100vh'
+      // background: '#ffffff',
+      // minHeight: '100vh'
+     
+      minHeight: '100vh',
+      width: '90%',
+      margin: '0 auto',
+     
     }}>
-      
+      <div style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+        opacity:'0.8'
+      }}>
       <div style={{
         maxWidth: '1280px',
         margin: '0 auto',
@@ -127,10 +138,10 @@ export default function ServicesSection() {
                   padding: 'clamp(12px, 3.5vw, 16px)',
                   borderRadius: '16px',
                   background: service.iconBg,
-                  color: 'white',
+                  color: service.iconColor,
                   flexShrink: 0
                 }}>
-                  <service.icon style={{ width: 'clamp(20px, 4vw, 24px)', height: 'clamp(20px, 4vw, 24px)' }} />
+                  <service.icon style={{ width: 'clamp(20px, 4vw, 24px)', height: 'clamp(20px, 4vw, 24px)', color:'currentcolor' }} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <h3 style={{
@@ -185,6 +196,7 @@ export default function ServicesSection() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   )

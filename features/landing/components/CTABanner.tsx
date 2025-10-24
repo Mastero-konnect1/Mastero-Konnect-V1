@@ -5,8 +5,9 @@ import Link from "next/link";
 const CTABanner = () => {
   const styles = {
     heroGradient: {
-      background:
-        "linear-gradient(135deg, #6B50EB, #6256ED, #555DEF)",
+       background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+         minHeight: '100vh',
+      
     },
     glassCard: {
       background: "rgba(255, 255, 255, 0.1)",
@@ -84,7 +85,7 @@ const CTABanner = () => {
         }
 
         .btn-hero-outline:hover {
-          background: rgba(255, 255, 255, 0.1) !important;
+          background: linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%) !important;
           border-color: rgba(255, 255, 255, 0.5) !important;
         }
 
@@ -155,28 +156,28 @@ const CTABanner = () => {
           }}
         />
         {/* Stars */}
-        <svg width="0" height="0" style={{ position: "absolute" }}>
+        {/* <svg width="0" height="0" style={{ position: "absolute" }}>
           <defs>
             <symbol id="mk-star" viewBox="0 0 100 100">
               <path d="M50 6 L61 36 L93 39 L68 58 L75 90 L50 73 L25 90 L32 58 L7 39 L39 36 Z" fill="white" />
             </symbol>
           </defs>
-        </svg>
+        </svg> */}
         {/* Top-left star */}
-        <svg className="star star--twinkle" width="80" height="80" style={{ position: 'absolute', top: '2.5rem', left: '1.25rem', opacity: 0.25 }}>
+        {/* <svg className="star star--twinkle" width="80" height="80" style={{ position: 'absolute', top: '2.5rem', left: '1.25rem', opacity: 0.25 }}>
           <use href="#mk-star" />
-        </svg>
+        </svg> */}
         {/* Mid-right small stars */}
-        <svg className="star star--float" width="32" height="32" style={{ position: 'absolute', top: '35%', right: '4rem', opacity: 0.35 }}>
+        {/* <svg className="star star--float" width="32" height="32" style={{ position: 'absolute', top: '35%', right: '4rem', opacity: 0.35 }}>
           <use href="#mk-star" />
         </svg>
         <svg className="star star--twinkle" width="22" height="22" style={{ position: 'absolute', top: '28%', right: '7.5rem', opacity: 0.35 }}>
           <use href="#mk-star" />
-        </svg>
+        </svg> */}
         {/* Bottom-right larger star */}
-        <svg className="star star--twinkle" width="92" height="92" style={{ position: 'absolute', bottom: '4.5rem', right: '2rem', opacity: 0.25 }}>
+        {/* <svg className="star star--twinkle" width="92" height="92" style={{ position: 'absolute', bottom: '4.5rem', right: '2rem', opacity: 0.25 }}>
           <use href="#mk-star" />
-        </svg>
+        </svg> */}
         <div
           style={{
             position: "absolute",
