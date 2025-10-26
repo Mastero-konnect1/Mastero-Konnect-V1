@@ -524,11 +524,40 @@ const ContentBlock1 = () => {
   ];
 
   return (
-    <section style={{ padding: '5rem 3rem',  background: 'white',
+    <section 
+      ref={sectionRef}
+      style={{ padding: '5rem 3rem',  background: 'white',
       minHeight: '100vh',
-     
      }}>
-      <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+      <style>{`
+        .mentor-card {
+          transform: translateY(22px) scale(.98);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          will-change: transform, opacity;
+        }
+        .mentor-grid.entered .mentor-card {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        .content-header {
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+        }
+        .content-header.entered {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .mentor-card, .content-header {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+      <div className={`content-header ${entered ? 'entered' : ''}`} style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <h1 style={{
           fontSize: '3.5rem',
           fontWeight: 'bold',
@@ -565,7 +594,7 @@ const ContentBlock1 = () => {
         padding: '1rem 0'
       }}>
         <div 
-          className="marquee-container"
+          className={`marquee-container mentor-grid ${entered ? 'entered' : ''}`}
           style={{
             display: 'flex',
             gap: '2rem',
@@ -582,6 +611,7 @@ const ContentBlock1 = () => {
             return (
               <div
                 key={`${index}-${card.title}`}
+                className="mentor-card"
                 onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
