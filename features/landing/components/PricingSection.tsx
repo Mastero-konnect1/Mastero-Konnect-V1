@@ -365,11 +365,33 @@
 
 'use client'
 import { Zap, Sparkles, Crown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const PricingSection = () => {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [entered, setEntered] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const plans = [
     {
@@ -433,14 +455,59 @@ const PricingSection = () => {
   };
 
   return (
-    <section id="pricing" style={{ 
-      padding: '5rem 1.5rem',
-       background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
-       minHeight: '100vh',
-      width: '90%',
-      margin: '0 auto'
-    }}>
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+    <section 
+      ref={sectionRef}
+      id="pricing" 
+      className={`pricing-section ${entered ? 'entered' : ''}`}
+      style={{ 
+        padding: '5rem 1.5rem',
+        background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+        minHeight: '100vh',
+        width: '90%',
+        margin: '0 auto'
+      }}
+    >
+      <style>{`
+        .pricing-header {
+          transform: translateY(22px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+        }
+        .pricing-section.entered .pricing-header {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        .pricing-card {
+          transform: translateY(22px) scale(.98);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+        }
+        .pricing-section.entered .pricing-card {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+
+        .pricing-footer {
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          transition-delay: 400ms;
+        }
+        .pricing-section.entered .pricing-footer {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .pricing-header, .pricing-card, .pricing-footer {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+      <div className="pricing-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h2 style={{ 
           fontSize: 'clamp(2.25rem, 5vw, 3rem)',
           fontWeight: 'bold',
@@ -516,9 +583,11 @@ const PricingSection = () => {
           return (
             <div
               key={index}
+              className="pricing-card"
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
+                transitionDelay: `${index * 70}ms`,
                 position: 'relative',
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(12px)',
@@ -650,7 +719,7 @@ const PricingSection = () => {
         })}
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+      <div className="pricing-footer" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <p style={{ color: 'white', marginBottom: '1.5rem', fontSize: '1rem' }}>
           Start your free trial today. Cancel anytime.
         </p>

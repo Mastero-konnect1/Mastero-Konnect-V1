@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus, Mail, MessageCircle } from 'lucide-react'
 
@@ -74,6 +74,28 @@ export default function FAQSection() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [allExpanded, setAllExpanded] = useState(false)
+  const [entered, setEntered] = useState(false)
+  const sectionRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Filter FAQs based on search and category
   const filteredFaqs = useMemo(() => {
@@ -402,10 +424,33 @@ export default function FAQSection() {
     </section> */}
     
     {/* Enhanced CTA Section */}
-    <section className="py-20 faq-cta-section flex items-center justify-center" style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
-       minHeight: '100vh',
-      
-      }}>
+    <section 
+      ref={sectionRef}
+      className={`py-20 faq-cta-section flex items-center justify-center ${entered ? 'entered' : ''}`} 
+      style={{ 
+        background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+        minHeight: '100vh',
+      }}
+    >
+      <style>{`
+        .faq-cta-section {
+          opacity: 0;
+          transform: translateY(8px);
+          transition: opacity 280ms ease-out, transform 320ms cubic-bezier(.22,.9,.3,1);
+        }
+        .faq-cta-section.entered {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .faq-cta-section {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
       <div className=" mt-12 mb-12 mx-auto"> 
         <div className="p-16 md:p-16 height-full rounded-3xl text-center faq-cta-container relative">
           <h3 className="text-3xl mt-12 mb-12 md:text-4xl lg:text-5xl font-bold  faq-cta-title">

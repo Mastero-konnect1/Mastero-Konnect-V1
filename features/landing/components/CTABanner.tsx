@@ -1,8 +1,30 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Sparkles, ArrowRight, Users, TrendingUp, Heart } from "lucide-react";
 import Link from "next/link";
 
 const CTABanner = () => {
+  const [entered, setEntered] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
   const styles = {
     heroGradient: {
        background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
@@ -63,6 +85,45 @@ const CTABanner = () => {
   return (
     <>
       <style>{`
+        .cta-header {
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+        }
+        .cta-banner.entered .cta-header {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        .cta-stats {
+          transform: translateY(22px) scale(.98);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          transition-delay: 200ms;
+        }
+        .cta-banner.entered .cta-stats {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+
+        .stats-card {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stats-card:hover {
+          background: rgba(255, 255, 255, 0.12) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.35) !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cta-header, .cta-stats, .stats-card {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -93,30 +154,6 @@ const CTABanner = () => {
           transition: transform 0.3s ease;
         }
 
-        /* Star animations */
-        @keyframes starTwinkle {
-          0%, 100% { opacity: 0.25; transform: scale(1) rotate(0deg); }
-          50% { opacity: 0.9; transform: scale(1.05) rotate(5deg); }
-        }
-        @keyframes starFloat {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-          100% { transform: translateY(0); }
-        }
-        .star { opacity: 0.6; filter: drop-shadow(0 2px 6px rgba(98,86,237,0.25)); }
-        .star--twinkle { animation: starTwinkle 3s ease-in-out infinite; }
-        .star--float { animation: starFloat 6s ease-in-out infinite; }
-
-        /* Stats card hover (match button hover feel) */
-        .stats-card {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .stats-card:hover {
-          background: rgba(255, 255, 255, 0.12) !important;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.15) !important;
-          border-color: rgba(255, 255, 255, 0.35) !important;
-        }
 
         /* Responsive fixes */
         @media (max-width: 768px) {
@@ -138,7 +175,9 @@ const CTABanner = () => {
         }
       `}</style>
 
-      <div
+      <section
+        ref={sectionRef}
+        className={`cta-banner ${entered ? 'entered' : ''}`}
         style={{
           ...styles.heroGradient,
           minHeight: "88vh",
@@ -218,7 +257,7 @@ const CTABanner = () => {
           }}
         >
           {/* Badge */}
-          <div style={{ marginBottom: "1.5rem", ...styles.fadeIn }}>
+          <div className="cta-header" style={{ marginBottom: "1.5rem" }}>
             <div
               style={{
                 display: "flex",
@@ -323,7 +362,7 @@ const CTABanner = () => {
         </div>
 
         {/* Stats Section */}
-        <div style={{ padding: "0 1rem 1.5rem", marginTop: "-1rem" }}>
+        <div className="cta-stats" style={{ padding: "0 1rem 1.5rem", marginTop: "-1rem" }}>
           <div style={{ maxWidth: "72rem", margin: "0 auto" }}>
             <div
               style={{
@@ -365,7 +404,7 @@ const CTABanner = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
