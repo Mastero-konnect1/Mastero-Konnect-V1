@@ -417,12 +417,34 @@
 'use client'
 import { ArrowRight, Briefcase } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const ContentBlock1 = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [hoveredMainButton, setHoveredMainButton] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Mentor images sourced from ai-recommendation page
   const mentorImages = [
@@ -561,8 +583,9 @@ const ContentBlock1 = () => {
               <div
                 key={`${index}-${card.title}`}
                 onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
-                style={{
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                transitionDelay: `${index * 70}ms`,
                   position: 'relative',
                   backgroundImage: card.image ? `url(${card.image})` : undefined,
                   backgroundSize: 'cover',

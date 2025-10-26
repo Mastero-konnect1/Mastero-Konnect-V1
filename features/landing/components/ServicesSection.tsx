@@ -1,4 +1,7 @@
+'use client'
+
 import { Brain, Users, CheckCircle, Target, Zap } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 const services = [
   {
@@ -36,8 +39,31 @@ const services = [
 ]
 
 export default function ServicesSection() {
+  const [entered, setEntered] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section style={{
+    <section ref={sectionRef} className="reveal-section" style={{
       padding: '0',
       // background: '#ffffff',
       // minHeight: '100vh'
@@ -47,6 +73,43 @@ export default function ServicesSection() {
       margin: '0 auto',
      
     }}>
+      <style>{`
+        /* Card grid stagger animation */
+        .service-card {
+          transform: translateY(22px) scale(.98);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          will-change: transform, opacity;
+        }
+        .service-grid.entered .service-card {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        .service-card:hover {
+          transform: translateY(-6px) scale(1.02) !important;
+          transition: transform 180ms cubic-bezier(.2,.9,.3,1) !important;
+        }
+        
+        /* Section header fade */
+        .section-header {
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+        }
+        .section-header.entered {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .service-card, .section-header {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+      
       <div style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
         opacity:'0.8'
       }}>
@@ -56,7 +119,7 @@ export default function ServicesSection() {
         padding: '80px 16px'
       }}>
         {/* Section Header */}
-        <div style={{
+        <div className={`section-header ${entered ? 'entered' : ''}`} style={{
           textAlign: 'center',
           marginBottom: '64px'
         }}>
@@ -98,32 +161,30 @@ export default function ServicesSection() {
         </div>
 
         {/* Services Grid - 1 card on mobile, 2 cards on desktop */}
-        <div style={{
+        <div className={`service-grid grid-cols-1 md:grid-cols-2 ${entered ? 'entered' : ''}`} style={{
           display: 'grid',
           gap: 'clamp(24px, 4vw, 32px)',
           maxWidth: '1024px',
           margin: '0 auto'
-        }}
-        className="grid-cols-1 md:grid-cols-2">
+        }}>
           {services.map((service, index) => (
             <div
               key={index}
+              className="service-card"
               style={{
+                transitionDelay: `${index * 70}ms`,
                 background: 'white',
                 borderRadius: '20px',
                 padding: 'clamp(16px, 4vw, 32px)',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',
                 border: 'none',
                 cursor: 'pointer'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)'
-                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)'
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.1)'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)'
               }}
             >
               <div style={{

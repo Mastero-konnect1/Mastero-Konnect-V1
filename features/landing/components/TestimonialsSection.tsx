@@ -1,6 +1,31 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+
 export default function OurCommunitySection() {
+  const [entered, setEntered] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setEntered(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>{`
@@ -38,9 +63,28 @@ export default function OurCommunitySection() {
         .floating-particle {
           animation: floatParticle 8s ease-in-out infinite;
         }
+        
+        /* Section fade in */
+        .testimonials-section {
+          opacity: 0;
+          transform: translateY(12px);
+          transition: opacity 320ms ease-out, transform 420ms cubic-bezier(.22,.9,.3,1);
+        }
+        .testimonials-section.entered {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .testimonials-section {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
       `}</style>
       
-      <section className="py-20 testimonials-section relative overflow-hidden testimonials-gradient" style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
+      <section ref={sectionRef} className={`py-20 testimonials-section relative overflow-hidden testimonials-gradient reveal-section ${entered ? 'entered' : ''}`} style={{ background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))',
        minHeight: '100vh',
     }}>
         {/* Enhanced animated background elements */}

@@ -3,24 +3,83 @@
 'use client'
 
 import { Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 
 
 const HeroSection = () => {
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    // Trigger entrance animations
+    const timer = setTimeout(() => setEntered(true), 120);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div style={{
       background: 'white',
-      
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
+      <style>{`
+        @keyframes floatYSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes floatYFast{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+        
+        /* Hero background zoom */
+        .hero-bg {
+          transform: scale(1);
+          transition: transform 900ms cubic-bezier(.2,.8,.2,1);
+          will-change: transform;
+        }
+        .hero-bg.entered { 
+          transform: scale(1.03); 
+        }
+        
+        /* Headline mask reveal */
+        .hero-headline {
+          overflow: hidden;
+        }
+        .hero-headline .line {
+          display: inline-block;
+          transform: translateY(100%);
+          opacity: 0;
+          transition: transform 600ms cubic-bezier(.16,.84,.35,1), opacity 520ms ease-out;
+          will-change: transform, opacity;
+        }
+        .hero-headline.entered .line {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        
+        /* Subtitle reveal */
+        .hero-subtitle {
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          transition-delay: 300ms;
+        }
+        .hero-subtitle.entered {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-bg, .hero-headline .line, .hero-subtitle {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+      
       {/* Hero Section */}
-      <main style={{
+      <main className={`hero-bg ${entered ? 'entered' : ''}`} style={{
         position: 'relative',
         height: '100vh',
         padding: 'clamp(120px, 30vw, 190px) clamp(20px, 5vw, 80px) clamp(40px, 8vw, 80px)',
         textAlign: 'center',
         overflow: 'visible'
       }}>
-        <style>{`@keyframes floatYSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes floatYFast{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}`}</style>
         {/* Floating Icons - Responsive positioning */}
         <img aria-hidden src={'/figma.png'} alt="Design" style={{position:'absolute',top:'clamp(160px, 35vw, 190px)',left:'clamp(60px, 25vw, 290px)',width:'clamp(40px, 6vw, 56px)',height:'clamp(40px, 6vw, 56px)',padding:'8px',borderRadius:'12px',background:'rgba(255,255,255,0.6)',backdropFilter:'blur(8px)',boxShadow:'0 10px 25px rgba(0,0,0,0.12)',animation:'floatYSlow 6s ease-in-out infinite',pointerEvents:'none',zIndex:1}} />
 
@@ -84,7 +143,7 @@ const HeroSection = () => {
         }} className="hidden md:block"></div> */}
 
         {/* Main Headline */}
-        <h1 style={{
+        <h1 className={`hero-headline ${entered ? 'entered' : ''}`} style={{
           fontSize: '74px',
           fontWeight: '700',
           lineHeight: '1.1',
@@ -95,13 +154,12 @@ const HeroSection = () => {
           position: 'relative',
           zIndex: 2
         }}>
-          Ready to {' '}
-          <span style={{ background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}> level up?</span>{' '}
-          
+          <span className="line" style={{ transitionDelay: '0ms' }}>Ready to </span>
+          <span className="line" style={{ background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', transitionDelay: '70ms' }}>level up?</span>
         </h1>
 
         {/* Subtitle */}
-        <p style={{
+        <p className={`hero-subtitle ${entered ? 'entered' : ''}`} style={{
           fontSize: '28px',
           color: '#64748b',
           lineHeight: '1.6',
