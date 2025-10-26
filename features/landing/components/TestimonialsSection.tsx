@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 export default function OurCommunitySection() {
   const [entered, setEntered] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

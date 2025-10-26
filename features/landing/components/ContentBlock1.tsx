@@ -424,7 +424,7 @@ const ContentBlock1 = () => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [hoveredMainButton, setHoveredMainButton] = useState(false);
   const [entered, setEntered] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
