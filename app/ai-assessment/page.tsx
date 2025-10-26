@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef } from "react";
-import { Send, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import Link from 'next/link'
+import { ArrowRight, Send,Sparkles, Users, Clock, Target, Award, BookOpen } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from "react"
 
 interface Message {
   role: 'user' | 'assistant';
@@ -255,59 +257,88 @@ export default function AIAssessment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50/30 via-white to-blue-50/30">
-      <div className="container mx-auto px-4 pt-24 pb-8">
+    <div className="min-h-screen relative" style={{ minHeight: '100vh' }}>
+      {/* Background: diagonal gradient as specified */}
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-10"
+        style={{
+          background: "linear-gradient(135deg, rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))",
+          backgroundAttachment: "fixed",
+        }}
+      />
+      {/* subtle vignette for depth */}
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(1200px 600px at -10% 110%, rgba(16,24,40,0.08), transparent 60%)",
+          backgroundAttachment: "fixed",
+        }}
+      />
+      <div className="container mx-auto px-4 pt-48 md:pt-48 pb-8" style={{ minHeight: '100vh' }}>
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 mb-4">
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+              <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 bg-clip-text text-transparent"
+                style={{ textShadow: "0 6px 24px rgba(71,85,105,0.5)" }}
+              >
                 AI Career Assessment
               </h1>
             </div>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-slate-800 text-lg font-medium">
               Let's find your perfect mentor match in just 4-5 questions
             </p>
+            {/* Decorative gradient accent */}
+            <div className="mx-auto mt-4 h-1.5 w-32 rounded-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 blur-[0.2px] shadow-[0_0_24px_rgba(251,191,36,0.6)]" />
           </div>
 
           {/* Chat Container */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             {/* Messages */}
             <div className="h-[500px] overflow-y-auto p-6 space-y-6">
               {messages.map((message, index) => (
-                <div
+                <motion.div
                   key={index}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {message.role === 'assistant' && (
                     <div className="flex items-start gap-3 max-w-[80%]">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-md">
-                        <Sparkles className="w-5 h-5 text-white" />
+                      {/* Assistant Avatar Gradient */}
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center shadow-md">
+                        <Sparkles className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div className="bg-gray-50 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm">
-                        <p className="text-gray-800 leading-relaxed">{message.content}</p>
+                      <div className="bg-slate-50 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm border border-slate-200">
+                        <p className="text-slate-800 leading-relaxed">{message.content}</p>
                       </div>
                     </div>
                   )}
                   {message.role === 'user' && (
-                    <div className="max-w-[80%] bg-gradient-to-r from-primary to-blue-600 text-white rounded-2xl rounded-br-sm px-5 py-4 shadow-md">
+                    <div className="max-w-[80%] bg-gradient-to-r from-blue-100 to-indigo-100 text-slate-800 rounded-2xl rounded-br-sm px-5 py-4 shadow-md border border-blue-200">
                       <p className="leading-relaxed">{message.content}</p>
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
               {isStreaming && (
                 <div className="flex justify-start animate-fade-in">
                   <div className="flex items-start gap-3 max-w-[80%]">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-md">
-                      <Sparkles className="w-5 h-5 text-white" />
+                    {/* Streaming Avatar Gradient */}
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center shadow-md">
+                      <Sparkles className="w-5 h-5 text-blue-600" />
                     </div>
-                    <div className="bg-gray-50 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm">
+                    <div className="bg-slate-50 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm border border-slate-200">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                       </div>
                     </div>
                   </div>
@@ -317,7 +348,7 @@ export default function AIAssessment() {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-100 p-4 bg-gray-50">
+            <div className="border-t border-gray-100 p-4 bg-slate-50">
               {/* Quick Options */}
               {quickOptions.length > 0 && !isStreaming && (
                 <div className="mb-3 flex flex-wrap gap-2">
@@ -325,7 +356,7 @@ export default function AIAssessment() {
                     <button
                       key={idx}
                       onClick={() => handleSendMessage(option)}
-                      className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition-all duration-200 shadow-sm"
+                      className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-50 hover:border-blue-500 transition-all duration-200 shadow-sm"
                     >
                       {option}
                     </button>
@@ -345,12 +376,12 @@ export default function AIAssessment() {
                   }}
                   placeholder="Type your response..."
                   disabled={isStreaming}
-                  className="flex-1 h-12 rounded-full border-gray-200 focus-visible:ring-2 focus-visible:ring-primary/40 bg-white shadow-sm"
+                  className="flex-1 h-12 rounded-full border-gray-200 focus-visible:ring-2 focus-visible:ring-blue-500/40 bg-white shadow-sm text-slate-800"
                 />
                 <Button
                   onClick={() => handleSendMessage()}
                   disabled={isStreaming || !input.trim()}
-                  className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 hover:shadow-lg transition-all duration-200 flex items-center justify-center"
+                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center shadow-lg"
                 >
                   <Send className="w-5 h-5" />
                 </Button>
@@ -364,7 +395,7 @@ export default function AIAssessment() {
               <Button
                 onClick={handleFinishAssessment}
                 size="lg"
-                className="px-8 py-6 rounded-xl bg-gradient-to-r from-primary to-blue-600 hover:shadow-xl transition-all duration-300 text-lg font-semibold"
+                className="px-8 py-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-xl hover:shadow-indigo-400/50 transition-all duration-300 text-lg font-semibold text-white"
               >
                 🎯 See My Perfect Matches
               </Button>

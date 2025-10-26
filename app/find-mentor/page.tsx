@@ -1,6 +1,3 @@
-
-
-
 'use client'
 
 import { useState } from "react";
@@ -147,12 +144,23 @@ export default function FindMentor() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div 
+        // 1. MAIN BACKGROUND (Subtle Blue-Violet)
+        className="min-h-screen bg-gray-50"
+        style={{
+            background: "linear-gradient(135deg, rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))",
+            backgroundAttachment: "fixed",
+        }}
+    >
       <div className="container mx-auto px-4 pt-24 pb-12">
         {/* Header Section */}
         <div className="mb-8 text-center">
+          {/* 2. HEADER TEXT GRADIENT */}
           <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Find Your Perfect Mentor
+            Find Your Perfect 
+            <span className="bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent ml-2">
+                Mentor
+            </span>
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore our curated network of industry experts and leaders, ready to help you unlock your potential.
@@ -160,21 +168,24 @@ export default function FindMentor() {
         </div>
 
         {/* Search & Filter Bar */}
-        <Card className="mb-8 sticky top-20 z-10 bg-blue-50/70 backdrop-blur-lg shadow-sm">
+        {/* 3. FILTER BAR CARD STYLING */}
+        <Card className="mb-8 sticky top-20 z-10 bg-white/80 backdrop-blur-lg shadow-xl border-indigo-200">
           <CardContent className="p-4 md:p-6">
             <div className="flex flex-col md:flex-row items-center gap-4">
-              <div className="flex-1 relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <div className="flex-1 relative w-full group">
+                {/* 4. SEARCH INPUT STYLING */}
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-500 w-5 h-5 transition-colors group-focus-within:text-indigo-700" />
                 <Input
                   placeholder="Search by name, skill, or company..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-12"
+                  className="pl-10 h-12 border-2 border-indigo-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 shadow-sm"
                 />
               </div>
               <div className="flex flex-wrap items-center gap-2 md:gap-4 w-full md:w-auto">
+                {/* 5. SELECT INPUT STYLING (Blue/Violet focus) */}
                 <Select value={selectedDomain} onValueChange={setSelectedDomain}>
-                  <SelectTrigger className="w-full md:w-40 h-12"><SelectValue placeholder="Domain" /></SelectTrigger>
+                  <SelectTrigger className="w-full md:w-40 h-12 border-indigo-300 focus:ring-2 focus:ring-purple-500 transition duration-200"><SelectValue placeholder="Domain" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Domains</SelectItem>
                     <SelectItem value="Tech">Tech</SelectItem>
@@ -183,7 +194,7 @@ export default function FindMentor() {
                   </SelectContent>
                 </Select>
                 <Select value={selectedExperience} onValueChange={setSelectedExperience}>
-                  <SelectTrigger className="w-full md:w-40 h-12"><SelectValue placeholder="Experience" /></SelectTrigger>
+                  <SelectTrigger className="w-full md:w-40 h-12 border-indigo-300 focus:ring-2 focus:ring-purple-500 transition duration-200"><SelectValue placeholder="Experience" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Levels</SelectItem>
                     <SelectItem value="Senior">Senior</SelectItem>
@@ -191,7 +202,7 @@ export default function FindMentor() {
                   </SelectContent>
                 </Select>
                 <Select value={selectedRating} onValueChange={setSelectedRating}>
-                  <SelectTrigger className="w-full md:w-32 h-12"><SelectValue placeholder="Rating" /></SelectTrigger>
+                  <SelectTrigger className="w-full md:w-32 h-12 border-indigo-300 focus:ring-2 focus:ring-purple-500 transition duration-200"><SelectValue placeholder="Rating" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Ratings</SelectItem>
                     <SelectItem value="4.5">4.5+ stars</SelectItem>
@@ -206,14 +217,14 @@ export default function FindMentor() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Showing <span className="font-semibold text-gray-900">{filteredMentors.length}</span> mentors
+            Showing <span className="font-semibold text-indigo-700">{filteredMentors.length}</span> mentors
           </p>
         </div>
 
         {/* ====== PREMIUM MENTOR GRID ====== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredMentors.map((mentor) => (
-            <Card key={mentor.id} className="group relative overflow-hidden rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+            <Card key={mentor.id} className="group relative overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-purple-300/50 hover:-translate-y-2 border border-gray-100">
               {/* Background Image */}
               <img
                 src={mentor.image}
@@ -222,12 +233,13 @@ export default function FindMentor() {
               />
               
               {/* Gradient Overlay */}
+              {/* 6. GRADIENT OVERLAY (Subtle Blue-Violet Tint in Transparency) */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
               {/* Favorite Button */}
               <button
                 onClick={() => toggleFavorite(mentor.id)}
-                className="absolute top-4 right-4 z-10 p-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-colors"
+                className="absolute top-4 right-4 z-10 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors shadow-lg"
               >
                 <Heart className={`w-6 h-6 transition-all ${favorites.includes(mentor.id) ? 'fill-red-500 text-red-500' : 'text-white'}`} />
               </button>
@@ -236,24 +248,27 @@ export default function FindMentor() {
               <div className="relative p-6 h-full flex flex-col justify-end text-white">
                 <div>
                   <h3 className="text-2xl font-bold" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>{mentor.name}</h3>
-                  <p className="text-sm font-light opacity-90" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>{mentor.title} at {mentor.company}</p>
+                  <p className="text-sm font-light opacity-90 text-indigo-200" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>{mentor.title} at {mentor.company}</p>
                 </div>
 
                 <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-medium opacity-90">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 text-purple-200">
                     <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                    <span>{mentor.rating} ({mentor.reviewCount} reviews)</span>
+                    <span className="text-white">{mentor.rating}</span> ({mentor.reviewCount} reviews)
                   </div>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 text-indigo-200">
                      <Briefcase className="w-4 h-4" />
-                     <span>{mentor.experience}</span>
+                     <span className="text-white">{mentor.experience}</span>
                   </div>
                 </div>
 
                 {/* View Profile Button (Appears on Hover) */}
-                 <Button className="w-full mt-6 bg-white/20 border-white/30 backdrop-blur-md text-white hover:bg-white/30 transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0">
-                    <Link href={'/mentor/sarahchen'}> View Profile</Link>
-                 </Button>
+                {/* 7. VIEW PROFILE BUTTON GRADIENT */}
+                <Button 
+                    className="w-full mt-6 bg-gradient-to-r from-indigo-700/80 to-purple-600/80 text-white border-none backdrop-blur-md hover:from-indigo-700 hover:to-purple-600 hover:shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0"
+                >
+                  <Link href={'/mentor/sarahchen'}> View Profile</Link>
+                </Button>
               </div>
             </Card>
           ))}
@@ -265,6 +280,19 @@ export default function FindMentor() {
           <div className="text-center py-20">
             <h3 className="text-xl font-semibold text-gray-800">No Mentors Found</h3>
             <p className="text-gray-500 mt-2">Try adjusting your filters or search terms to find the perfect mentor.</p>
+            {/* 8. CLEAR SEARCH BUTTON STYLING */}
+            <Button 
+                variant="outline" 
+                className="mt-4 border-indigo-500 text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800"
+                onClick={() => {
+                    setSearchQuery("");
+                    setSelectedDomain("all");
+                    setSelectedExperience("all");
+                    setSelectedRating("all");
+                }}
+            >
+                Clear Filters
+            </Button>
           </div>
         )}
       </div>
