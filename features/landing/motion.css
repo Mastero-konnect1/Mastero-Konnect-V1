@@ -1,0 +1,160 @@
+/* Motion system CSS for landing page */
+
+:root {
+  --ease-entrance: cubic-bezier(.22,.9,.3,1);
+  --ease-hero: cubic-bezier(.16,.84,.35,1);
+  --ease-slider: cubic-bezier(.25,.8,.25,1);
+}
+
+/* Header entrance */
+.header {
+  transform: translateY(-12px);
+  opacity: 0;
+  transition: transform 280ms var(--ease-entrance), opacity 220ms ease-out;
+  will-change: transform, opacity;
+}
+
+.header.entered {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Hero headline mask reveal */
+.hero .headline {
+  overflow: hidden;
+}
+
+.hero .headline .line {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 600ms var(--ease-hero), opacity 520ms ease-out;
+  will-change: transform, opacity;
+}
+
+.hero.entered .headline .line {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Hero background zoom */
+.hero-bg {
+  transform: scale(1);
+  transition: transform 900ms cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+
+.hero.entered .hero-bg {
+  transform: scale(1.03);
+}
+
+/* Card grid animations */
+.card {
+  transform: translateY(22px) scale(.98);
+  opacity: 0;
+  transition: transform 420ms var(--ease-entrance), opacity 360ms ease-out;
+  will-change: transform, opacity;
+}
+
+.grid.entered .card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  transition: transform 180ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* Carousel emphasis */
+.carousel-track {
+  transition: transform 640ms var(--ease-slider);
+  will-change: transform;
+}
+
+.carousel .slide {
+  transition: transform 360ms var(--ease-entrance), opacity 300ms ease;
+  transform-origin: center;
+}
+
+.carousel .slide.center {
+  transform: scale(1.04);
+  z-index: 2;
+}
+
+.carousel .slide:not(.center) {
+  transform: scale(.96);
+  opacity: .9;
+  z-index: 1;
+}
+
+/* Section crossfade */
+.section {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 280ms ease-out, transform 320ms var(--ease-entrance);
+}
+
+.section.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Modal animations */
+.modal {
+  transform: scale(.96);
+  opacity: 0;
+  transition: transform 260ms var(--ease-entrance), opacity 220ms ease-out;
+}
+
+.modal.open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.backdrop {
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.backdrop.open {
+  opacity: .6;
+}
+
+/* Micro-interactions */
+.btn {
+  transition: transform 140ms cubic-bezier(.2,.9,.3,1), box-shadow 140ms;
+  will-change: transform, box-shadow;
+}
+
+.btn:active {
+  transform: scale(.98);
+  transition-duration: 80ms;
+}
+
+a.link::after {
+  content: '';
+  display: block;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms cubic-bezier(.2,.9,.3,1);
+}
+
+a.link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .hero .headline .line,
+  .card,
+  .carousel-track,
+  .modal,
+  .section {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

@@ -63,7 +63,7 @@ export default function PremiumNavigation() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white backdrop-blur-lg border-b border-gray-200/80">
+      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-transparent backdrop-blur-lg border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center">
@@ -97,8 +97,8 @@ export default function PremiumNavigation() {
                   onClose={closeAllMenus}
                 />
               ) : (
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Link href="/auth/sign-in">Get Started</Link>
+                <Button asChild className="bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-purple-400/50 text-white transition-all duration-300">
+                  <Link href="/auth/sign-up">Get Started</Link>
                 </Button>
               )}
             </div>
@@ -276,8 +276,8 @@ function MobileMenu({
                 )}
               </>
             ) : (
-              <Button size="lg" asChild className="w-full h-14 bg-blue-600 text-white text-lg">
-                <Link href="/auth/sign-in" onClick={onNavClick}>Get Started</Link>
+              <Button size="lg" asChild className="w-full h-14 bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-purple-400/50 text-white text-lg transition-all duration-300">
+                <Link href="/auth/sign-up" onClick={onNavClick}>Get Started</Link>
               </Button>
             )}
           </div>

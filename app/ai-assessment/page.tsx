@@ -257,48 +257,33 @@ export default function AIAssessment() {
   };
 
   return (
-    <div className="min-h-screen relative" style={{ minHeight: '100vh' }}>
-      {/* Background: diagonal gradient as specified */}
-      <div
-        aria-hidden
-        className="fixed inset-0 -z-10"
-        style={{
-          background: "linear-gradient(135deg, rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))",
-          backgroundAttachment: "fixed",
-        }}
-      />
-      {/* subtle vignette for depth */}
-      <div
-        aria-hidden
-        className="fixed inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(1200px 600px at -10% 110%, rgba(16,24,40,0.08), transparent 60%)",
-          backgroundAttachment: "fixed",
-        }}
-      />
-      <div className="container mx-auto px-4 pt-48 md:pt-48 pb-8" style={{ minHeight: '100vh' }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ minHeight: '100vh' }}>
+      {/* Gradient Glassmorphic Background Cards */}
+      <div className="absolute top-10 left-10 right-10 bottom-10 bg-gradient-to-br from-blue-500/15 to-purple-500/15 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl z-0" />
+      <div className="absolute top-5 left-5 right-5 bottom-5 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-2xl rounded-[40px] border border-white/30 shadow-3xl z-1" />
+      
+      <div className="container mx-auto px-4 pt-48 md:pt-48 pb-8 relative z-10" style={{ minHeight: '100vh' }}>
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 mb-4">
               <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
               <h1
-                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 bg-clip-text text-transparent"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
                 style={{ textShadow: "0 6px 24px rgba(71,85,105,0.5)" }}
               >
                 AI Career Assessment
               </h1>
             </div>
-            <p className="text-slate-800 text-lg font-medium">
+            <p className="text-gray-600 text-lg font-medium">
               Let's find your perfect mentor match in just 4-5 questions
             </p>
             {/* Decorative gradient accent */}
-            <div className="mx-auto mt-4 h-1.5 w-32 rounded-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 blur-[0.2px] shadow-[0_0_24px_rgba(251,191,36,0.6)]" />
+            <div className="mx-auto mt-4 h-1.5 w-32 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-[0.2px] shadow-[0_0_24px_rgba(59,130,246,0.6)]" />
           </div>
 
           {/* Chat Container */}
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 overflow-hidden">
             {/* Messages */}
             <div className="h-[500px] overflow-y-auto p-6 space-y-6">
               {messages.map((message, index) => (
@@ -348,7 +333,7 @@ export default function AIAssessment() {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-100 p-4 bg-slate-50">
+            <div className="border-t border-white/30 p-4 bg-white/50 backdrop-blur-sm">
               {/* Quick Options */}
               {quickOptions.length > 0 && !isStreaming && (
                 <div className="mb-3 flex flex-wrap gap-2">
@@ -356,7 +341,7 @@ export default function AIAssessment() {
                     <button
                       key={idx}
                       onClick={() => handleSendMessage(option)}
-                      className="px-4 py-2 bg-white border-2 border-blue-200 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-50 hover:border-blue-500 transition-all duration-200 shadow-sm"
+                      className="px-4 py-2 bg-white/80 backdrop-blur-sm border border-white/30 text-gray-700 rounded-full text-sm font-medium hover:bg-white/90 hover:border-blue-500/50 transition-all duration-200 shadow-sm"
                     >
                       {option}
                     </button>
@@ -376,12 +361,12 @@ export default function AIAssessment() {
                   }}
                   placeholder="Type your response..."
                   disabled={isStreaming}
-                  className="flex-1 h-12 rounded-full border-gray-200 focus-visible:ring-2 focus-visible:ring-blue-500/40 bg-white shadow-sm text-slate-800"
+                  className="flex-1 h-12 rounded-full border border-white/30 focus-visible:ring-2 focus-visible:ring-blue-500/40 bg-white/80 backdrop-blur-sm shadow-sm text-gray-800"
                 />
                 <Button
                   onClick={() => handleSendMessage()}
                   disabled={isStreaming || !input.trim()}
-                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-200 flex items-center justify-center shadow-lg"
                 >
                   <Send className="w-5 h-5" />
                 </Button>
@@ -395,7 +380,7 @@ export default function AIAssessment() {
               <Button
                 onClick={handleFinishAssessment}
                 size="lg"
-                className="px-8 py-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-xl hover:shadow-indigo-400/50 transition-all duration-300 text-lg font-semibold text-white"
+                className="px-8 py-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-xl hover:shadow-purple-400/50 transition-all duration-300 text-lg font-semibold text-white"
               >
                 🎯 See My Perfect Matches
               </Button>

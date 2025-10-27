@@ -154,19 +154,7 @@ export default function FindMentor() {
     >
       <div className="container mx-auto px-4 pt-24 pb-12">
         {/* Header Section */}
-        <div className="mb-8 text-center">
-          {/* 2. HEADER TEXT GRADIENT */}
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Find Your Perfect 
-            <span className="bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent ml-2">
-                Mentor
-            </span>
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our curated network of industry experts and leaders, ready to help you unlock your potential.
-          </p>
-        </div>
-
+        
         {/* Search & Filter Bar */}
         {/* 3. FILTER BAR CARD STYLING */}
         <Card className="mb-8 sticky top-20 z-10 bg-white/80 backdrop-blur-lg shadow-xl border-indigo-200">

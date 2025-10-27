@@ -28,28 +28,34 @@ export default function MentorProfile() {
   };
 
   return (
-    <main className={`container ${inter.className}`} style={{ maxWidth: 1100, margin: '0 auto', padding: 24, color: '#333' }}>
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Enhanced Gradient Glassmorphic Background Cards */}
+      <div className="absolute top-10 left-10 right-10 bottom-10 bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-indigo-500/20 backdrop-blur-xl rounded-3xl border border-white/30 shadow-2xl z-0" />
+      <div className="absolute top-5 left-5 right-5 bottom-5 bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-indigo-500/15 backdrop-blur-2xl rounded-[40px] border border-white/40 shadow-3xl z-1" />
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/5 z-2" />
+      
+      <main className={`container ${inter.className} relative z-10`} style={{ maxWidth: 1100, margin: '0 auto', padding: 24, color: '#333' }}>
       <style>
         {`
-          :root { --border:#EAEAEA; --blue-1:#2F6BAE; --blue-2:#5A8DC8; --gradient: linear-gradient(135deg, var(--blue-1), var(--blue-2)); }
+          :root { --border:rgba(255,255,255,0.4); --blue-1:#3A86FF; --blue-2:#7B2FF7; --indigo:#6366F1; --gradient: linear-gradient(135deg, var(--blue-1), var(--blue-2), var(--indigo)); }
           .mkp-hero { display:grid; grid-template-columns:120px 1fr; gap:24px; align-items:center; padding-top:32px; }
-          .mkp-avatar { width:120px; height:120px; border-radius:50%; background: var(--gradient); box-shadow: 0 4px 12px rgba(0,0,0,0.05); display:grid; place-items:center; color:#fff; font-size:40px; font-weight:700 }
-          .mkp-name { font-size:28px; font-weight:700 }
+          .mkp-avatar { width:120px; height:120px; border-radius:50%; background: var(--gradient); box-shadow: 0 12px 40px rgba(58,134,255,0.4); display:grid; place-items:center; color:#fff; font-size:40px; font-weight:700 }
+          .mkp-name { font-size:28px; font-weight:700; background: var(--gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
           .mkp-sub { color:#666 }
           .mkp-badges { display:flex; gap:16px; flex-wrap:wrap; margin-top:16px }
-          .mkp-badge { border:1px solid var(--border); padding:6px 10px; border-radius:999px; font-size:12px; color:#666; background:#fff }
+          .mkp-badge { border:1px solid var(--border); padding:6px 10px; border-radius:999px; font-size:12px; color:#666; background:rgba(255,255,255,0.9); backdrop-filter: blur(15px) }
           .mkp-tabs { display:flex; gap:24px; margin-top:32px; border-bottom:1px solid var(--border) }
           .mkp-tab-btn { padding:10px 0; color:#666; font-weight:600; border:none; background:none; cursor:pointer; position:relative }
           .mkp-tab-btn.active { color: var(--blue-1) }
           .mkp-tab-btn.active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background: var(--gradient); }
-          .mkp-card { border:1px solid var(--border); border-radius:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background:#fff; padding:24px; margin-top:24px }
+          .mkp-card { border:1px solid var(--border); border-radius:12px; box-shadow: 0 12px 40px rgba(0,0,0,0.1); background:rgba(255,255,255,0.9); backdrop-filter: blur(15px); padding:24px; margin-top:24px }
           .mkp-skills { display:flex; gap:16px; flex-wrap:wrap }
-          .mkp-skill { background:#F6F9FE; color: var(--blue-1); border:1px solid #E8F1FF; padding:8px 12px; border-radius:999px; font-size:13px }
+          .mkp-skill { background:rgba(58,134,255,0.15); color: var(--blue-1); border:1px solid rgba(58,134,255,0.3); padding:8px 12px; border-radius:999px; font-size:13px }
           .mkp-reviews { display:grid; gap:16px }
-          .mkp-review { border:1px solid var(--border); border-radius:12px; padding:16px }
+          .mkp-review { border:1px solid var(--border); border-radius:12px; padding:16px; background:rgba(255,255,255,0.7); backdrop-filter: blur(10px) }
           .mkp-stars { color:#FFD700; letter-spacing:2px }
-          .mkp-sticky { position:sticky; bottom:0; background:rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-top:1px solid var(--border); padding:16px 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:32px }
-          .mkp-cta { background: var(--gradient); color:#fff; border:none; border-radius:999px; padding:12px 18px; font-weight:700; cursor:pointer; box-shadow: 0 8px 20px rgba(47,107,174,0.25) }
+          .mkp-sticky { position:sticky; bottom:0; background:rgba(255,255,255,0.95); backdrop-filter: blur(25px); border-top:1px solid var(--border); padding:16px 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:32px }
+          .mkp-cta { background: var(--gradient); color:#fff; border:none; border-radius:999px; padding:12px 18px; font-weight:700; cursor:pointer; box-shadow: 0 12px 25px rgba(58,134,255,0.4) }
           @media (max-width:640px){ .mkp-hero{grid-template-columns:80px 1fr} .mkp-avatar{width:80px;height:80px;font-size:28px} .mkp-name{font-size:22px} .mkp-tabs{overflow-x:auto} }
         `}
       </style>
@@ -119,9 +125,13 @@ export default function MentorProfile() {
       </section>
 
       <div className="mkp-sticky" role="region" aria-label="Booking">
-        <div style={{ color: '#666', fontSize: 14 }}>1:1 Video Session • 30 mins</div>
-        <button className="mkp-cta" onClick={() => router.push(`/connect-mentor/${id || 'sarah-chen'}`)}>Check Availability & Connect</button>
+        <div>
+          <div className="text-sm text-gray-600">Starting at</div>
+          <div className="text-2xl font-bold text-gray-900">$50/hour</div>
+        </div>
+        <button className="mkp-cta hover:shadow-xl hover:shadow-purple-400/50 transition-all duration-300 transform hover:scale-105" onClick={() => router.push(`/connect-mentor/${id || 'sarah-chen'}`)}>Connect Now</button>
       </div>
     </main>
+    </div>
   );
 }

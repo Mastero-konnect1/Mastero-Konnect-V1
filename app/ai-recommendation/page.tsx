@@ -252,17 +252,22 @@ export default function AIRecommendation() {
 
   return (
     <div
-      className="min-h-screen"
+      className="min-h-screen relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))",
+        background: "white",
         backgroundAttachment: "fixed",
       }}
     >
-      <div className="container mx-auto px-4 py-8">
+      {/* Enhanced Gradient Glassmorphic Background Cards */}
+      <div className="absolute top-10 left-10 right-10 bottom-10 bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-indigo-500/20 backdrop-blur-xl rounded-3xl border border-white/30 shadow-2xl z-0" />
+      <div className="absolute top-5 left-5 right-5 bottom-5 bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-indigo-500/15 backdrop-blur-2xl rounded-[40px] border border-white/40 shadow-3xl z-1" />
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/5 z-2" />
+      
+      <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Your Recommended Mentors,{" "}
-            <span className="bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Curated Just For You
             </span>
           </h1>
@@ -270,7 +275,7 @@ export default function AIRecommendation() {
 
         <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-5xl mx-auto">
           <div className="flex-1 relative group">
-            <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-indigo-200 transform group-hover:shadow-2xl transition-all duration-300">
+            <div className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden border border-white/40 transform group-hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center px-4 py-3">
                 <div className="pr-3">
                   <Search className="w-6 h-6 text-purple-500" />
@@ -306,7 +311,7 @@ export default function AIRecommendation() {
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="p-2 rounded-xl border border-indigo-300 bg-white shadow-sm appearance-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+              className="p-2 rounded-xl border border-white/40 bg-white/90 backdrop-blur-md shadow-sm appearance-none focus:ring-2 focus:ring-purple-500 transition duration-200"
             >
               <option value="">All Mentors</option>
               <option value="accepting">Accepting Mentees</option>
@@ -315,7 +320,7 @@ export default function AIRecommendation() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="p-2 rounded-xl border border-indigo-300 bg-white shadow-sm appearance-none focus:ring-2 focus:ring-purple-500 transition duration-200"
+              className="p-2 rounded-xl border border-white/40 bg-white/90 backdrop-blur-md shadow-sm appearance-none focus:ring-2 focus:ring-purple-500 transition duration-200"
             >
               <option value="matchScore">Match Score</option>
               <option value="rating">Rating</option>
@@ -325,15 +330,7 @@ export default function AIRecommendation() {
         </div>
 
         <div className="mb-12">
-          <Card className="relative overflow-hidden group transition-transform duration-300 hover:scale-[1.01] border-[4px] border-transparent shadow-2xl hover:shadow-purple-400/50 bg-white">
-            <div className="absolute inset-0 border-4 border-transparent rounded-xl"
-                 style={{
-                    background: 'linear-gradient(white, white) padding-box, linear-gradient(to right, #4F46E5, #9333EA) border-box', 
-                    borderRadius: '16px',
-                    margin: '-4px',
-                    zIndex: 0
-                 }}
-            />
+          <Card className="relative overflow-hidden group transition-transform duration-300 hover:scale-[1.01] border border-white/40 shadow-2xl hover:shadow-purple-400/50 bg-white/90 backdrop-blur-md">
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 p-8">
               <div className="relative w-full h-[420px] rounded-lg overflow-hidden">
                 <img 
@@ -382,7 +379,7 @@ export default function AIRecommendation() {
 
                 <Button
                   size="lg"
-                  className={`bg-gradient-to-r from-indigo-700 to-purple-600 text-white hover:from-indigo-800 hover:to-purple-700 w-full py-3 shadow-lg hover:shadow-xl transition-all duration-300 mt-6 ${
+                  className={`bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 text-white hover:from-blue-600 hover:via-purple-600 hover:to-indigo-600 w-full py-3 shadow-lg hover:shadow-xl transition-all duration-300 mt-6 transform hover:scale-105 ${
                     hoveredButton === bestMatch.id ? 'scale-105' : ''
                   }`}
                   onMouseEnter={() => setHoveredButton(bestMatch.id)}
@@ -408,7 +405,7 @@ export default function AIRecommendation() {
                   size="sm"
                   onClick={prevSlide}
                   disabled={currentSlide === 0}
-                  className="border-indigo-500 text-indigo-700 flex items-center gap-1 hover:bg-indigo-50 transition-colors"
+                  className="border border-white/40 bg-white/90 backdrop-blur-md text-gray-700 flex items-center gap-1 hover:bg-white/95 hover:shadow-lg transition-all duration-300"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" /> Prev
                 </Button>
@@ -417,7 +414,7 @@ export default function AIRecommendation() {
                   size="sm"
                   onClick={nextSlide}
                   disabled={currentSlide >= Math.ceil(filteredMatches.length / 3) - 1}
-                  className="border-indigo-500 text-indigo-700 flex items-center gap-1 hover:bg-indigo-50 transition-colors"
+                  className="border border-white/40 bg-white/90 backdrop-blur-md text-gray-700 flex items-center gap-1 hover:bg-white/95 hover:shadow-lg transition-all duration-300"
                 >
                   Next <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -461,11 +458,12 @@ export default function AIRecommendation() {
                   {visibleMatches.map((mentor) => (
                     <Card
                       key={mentor.id}
-                      className="relative overflow-hidden group transition-transform duration-300 hover:scale-[1.03] shadow-lg border border-gray-100 h-[420px]"
+                      className="relative overflow-hidden group transition-transform duration-300 hover:scale-[1.03] shadow-lg border border-white/40 h-[420px]"
                       onMouseEnter={() => setHoveredCard(mentor.id)}
                       onMouseLeave={() => setHoveredCard(null)}
                       style={{
-                        background: 'linear-gradient(135deg, rgba(64, 142, 216, 0.3), rgba(90, 56, 136, 0.3))',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(15px)',
                       }}
                     >
                       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -521,7 +519,7 @@ export default function AIRecommendation() {
                         </motion.div>
                         <Button
                           size="lg"
-                          className={`bg-gradient-to-r from-indigo-700 to-purple-600 text-white hover:from-indigo-800 hover:to-purple-700 w-full py-4 shadow-lg transition-all duration-300 ${
+                          className={`bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 text-white hover:from-blue-600 hover:via-purple-600 hover:to-indigo-600 w-full py-4 shadow-lg transition-all duration-300 transform hover:scale-105 ${
                             hoveredButton === mentor.id ? 'scale-105' : ''
                           }`}
                           onMouseEnter={() => setHoveredButton(mentor.id)}
@@ -542,7 +540,7 @@ export default function AIRecommendation() {
         <div className="text-center mt-12">
           <Button
             size="lg"
-            className="bg-gradient-to-r from-indigo-700 to-purple-600 text-white rounded-full px-10 py-3 text-lg font-semibold hover:from-indigo-800 hover:to-purple-700 shadow-xl transition-all duration-300"
+            className="bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 text-white rounded-full px-10 py-3 text-lg font-semibold hover:from-blue-600 hover:via-purple-600 hover:to-indigo-600 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
           >
             <Link href={"/find-mentor"}>Browse All Mentors</Link>
           </Button>

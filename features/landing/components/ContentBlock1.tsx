@@ -1,430 +1,382 @@
-// import Link from 'next/link'
-// import { CheckCircle, ArrowRight, Sparkles, Users, Clock, Target, Award, BookOpen } from 'lucide-react'
-// import { Button } from '@/components/ui/button'
-// import { motion, AnimatePresence } from 'framer-motion'
-// import { useState } from 'react'
 
-// const features = [
-//   {
-//     icon: Users,
-//     title: "Personalized Mentorship",
-//     description: "One-on-one guidance tailored to your unique learning style and career goals",
-//     iconColor: "#6B50EB" // brand start
-//   },
-//   {
-//     icon: Award,
-//     title: "Expert Instructors",
-//     description: "Learn from certified professionals with proven industry experience",
-//     iconColor: "#6256ED" // brand mid
-//   },
-//   {
-//     icon: BookOpen,
-//     title: "Premium Platform",
-//     description: "Access our cutting-edge online learning environment with advanced tools",
-//     iconColor: "#555DEF" // brand end
-//   },
-//   {
-//     icon: Clock,
-//     title: "Flexible Scheduling",
-//     description: "Study when it works best for your lifestyle and commitments",
-//     iconColor: "#6B50EB" // brand start
-//   },
-//   {
-//     icon: Target,
-//     title: "Progress Tracking",
-//     description: "Monitor your advancement with clear milestones and detailed insights",
-//     iconColor: "#6256ED" // brand mid
-//   },
-//   {
-//     icon: Sparkles,
-//     title: "Community Support",
-//     description: "Connect with fellow learners in our vibrant, supportive community",
-//     iconColor: "#555DEF" // brand end
-//   }
-// ]
+// 'use client'
+// import { Bookmark } from "lucide-react";
+// import Link from "next/link";
+// import { useState, useEffect, useRef } from "react";
 
-// const scrollingFeatures = [...features, ...features]
+// const ContentBlock1 = () => {
+//   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+//   const [entered, setEntered] = useState(false);
+//   const sectionRef = useRef<HTMLElement | null>(null);
 
-// const containerVariants = {
-//   hidden: { opacity: 0 },
-//   visible: {
-//     opacity: 1,
-//     transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-//   }
-// }
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         entries.forEach((entry) => {
+//           if (entry.isIntersecting) {
+//             setEntered(true);
+//             observer.unobserve(entry.target);
+//           }
+//         });
+//       },
+//       { threshold: 0.15 }
+//     );
 
-// const itemVariants = {
-//   hidden: { opacity: 0, y: 30, scale: 0.95 },
-//   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6 } }
-// }
-
-// const cardVariants = {
-//   hidden: { opacity: 0, y: 20, scale: 0.95 },
-//   visible: { 
-//     opacity: 1, 
-//     y: 0, 
-//     scale: 1, 
-//     transition: { duration: 0.5, ease: "easeOut" }
-//   },
-//   hover: { 
-//     scale: 1.05,
-//     y: -8,
-//     rotateX: 5,
-//     rotateY: 5,
-//     transition: { 
-//       duration: 0.3,
-//       type: "spring",
-//       stiffness: 300,
-//       damping: 20
+//     if (sectionRef.current) {
+//       observer.observe(sectionRef.current);
 //     }
-//   }
-// }
 
-// const buttonVariants = {
-//   hover: {
-//     scale: 1.05,
-//     boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)",
-//     transition: { type: "spring", stiffness: 300, damping: 20 }
-//   },
-//   tap: { scale: 0.98, transition: { duration: 0.2 } }
-// }
+//     return () => observer.disconnect();
+//   }, []);
 
-// const rocketVariants = {
-//   hidden: { opacity: 0, y: 0 },
-//   visible: {
-//     opacity: 1,
-//     y: -200,
-//     transition: { duration: 1.5 }
-//   },
-//   exit: { opacity: 0, y: -300, transition: { duration: 0.5 } }
-// }
-
-// const trailVariants = {
-//   hidden: { opacity: 0, scale: 0 },
-//   visible: { opacity: 0.6, scale: 1, transition: { duration: 0.5 } },
-//   exit: { opacity: 0, scale: 1.5, transition: { duration: 0.3 } }
-// }
-
-// export default function ContentBlock1() {
-//   const [showRocket, setShowRocket] = useState(false)
-
-//   const handleButtonClick = () => {
-//     setShowRocket(true)
-//     setTimeout(() => setShowRocket(false), 2000)
-//   }
+//   const cards = [
+//    {
+//     title: "Sarah Chen",
+//       role: "Senior Product Manager",
+//     company: "Google",
+//       gigs: "12 gigs",
+//     rating: 4.9,
+//       reviews: 120,
+//       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face&auto=format&q=80",
+//       imagePosition: "left"
+//     },
+//     {
+//       title: "Marcus Johnson",
+//       role: "VP of Engineering",
+//       company: "Stripe",
+//       gigs: "8 gigs",
+//       rating: 4.9,
+//       reviews: 89,
+//       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+//       imagePosition: "center"
+//     },
+//     {
+//       title: "Emily Rodriguez",
+//       role: "Design Director at AirBnB",
+//       company: "AirBnB",
+//       gigs: "15 gigs",
+//       rating: 4.8,
+//       reviews: 156,
+//       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+//       imagePosition: "center"
+//     },
+//     {
+//      title: "David Kim",
+//       role: "Head of Growth",
+//       company: "Notion",
+//       gigs: "5 gigs",
+//       rating: 3.8,
+//       reviews: 42,
+//       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+//       imagePosition: "right"
+//     }
+//   ];
 
 //   return (
-//     <section style={{ paddingTop: '6rem', paddingBottom: '6rem', background: 'linear-gradient(135deg,rgb(64, 142, 216), rgb(220, 218, 231), rgb(90, 56, 136))', position: 'relative', overflow: 'hidden', width: '90%', margin: '0 auto' }}>
-//       {/* Background Pattern */}
-//       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%236368A0" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`, opacity: 0.3 }} />
-      
-//       <div style={{ maxWidth: '80rem', margin: '0 auto', paddingLeft: '1.5rem', paddingRight: '1.5rem',  position: 'relative', zIndex: 10 }}>
-//         {/* Header Section */}
-//         <motion.div
-//           style={{ textAlign: 'center', marginBottom: '4rem' }}
-//           variants={containerVariants}
-//           initial="hidden"
-//           animate="visible"
-//         >
-//           <motion.h2 
-//             variants={itemVariants}
-//             style={{ 
-//               marginBottom: '1.5rem', 
-//               position: 'relative',
-//               textAlign: 'center'
-//             }}
-//           >
-//             <span style={{ 
-//               display: 'inline-block', 
-//               fontSize: '2.5rem', 
-//               fontWeight: 'bold', 
-//               background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
-//               WebkitBackgroundClip: 'text', 
-//               backgroundClip: 'text', 
-//               WebkitTextFillColor: 'transparent', 
-//               marginBottom: '0.5rem' ,
-//               marginRight: '0.5rem',
-//             }}>
-//               Choose your
-//             </span>
-            
-//             <span style={{ 
-//               fontSize: '3rem', 
-//               fontWeight: '800', 
-//               background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
-//               WebkitBackgroundClip: 'text', 
-//               backgroundClip: 'text', 
-//               WebkitTextFillColor: 'transparent', 
-//               // boxShadow: '0 6px 16px rgba(85,93,239,0.45)', 
-//               letterSpacing: '0.05em',
-//               marginRight: '0.5rem',
-              
-//             }}>
-//                Perfect Tutor
-//             </span>
-//           </motion.h2>
-//           <motion.p
-//             variants={itemVariants}
-//             style={{ 
-//               fontSize: '1.125rem', 
-//               lineHeight: '1.75', 
-              
-//               fontWeight: '300', 
-//               color: '#1F2937',
-//               maxWidth: '48rem',
-//               margin: '0 auto',
-//               textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      
-//             }}
-//           >
-//             Experience exceptional tutoring designed to help you <span style={{ 
-//               fontWeight: '600', 
-//               background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', 
-//               WebkitBackgroundClip: 'text', 
-//               backgroundClip: 'text', 
-//               WebkitTextFillColor: 'transparent',
-//               fontStyle: 'italic'
-//             }}>achieve your goals</span> with confidence and excellence.
-//           </motion.p>
-//         </motion.div>
-
-//         {/* Features Marquee - Infinite Left-to-Right */}
-//         <motion.div
-//           style={{ position: 'relative', marginBottom: '4rem' }}
-//           variants={containerVariants}
-//           initial="hidden"
-//           animate="visible"
-//         >
-//           <div style={{ overflow: 'hidden', borderRadius: '1.5rem', background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)',  }}>
-//             <div className="marquee" style={{ display: 'flex', gap: '2rem', width: 'max-content', animation: 'marquee-right 35s linear infinite', willChange: 'transform' }}>
-//               {scrollingFeatures.map((feature, index) => (
-//                 <motion.div
-//                   key={`${index}-${feature.title}`}
-//                   whileHover="hover"
-//                   style={{ 
-//                     position: 'relative', 
-//                     minWidth: '20rem', 
-//                     maxWidth: '23.75rem', 
-//                     display: 'inline-block', 
-//                     marginLeft: '1rem', 
-//                     marginRight: '1rem',
-//                     perspective: "1000px"
-                  
-//                   }}
-//                 >
-//                <div
-//   className="relative overflow-hidden group transition-transform duration-300 hover:scale-105 border-[3px] border-gradient-to-br from-blue-200 to-blue-400 shadow-md h-[420px]"
-//   style={{
-//     position: 'relative',
-//     height: '420px',
-//     transition: 'all 0.5s ease',
-//     cursor: 'pointer',
-//     overflow: 'hidden',
-//     border: '3px solid transparent',
-//     background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #93C5FD, #60A5FA) border-box',
-//     borderRadius: '1rem',
-//     boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-//   }}
-// >
-//   {/* Background with whitish light blue */}
-//   <div 
-//     className="absolute inset-0"
-//     style={{
-//       background: 'linear-gradient(135deg, #f0f8ff, #e6f3ff, #ddeeff)',
-//       backgroundSize: 'cover',
-//       backgroundPosition: 'center',
-//       backgroundRepeat: 'no-repeat'
-//     }}
-//   />
-//   <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-transparent to-blue-100/30" />
-  
-//   {/* Top content */}
-//   <div className="absolute top-4 left-4 text-slate-800">
-//     <div className="flex items-center gap-3 mb-4">
-//       <div
-//         style={{
-//           width: '3rem',
-//           height: '3rem',
-//           borderRadius: '0.75rem',
-//           backgroundColor: feature.iconColor || '#3B82F6',
-//           display: 'flex',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
-//         }}
-//       >
-//         <feature.icon
-//           style={{
-//             height: '1.5rem',
-//             width: '1.5rem',
-//             color: 'white',
-//           }}
-//         />
-//       </div>
-//     </div>
-//     <h3 className="text-2xl font-bold mb-1 text-slate-800">{feature.title}</h3>
-//      {/* Bottom content */}
-//   <div className="relative z-10 h-full flex flex-col justify-end p-4 text-slate-700">
-//     <div className="flex items-center justify-center mb-6">
-//       <div className="text-center space-y-2">
-//         <p className="text-base text-slate-600"><span className="font-semibold text-slate-800">{feature.description}</span></p>
-//         <ul className="list-disc list-inside text-slate-700 space-y-1 mt-2">
-//           <li>Tailored guidance</li>
-//           <li>Proven results</li>
-//         </ul>
-//       </div>
-//     </div>
-//   </div>
-//     <Button
-//       size="lg"
-//       className="bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 w-full py-4 transition-all duration-300 mt-4 shadow-lg"
+//     <section 
+//       ref={sectionRef}
+//       style={{ 
+//         background: 'white',
+//         padding: 'clamp(64px, 8vw, 120px) 0'
+//       }}
 //     >
-//       Learn more
-//       <ArrowRight className="w-5 h-5 ml-2" />
-//     </Button>
-//   </div>
-// </div>
-//                 </motion.div>
-//               ))}
-//             </div>
-//           </div>
-//         </motion.div>
+//       <style>{`
+//         /* Heading mask reveal */
+//         .section-headline {
+//           overflow: hidden;
+//           text-align: center;
+//         }
+//         .section-headline .line {
+//           display: inline-block;
+//           transform: translateY(100%);
+//           opacity: 0;
+//           transition: transform 1200ms cubic-bezier(.16,.84,.35,1), opacity 520ms ease-out;
+//           will-change: transform, opacity;
+//         }
+//         .section-headline.entered .line {
+//           transform: translateY(0);
+//           opacity: 1;
+//         }
 
-//         {/* CTA Section */}
-//         <motion.div 
-//           style={{ textAlign: 'center' }}
-//           variants={itemVariants}
-//           initial="hidden"
-//           animate="visible"
-//         >
-//           <motion.div whileHover="hover" whileTap="tap" onClick={handleButtonClick}>
-//             <Button
-//               size="lg"
-//               asChild
-//               style={{ 
-//                 position: 'relative', 
-//                 overflow: 'hidden', 
-//                 background: 'linear-gradient(135deg, #3B82F6, #6366F1)', 
-//                 color: 'white', 
-//                 fontWeight: 'bold', 
-//                 fontSize: '1.125rem', 
-//                 paddingLeft: '3rem', 
-//                 paddingRight: '3rem', 
-//                 paddingTop: '1.5rem', 
-//                 paddingBottom: '1.5rem', 
-//                 borderRadius: '1rem', 
-//                 boxShadow: '0 1.25rem 2rem rgba(0,0,0,0.3)', 
-//                 transition: 'all 0.3s ease',
-//                 display: 'flex', 
-//                 alignItems: 'center', 
-//                 gap: '1rem', 
-//                 margin: '0 auto' 
-//               }} onMouseEnter={(e) => {
-//                 e.currentTarget.style.background = 'linear-gradient(135deg, #2563EB, #4F46E5)';
-//                 e.currentTarget.style.boxShadow = '0 1.5rem 2.5rem rgba(0,0,0,0.4)';
-//               }} onMouseLeave={(e) => {
-//                 e.currentTarget.style.background = 'linear-gradient(135deg, #3B82F6, #6366F1)';
-//                 e.currentTarget.style.boxShadow = '0 1.25rem 2rem rgba(0,0,0,0.3)';
-//               }}
-//             >
-//               <Link href="/ai-assessment" style={{ color: 'white', textDecoration: 'none'}} className="w-[30%] sm:w-[100%]">
-//                 Start Your Journey
-//                 <ArrowRight style={{ height: '1.5rem', width: '1.5rem' }} />
-//                 <span style={{ 
-//                   position: 'absolute', 
-//                   inset: 0, 
-//                   background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', 
-//                   opacity: 0, 
-//                   transition: 'opacity 0.5s ease',
-//                   pointerEvents: 'none' 
-//                 }} />
-//               </Link>
-//             </Button>
-//           </motion.div>
-//         </motion.div>
-//       </div>
+//         /* Card content slide from top */
+//         .card-content {
+//           transform: translateY(-40px);
+//           opacity: 0;
+//           transition: transform 800ms cubic-bezier(.22,.9,.3,1), opacity 600ms ease-out;
+//         }
+//         .mentor-card.entered .card-content {
+//           transform: translateY(0);
+//           opacity: 1;
+//         }
 
-//       {/* Rocket Loading Animation */}
-//       {/* <AnimatePresence>
-//         {showRocket && (
-//           <motion.div
-//             style={{ 
-//               position: 'fixed', 
-//               inset: 0, 
-//               display: 'flex', 
-//               alignItems: 'center', 
-//               justifyContent: 'center', 
-//               backgroundColor: 'rgba(15, 23, 42, 0.8)', 
-//               zIndex: 50 
-//             }}
-//             initial="hidden"
-//             animate="visible"
-//             exit="exit"
-//             variants={rocketVariants}
-//           >
-//             <motion.div
-//               style={{ position: 'relative' }}
-//               variants={trailVariants}
-//             >
-//               <span style={{ fontSize: '5rem', color: '#60A5FA', animation: 'bounce 2s infinite' }}>🚀</span>
-//               <motion.div
-//                 style={{ 
-//                   position: 'absolute', 
-//                   top: '50%', 
-//                   left: '50%', 
-//                   transform: 'translate(-50%, -50%)', 
-//                   width: '1.5rem', 
-//                   height: '1.5rem', 
-//                   backgroundColor: '#60A5FA', 
-//                   borderRadius: '50%' 
-//                 }}
-//                 animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 0] }}
-//                 transition={{ duration: 1, repeat: Infinity }}
-//               />
-//             </motion.div>
-//           </motion.div>
-//         )}
-//       </AnimatePresence> */}
+//         /* Card image slide from top with delay */
+//         .card-image {
+//           transform: translateY(-60px);
+//           opacity: 0;
+//           transition: transform 1000ms cubic-bezier(.22,.9,.3,1), opacity 700ms ease-out;
+//           transition-delay: 200ms;
+//         }
+//         .mentor-card.entered .card-image {
+//           transform: translateY(0);
+//           opacity: 1;
+//         }
 
-//       <style jsx>{`
-//         .marquee {
-//           display: flex;
-//           gap: 2rem;
-//           width: max-content;
-//           animation: marquee-right 35s linear infinite;
+//         /* Card rating slide from top with more delay */
+//         .card-rating {
+//           transform: translateY(-20px);
+//           opacity: 0;
+//           transition: transform 700ms cubic-bezier(.22,.9,.3,1), opacity 500ms ease-out;
+//           transition-delay: 400ms;
+//         }
+//         .mentor-card.entered .card-rating {
+//           transform: translateY(0);
+//           opacity: 1;
+//         }
+
+//         /* Mentor card base styles */
+//         .mentor-card {
+//           transition: transform 300ms cubic-bezier(.22,.9,.3,1);
 //           will-change: transform;
 //         }
-//         .marquee:hover {
-//           animation-play-state: paused;
+//         .mentor-card:hover {
+//           transform: translateY(-8px);
 //         }
-//         @keyframes marquee-right {
-//           0% {
-//             transform: translateX(-50%);
-//           }
-//           100% {
-//             transform: translateX(0);
+
+//         /* Accessibility */
+//         @media (prefers-reduced-motion: reduce) {
+//           .section-headline .line,
+//           .card-content,
+//           .card-image,
+//           .card-rating,
+//           .mentor-card {
+//             transition: none !important;
+//             transform: none !important;
+//             opacity: 1 !important;
 //           }
 //         }
-//         @keyframes bounce {
-//           0%, 100% { transform: translateY(0); }
-//           50% { transform: translateY(-20px); }
+        
+//         /* Responsive grid */
+//         @media (max-width: 1024px) {
+//           .mentor-grid {
+//             grid-template-columns: repeat(2, 1fr) !important;
+//           }
+//         }
+        
+//         @media (max-width: 768px) {
+//           .mentor-grid {
+//             grid-template-columns: 1fr !important;
+//           }
 //         }
 //       `}</style>
+      
+//       <div style={{
+//         maxWidth: '1200px',
+//         margin: '0 auto',
+//         padding: '0 clamp(16px, 3vw, 40px)'
+//       }}>
+
+//         {/* Heading Section */}
+//         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+//           <h1 className={`section-headline ${entered ? 'entered' : ''}`} style={{
+//             fontSize: '54px',
+//             fontWeight: '700',
+//             lineHeight: '1.1',
+//             color: '#1e293b',
+//             marginBottom: '24px',
+//             maxWidth: '800px',
+//             margin: '0 auto 24px',
+//             position: 'relative',
+//             zIndex: 2
+//           }}>
+             
+//             <span 
+//               className="line" 
+//               style={{ 
+//                 background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', 
+//                 WebkitBackgroundClip: 'text', 
+//                 backgroundClip: 'text', 
+//                 WebkitTextFillColor: 'transparent', 
+//                 transitionDelay: '70ms' 
+//               }}
+//             >
+//              Choose your perfect tutor
+//             </span>
+//           </h1>
+//         </div>
+
+//         {/* Four-Up Card Row */}
+//         <div className="mentor-grid" style={{
+//           display: 'grid',
+//           gridTemplateColumns: 'repeat(4, 1fr)',
+//           gap: '24px'
+//         }}>
+//           {cards.map((card, index) => {
+//             const isHovered = hoveredCard === index;
+
+//             return (
+//               <div
+//                 key={index}
+//                 className={`mentor-card ${entered ? 'entered' : ''}`}
+//                 onMouseEnter={() => setHoveredCard(index)}
+//                 onMouseLeave={() => setHoveredCard(null)}
+//                 style={{
+//                   transitionDelay: `${index * 80}ms`,
+//                   width: '100%',
+//                   height: 'clamp(360px, 32vw, 400px)',
+//                   backgroundColor: 'transparent',
+//                   borderRadius: '18px',
+//                   overflow: 'hidden',
+//                   cursor: 'pointer',
+//                   position: 'relative',
+//                   display: 'flex',
+//                   flexDirection: 'column',
+//                   border: '1px solid rgba(0,0,0,0.08)'
+//                 }}
+//               >
+//                 {/* Utility Icon */}
+//                 <div className="card-content" style={{
+//                   position: 'absolute',
+//                   top: '16px',
+//                   right: '16px',
+//                   width: '40px',
+//                   height: '40px',
+//                   borderRadius: '50%',
+//                   background: 'rgba(255, 255, 255, 0.95)',
+//                   backdropFilter: 'blur(8px)',
+//                   display: 'flex',
+//                   alignItems: 'center',
+//                   justifyContent: 'center',
+//                   color: '#6b7280',
+//                   zIndex: 10,
+//                   transition: 'transform 200ms ease',
+//                   transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+//                 }}>
+//                   <Bookmark style={{ width: '18px', height: '18px' }} />
+//                 </div>
+
+//                 {/* Image Region - 62% of card height */}
+//                 <div style={{
+//                   position: 'relative',
+//                   width: '100%',
+//                   height: '102%',
+//                   overflow: 'hidden'
+//                 }}>
+//                   {/* Gradient Overlay for depth */}
+//                   {/* <div style={{
+//                     position: 'absolute',
+//                     bottom: 0,
+//                     left: 0,
+//                     right: 0,
+//                     height: '120px',
+//                     background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, transparent 100%)',
+//                     zIndex: 2
+//                   }} /> */}
+                  
+//                   {/* Image with different positioning per card */}
+//                   <div className="card-image" style={{
+//                     width: '100%',
+//                     height: '100%',
+//                     backgroundImage: `url(${card.image})`,
+//                     backgroundSize: 'cover',
+//                     backgroundPosition: 
+//                       card.imagePosition === 'left' ? '90% center' : 
+//                       card.imagePosition === 'right' ? '10% center' : 
+//                       'center center',
+//                     backgroundRepeat: 'no-repeat',
+//                     transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+//                     transition: 'transform 300ms ease-out'
+//                   }} />
+//                 </div>
+
+//                 {/* Content Region - 38% of card height */}
+//                 <div style={{
+//                   flex: 1,
+//                   padding: '24px',
+//                   display: 'flex',
+//                   flexDirection: 'column',
+//                   justifyContent: 'space-between',
+//                   background: 'transparent'
+//                 }}>
+//                   <div className="card-content">
+//                     {/* Name */}
+//                     <h3 style={{
+//                         fontSize: '1.125rem',
+//                         fontWeight: '600',
+//                       color: '#1f2937',
+//                         marginBottom: '8px',
+//                         lineHeight: '1.2'
+//                     }}>
+//                       {card.title}
+//                     </h3>
+                    
+//                       {/* Role with meta chip */}
+//                     <p style={{
+//                         fontSize: '0.875rem',
+//                       color: '#6b7280',
+//                         marginBottom: '18px',
+//                         lineHeight: '1.4',
+//                         display: 'flex',
+//                         alignItems: 'baseline',
+//                         flexWrap: 'wrap',
+//                         gap: '6px'
+//                       }}>
+//                         {card.role} <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>•</span> <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{card.gigs}</span>
+//                       </p>
+//                   </div>
+                  
+//                   {/* Rating Block */}
+//                   <div className="card-rating" style={{
+//                     display: 'flex',
+//                     alignItems: 'baseline',
+//                     gap: '8px'
+//                   }}>
+//                     <span style={{ 
+//                       fontSize: '1.5rem', 
+//                       fontWeight: '700', 
+//                       color: '#1f2937',
+//                       lineHeight: '1'
+//                     }}>
+//                       {card.rating}
+//                     </span>
+//                     <span style={{ 
+//                       fontSize: '0.8125rem', 
+//                       color: '#6b7280' 
+//                     }}>
+//                       {card.reviews} reviews
+//                     </span>
+//                   </div>
+                  
+//                   {/* Fine print */}
+//                   <div className="card-content" style={{
+//                     fontSize: '0.75rem',
+//                     color: '#9ca3af',
+//                     lineHeight: '1.3',
+//                     marginTop: '8px'
+//                   }}>
+//                     Available now • Response time: 2h
+//                   </div>
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </div>
+//       </div>
 //     </section>
-//   )
-// }
+//   );
+// };
+
+// export default ContentBlock1;
 
 'use client'
-import { ArrowRight, Briefcase } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 
 const ContentBlock1 = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-  const [hoveredMainButton, setHoveredMainButton] = useState(false);
   const [entered, setEntered] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -446,327 +398,434 @@ const ContentBlock1 = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Mentor images sourced from ai-recommendation page
-  const mentorImages = [
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face&auto=format&q=80", // Sarah Chen
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Marcus Johnson
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Emily Rodriguez
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // David Kim
-    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Lisa Thompson
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Aisha Patel
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Rajesh Kumar
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face&auto=format&q=80", // Sophie Lee
+  const cards = [
+    {
+      title: "Sarah Chen",
+      role: "Senior Product Manager",
+      company: "Google",
+      gigs: "12 gigs",
+      rating: 4.9,
+      reviews: 120,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "left"
+    },
+    {
+      title: "Marcus Johnson",
+      role: "VP of Engineering",
+      company: "Stripe",
+      gigs: "8 gigs",
+      rating: 4.9,
+      reviews: 89,
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "center"
+    },
+    {
+      title: "Emily Rodriguez",
+      role: "Design Director",
+      company: "AirBnB",
+      gigs: "15 gigs",
+      rating: 4.8,
+      reviews: 156,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "center"
+    },
+    {
+      title: "David Kim",
+      role: "Head of Growth",
+      company: "Notion",
+      gigs: "5 gigs",
+      rating: 4.8,
+      reviews: 42,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "right"
+    },
+    {
+      title: "Priya Patel",
+      role: "Data Science Lead",
+      company: "Meta",
+      gigs: "9 gigs",
+      rating: 4.9,
+      reviews: 98,
+      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "center"
+    },
+    {
+      title: "Alex Thompson",
+      role: "Frontend Architect",
+      company: "Netflix",
+      gigs: "11 gigs",
+      rating: 4.7,
+      reviews: 76,
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      imagePosition: "center"
+    }
   ];
 
-  const cards = [
-   {
-    title: "Sarah Chen",
-    description: "Senior Product Manager",
-    company: "Google",
-    rating: 4.9,
-    image: mentorImages[0],
-    },
-    {
-      
-      title: "Marcus Johnson",
-      description: "VP of Engineering",
-      company: "Stripe",
-      rating: 4.8,
-      image: mentorImages[1]
-    },
-    {
-     
-      title: "Emily Rodriguez",
-      description: "Design Director",
-      company: "AirBnB",
-      rating: 4.9,
-      image: mentorImages[2]
-    },
-    {
-   
-     title: "David Kim",
-      description: "Head of growth ",
-      company: "Notion",
-      rating: 4.7,
-    image: mentorImages[3]
-  },
-   {
-  
-     title: "Lisa Thompson",
-      description: "Chief Technology Officer",
-      company: "Shopify",
-      rating: 4.9,
-    image: mentorImages[4]
-  },
-  {
-     title: "Aisha Patel",
-      description: "Senior Data Scientist",
-      company: "Meta",
-      rating: 4.8,
-    image: mentorImages[5]
-  },
-  {
-   
-     title: "Rajesh Kumar",
-      description: "Chief Marketing Officer",
-      company: "Amazon",
-      rating: 4.7,
-    image: mentorImages[6]
-  },
-  {
-   
-     title: "Sophie Lee",
-      description: "Head of Product",
-      company: "Dropbox",
-      rating: 4.9,
-    image: mentorImages[7]
-  },
-  ];
+  // Duplicate cards for seamless infinite scroll
+  const duplicatedCards = [...cards, ...cards, ...cards];
 
   return (
     <section 
       ref={sectionRef}
-      style={{ padding: '5rem 3rem',  background: 'white',
-      minHeight: '100vh',
-     }}>
+      style={{ 
+        background: 'white',
+        padding: 'clamp(64px, 8vw, 120px) 0',
+        overflow: 'hidden'
+      }}
+    >
       <style>{`
-        .mentor-card {
-          transform: translateY(22px) scale(.98);
+        /* Heading mask reveal */
+        .section-headline {
+          overflow: hidden;
+          text-align: center;
+        }
+        .section-headline .line {
+          display: inline-block;
+          transform: translateY(100%);
           opacity: 0;
-          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
+          transition: transform 1200ms cubic-bezier(.16,.84,.35,1), opacity 520ms ease-out;
           will-change: transform, opacity;
         }
-        .mentor-grid.entered .mentor-card {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
-        .content-header {
-          transform: translateY(12px);
-          opacity: 0;
-          transition: transform 420ms cubic-bezier(.22,.9,.3,1), opacity 360ms ease-out;
-        }
-        .content-header.entered {
+        .section-headline.entered .line {
           transform: translateY(0);
           opacity: 1;
         }
-        @media (prefers-reduced-motion: reduce) {
-          .mentor-card, .content-header {
-            transition: none !important;
-            transform: none !important;
-            opacity: 1 !important;
-          }
+
+        /* Subtitle animation */
+        .section-subtitle {
+          transform: translateY(30px);
+          opacity: 0;
+          transition: transform 800ms cubic-bezier(.22,.9,.3,1), opacity 600ms ease-out;
+          transition-delay: 200ms;
         }
-      `}</style>
-      <div className={`content-header ${entered ? 'entered' : ''}`} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <h1 style={{
-          fontSize: '3.5rem',
-          fontWeight: 'bold',
-          color: '#1f2937',
-          marginBottom: '1.5rem',
-          lineHeight: '1.2'
-        }}>
-          Choose your <span style={{  background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
-              WebkitBackgroundClip: 'text', 
-              backgroundClip: 'text', 
-              WebkitTextFillColor: 'transparent',  }}>Perfect Tutor</span>
-        </h1>
-        <p style={{
-          fontSize: '1.125rem',
-          color: '#4b5563',
-          maxWidth: '700px',
-          margin: '0 auto'
-        }}>
-          Experience exceptional tutoring designed to help you <span style={{  background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
-              WebkitBackgroundClip: 'text', 
-              backgroundClip: 'text', 
-              WebkitTextFillColor: 'transparent',  fontStyle: 'italic' }}>achieve your goals</span> with confidence and excellence.
-        </p>
-      </div>
+        .section-headline.entered .section-subtitle {
+          transform: translateY(0);
+          opacity: 1;
+        }
 
-      {/* Infinite Scrolling Cards Container */}
-      <div style={{
-        position: 'relative',
-        overflow: 'hidden',
-        marginBottom: '3rem',
-        background: 'rgba(255, 255, 255, 0.05)',
-        backdropFilter: 'blur(20px)',
-        borderRadius: '1.5rem',
-        padding: '1rem 0'
-      }}>
-        <div 
-          className={`marquee-container mentor-grid ${entered ? 'entered' : ''}`}
-          style={{
-            display: 'flex',
-            gap: '2rem',
-            width: 'max-content',
-            animation: 'marquee-scroll 30s linear infinite',
-            willChange: 'transform'
-          }}
-        >
-          {/* Duplicate cards for seamless infinite scroll */}
-          {[...cards, ...cards].map((card, index) => {
-            const isHovered = hoveredCard === index;
-            const isButtonHovered = hoveredButton === index;
+        /* Card content slide from top */
+        .card-content {
+          transform: translateY(-40px);
+          opacity: 0;
+          transition: transform 800ms cubic-bezier(.22,.9,.3,1), opacity 600ms ease-out;
+        }
+        .mentor-card.entered .card-content {
+          transform: translateY(0);
+          opacity: 1;
+        }
 
-            return (
-              <div
-                key={`${index}-${card.title}`}
-                className="mentor-card"
-                onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                transitionDelay: `${index * 70}ms`,
-                  position: 'relative',
-                  backgroundImage: card.image ? `url(${card.image})` : undefined,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  backdropFilter: 'blur(10px)',
-                  borderRadius: '19px',
-                  padding: '1.5rem',
-                  boxShadow: isHovered 
-                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' 
-                    : '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                  transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                  transition: 'all 0.5s ease',
-                  overflow: 'hidden',
-                  minWidth: '320px',
-                  maxWidth: '320px',
-                  // height: '420px',
-                  height: '300px',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                {/* Dark overlay for readability over image */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundColor: 'rgba(0,0,0,0.45)'
-                }} />
-                {/* Gradient Overlay Effect */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: 'linear-gradient(to bottom right, rgba(59, 130, 246, 0.15), rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.15))',
-                  opacity: isHovered ? 1 : 0,
-                  transition: 'opacity 0.5s ease',
-                  borderRadius: '16px',
-                  pointerEvents: 'none'
-                }} />
+        /* Card image slide from top with delay */
+        .card-image {
+          transform: translateY(-60px);
+          opacity: 0;
+          transition: transform 1000ms cubic-bezier(.22,.9,.3,1), opacity 700ms ease-out;
+          transition-delay: 200ms;
+        }
+        .mentor-card.entered .card-image {
+          transform: translateY(0);
+          opacity: 1;
+        }
 
-                {/* Content */}
-                <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  {/* Title */}
-                  <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#FFFFFF', marginBottom: '0.5rem' }}>
-                    {card.title}
-                  </h3>
-                  {/* Description */}
-                  <p style={{ color: '#E5E7EB', marginBottom: '1rem', lineHeight: '1.6' }}>
-                    {card.description}
-                  </p>
-                  {/* Company and Rating */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#E5E7EB', marginBottom: '1.25rem' }}>
-                    
-                    <span style={{ fontSize: '0.95rem' }}>{card.company}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#E5E7EB', marginBottom: '1.25rem' }}>
-                    <span style={{ fontWeight: 600 }}>⭐ {card.rating}</span>
-                  </div>
+        /* Card rating slide from top with more delay */
+        .card-rating {
+          transform: translateY(-20px);
+          opacity: 0;
+          transition: transform 700ms cubic-bezier(.22,.9,.3,1), opacity 500ms ease-out;
+          transition-delay: 400ms;
+        }
+        .mentor-card.entered .card-rating {
+          transform: translateY(0);
+          opacity: 1;
+        }
 
-                  <Link
-                  href="/find-mentor"
-                    onMouseEnter={() => setHoveredButton(index)}
-                    onMouseLeave={() => setHoveredButton(null)}
-                    style={{
-                      width: '100%',
-                      padding: '0.875rem',
-                      // backgroundColor: isButtonHovered ? '#1D4ED8' : '#2563EB',
-                      backgroundColor: isButtonHovered ? 'white' : 'transparent',
-                      color: isButtonHovered ? '#6256ED' : 'white',
-                      // border: 'none',
-                      border: '2px solid rgba(255, 255, 255, 0.35)',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                      fontWeight: '600',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.5rem',
-                      transition: 'background-color 0.3s ease',
-                      marginTop: 'auto'
-                    }}
-                  >
-                    View Mentor
-                    <ArrowRight style={{
-                      width: '18px',
-                      height: '18px',
-                      transform: isButtonHovered ? 'translateX(4px)' : 'translateX(0)',
-                      transition: 'transform 0.3s ease'
-                    }} />
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div style={{ textAlign: 'center' }}>
-          <Link href='/ai-assessment'
-            onMouseEnter={() => setHoveredMainButton(true)}
-            onMouseLeave={() => setHoveredMainButton(false)}
-            style={{
-              padding: '1rem 2.5rem',
-              backgroundColor: hoveredMainButton ? '#1D4ED8' : '#2563EB',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '1.125rem',
-              fontWeight: '600',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              boxShadow: '0 4px 6px rgba(37, 99, 235, 0.3)',
-              transition: 'background-color 0.3s ease'
-            }}
-          >
-            Start Your Journey 
-            <ArrowRight style={{
-              width: '20px',
-              height: '20px',
-              transform: hoveredMainButton ? 'translateX(4px)' : 'translateX(0)',
-              transition: 'transform 0.3s ease'
-            }} />
-        </Link>
-      </div>
-
-      {/* CSS Animation Styles */}
-      <style jsx>{`
-        .marquee-container {
-          display: flex;
-          gap: 2rem;
-          width: max-content;
-          animation: marquee-scroll 30s linear infinite;
+        /* Tutor card base styles */
+        .tutor-card {
+          transition: transform 300ms cubic-bezier(.22,.9,.3,1);
           will-change: transform;
         }
-        .marquee-container:hover {
-          animation-play-state: paused;
+        .tutor-card:hover {
+          transform: translateY(-8px);
         }
-        @keyframes marquee-scroll {
+
+        /* Infinite carousel animation */
+        @keyframes scroll {
           0% {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(calc(-250px * 6));
+          }
+        }
+
+        .carousel-track {
+          animation: scroll 40s linear infinite;
+        }
+
+        .carousel-track:hover {
+          animation-play-state: paused;
+        }
+
+        /* Gradient fade edges */
+        .carousel-container::before,
+        .carousel-container::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 100px;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .carousel-container::before {
+          left: 0;
+          background: linear-gradient(to right, white, transparent);
+        }
+
+        .carousel-container::after {
+          right: 0;
+          background: linear-gradient(to left, white, transparent);
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+          .section-headline .line,
+          .section-subtitle,
+          .card-content,
+          .card-image,
+          .card-rating,
+          .tutor-card,
+          .carousel-track {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+            animation: none !important;
+          }
+        }
+        
+        /* Responsive grid */
+        @media (max-width: 1024px) {
+          .mentor-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .mentor-grid {
+            grid-template-columns: 1fr !important;
+          }
+          
+          .carousel-container::before,
+          .carousel-container::after {
+            width: 50px;
           }
         }
       `}</style>
+      
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '0 clamp(16px, 3vw, 40px)'
+      }}>
+
+        {/* Heading Section */}
+        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+          <div className={`section-headline ${entered ? 'entered' : ''}`}>
+            <h1 style={{
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontWeight: '700',
+              lineHeight: '1.1',
+              color: '#1e293b',
+              marginBottom: '24px',
+              maxWidth: '800px',
+              margin: '0 auto 24px',
+              position: 'relative',
+              zIndex: 2
+            }}>
+              <span 
+                className="line" 
+                style={{ 
+                  background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)', 
+                  WebkitBackgroundClip: 'text', 
+                  backgroundClip: 'text', 
+                  WebkitTextFillColor: 'transparent', 
+                  transitionDelay: '70ms' 
+                }}
+              >
+                Choose Your Perfect Tutor
+              </span>
+            </h1>
+            
+            <p className="section-subtitle" style={{
+              fontSize: 'clamp(1.125rem, 2vw, 1.25rem)',
+              color: '#6b7280',
+              lineHeight: '1.6',
+              maxWidth: '600px',
+              margin: '0 auto',
+              fontWeight: '400'
+            }}>
+              Connect with top-tier tutors from leading tech companies. 
+              Get personalized 1:1 guidance to accelerate your learning journey.
+            </p>
+          </div>
+        </div>
+
+        
+               
+
+        {/* Infinite Auto-scrolling Carousel */}
+        <div style={{ marginBottom: '40px' }}>
+          {/* <h3 style={{
+            textAlign: 'center',
+            fontSize: '1.5rem',
+            fontWeight: '600',
+            color: '#1f2937',
+            marginBottom: '32px'
+          }}>
+            More Expert Tutors
+          </h3> */}
+          
+          <div 
+            className="carousel-container"
+            style={{
+              position: 'relative',
+              overflow: 'hidden',
+              padding: '20px 0'
+            }}
+          >
+            <div 
+              ref={carouselRef}
+              className="carousel-track"
+              style={{
+                display: 'flex',
+                gap: '24px',
+                width: 'max-content'
+              }}
+            >
+              {duplicatedCards.map((card, index) => (
+                <div
+                  key={index}
+                  className="tutor-card"
+                  style={{
+                    minWidth: '280px',
+                    height: '320px',
+                    backgroundColor: 'transparent',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={() => setHoveredCard(index + 100)} // Offset to avoid conflict with static cards
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/* Image Region */}
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '60%',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundImage: `url(${card.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center center',
+                      backgroundRepeat: 'no-repeat',
+                      transition: 'transform 300ms ease-out'
+                    }} />
+                  </div>
+
+                  {/* Content Region */}
+                  <div style={{
+                    flex: 1,
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    background: 'transparent'
+                  }}>
+                    <div>
+                      <h4 style={{
+                        fontSize: '1rem',
+                        fontWeight: '600',
+                        color: '#1f2937',
+                        marginBottom: '4px',
+                        lineHeight: '1.2'
+                      }}>
+                        {card.title}
+                      </h4>
+                      
+                      <p style={{
+                        fontSize: '0.75rem',
+                        color: '#6b7280',
+                        marginBottom: '8px',
+                        lineHeight: '1.3'
+                      }}>
+                        {card.role}
+                      </p>
+                    </div>
+                    
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: '6px'
+                    }}>
+                      <span style={{ 
+                        fontSize: '1.125rem', 
+                        fontWeight: '700', 
+                        color: '#1f2937',
+                        lineHeight: '1'
+                      }}>
+                        {card.rating}
+                      </span>
+                      <span style={{ 
+                        fontSize: '0.75rem', 
+                        color: '#6b7280' 
+                      }}>
+                        {card.reviews} reviews
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div style={{
+          textAlign: 'center',
+          padding: '40px 0'
+        }}>
+          <button style={{
+            padding: '16px 32px',
+            fontSize: '1rem',
+            fontWeight: '600',
+            color: 'white',
+            background: 'linear-gradient(90deg, #3A86FF 0%, #7B2FF7 100%)',
+            border: 'none',
+            borderRadius: '12px',
+            cursor: 'pointer',
+            transition: 'transform 200ms ease, box-shadow 200ms ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(58, 134, 255, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+          >
+            Browse All Tutors
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

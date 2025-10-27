@@ -404,24 +404,29 @@ export default function ProfileBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-100 pt-24 pb-5 px-5">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-white pt-24 pb-5 px-5 relative overflow-hidden">
+      {/* Enhanced Gradient Glassmorphic Background Cards */}
+      <div className="absolute top-10 left-10 right-10 bottom-10 bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-indigo-500/20 backdrop-blur-xl rounded-3xl border border-white/30 shadow-2xl z-0" />
+      <div className="absolute top-5 left-5 right-5 bottom-5 bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-indigo-500/15 backdrop-blur-2xl rounded-[40px] border border-white/40 shadow-3xl z-1" />
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-br from-transparent via-blue-500/5 to-purple-500/5 z-2" />
+      
+      <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-blue-900 mb-2">Create Your Profile</h1>
-          <p className="text-blue-700">Step {currentStep + 1} of {steps.length} • Overall: {overallCompletion}%</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">Create Your Profile</h1>
+          <p className="text-gray-600">Step {currentStep + 1} of {steps.length} • Overall: {overallCompletion}%</p>
         </div>
 
         {/* Progress (step-based) */}
-        <Card className="mb-6 shadow-lg bg-white">
+        <Card className="mb-6 shadow-xl bg-white/90 backdrop-blur-md border border-white/40 hover:shadow-2xl transition-all duration-300">
           <CardContent className="p-4 pt-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-black">Progress</span>
-              <span className="text-sm font-medium text-blue-700">{Math.round(progress)}%</span>
+              <span className="text-sm font-medium text-gray-700">Progress</span>
+              <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{Math.round(progress)}%</span>
             </div>
-            <div className="w-full h-2 bg-gray-300 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-200/80 rounded-full overflow-hidden backdrop-blur-sm">
               <div
-                className="h-full bg-gradient-to-r from-blue-600 to-blue-800 transition-all duration-500 ease-out"
+                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-all duration-700 ease-out shadow-lg"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -429,7 +434,7 @@ export default function ProfileBuilder() {
         </Card>
 
         {/* Step card */}
-        <Card className="shadow-md bg-white">
+        <Card className="shadow-xl bg-white/90 backdrop-blur-md border border-white/40 hover:shadow-2xl transition-all duration-300">
           <CardContent className="p-6">
             {/* Personal & Contact */}
             {steps[currentStep] === "Personal & Contact" && (
@@ -776,7 +781,7 @@ export default function ProfileBuilder() {
             {currentStep < steps.length - 1 ? (
               <Button
                 onClick={handleNext}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className="bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 text-white hover:from-blue-600 hover:via-purple-600 hover:to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 disabled={!completedSections[stepToSectionMap[steps[currentStep]]]}
               >
                 Next <ArrowRight className="w-4 h-4 ml-2" />
@@ -784,7 +789,7 @@ export default function ProfileBuilder() {
             ) : (
               <Button
                 onClick={saveProfileData}
-                className="bg-green-600 text-white hover:bg-green-700"
+                className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 disabled={!completedSections[stepToSectionMap[steps[currentStep]]] || isSaving}
               >
                 {isSaving ? "Saving..." : "Complete Profile"} <CheckCircle className="w-5 h-5 mr-2" />
@@ -795,13 +800,13 @@ export default function ProfileBuilder() {
           <div className="flex gap-2">
             <Button
               onClick={exportJsonToClipboard}
-              className="border border-gray-300 bg-white hover:bg-gray-50"
+              className="border border-white/40 bg-white/90 backdrop-blur-md hover:bg-white/95 text-gray-700 hover:shadow-lg transition-all duration-300"
             >
               <Share2 className="w-4 h-4 mr-2" /> Export JSON
             </Button>
             <Button
               onClick={clearAll}
-              className="border border-red-300 text-red-600 bg-white hover:bg-red-50"
+              className="border border-red-300/60 text-red-600 bg-white/90 backdrop-blur-md hover:bg-red-50/90 hover:shadow-lg transition-all duration-300"
             >
               <Trash2 className="w-4 h-4 mr-2" /> Clear All
             </Button>
