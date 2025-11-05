@@ -170,7 +170,7 @@ export default function ProfileBuilding() {
                       <Label>Your Skills</Label>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {formData.skills.map((skill, index) => (
-                          <span key={`${skill}-${index}`} className="px-3 py-1 bg-mastero-bg-subtle text-mastero-blue rounded-full text-sm">
+                          <span key={`${skill}-${index}`} className="px-3 py-1 text-mastero-blue rounded-full text-sm">
                             {skill}
                           </span>
                         ))}
