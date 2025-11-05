@@ -65,54 +65,54 @@ const plans = [
 
 export default function PricingSection() {
   return (
-    <section className="py-20 bg-mastero-bg-subtle">
+    <section className="py-12 md:py-20 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-mastero-dark mb-6">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-mastero-dark mb-4 md:mb-6">
             Choose Your <span className="text-gradient">Growth Plan</span>
           </h2>
-          <p className="text-xl text-mastero-text-medium max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-mastero-text-medium max-w-3xl mx-auto px-4">
             Flexible pricing options designed to scale with your career goals. 
             Start your mentorship journey today.
           </p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`relative hover:shadow-xl transition-all duration-300 hover-scale ${
+              className={`relative hover:shadow-xl transition-all duration-300 hover:scale-105 ${
                 plan.popular ? 'border-2 border-mastero-blue-start shadow-lg' : 'border shadow-md'
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-mastero text-white px-4 py-1">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                  <Badge className="bg-gradient-mastero text-white px-4 py-1 text-sm">
                     Most Popular
                   </Badge>
                 </div>
               )}
               
-              <CardHeader className="text-center pb-8">
+              <CardHeader className="text-center pb-6 md:pb-8 pt-8">
                 <div className="flex justify-center mb-4">
                   <div className={`p-3 rounded-xl ${plan.popular ? 'bg-gradient-mastero text-white' : 'bg-mastero-bg-subtle text-mastero-blue-start'}`}>
-                    <plan.icon className="h-8 w-8" />
+                    <plan.icon className="h-6 w-6 md:h-8 md:w-8" />
                   </div>
                 </div>
                 
-                <CardTitle className="text-2xl font-bold text-mastero-dark mb-2">
+                <CardTitle className="text-xl md:text-2xl font-bold text-mastero-dark mb-2">
                   {plan.name}
                 </CardTitle>
                 
-                <CardDescription className="text-mastero-text-medium mb-4">
+                <CardDescription className="text-sm md:text-base text-mastero-text-medium mb-4">
                   {plan.description}
                 </CardDescription>
                 
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-bold text-mastero-dark">{plan.price}</span>
-                  <span className="text-mastero-text-medium">{plan.period}</span>
+                  <span className="text-3xl md:text-4xl font-bold text-mastero-dark">{plan.price}</span>
+                  <span className="text-sm md:text-base text-mastero-text-medium">{plan.period}</span>
                 </div>
               </CardHeader>
 
@@ -121,12 +121,12 @@ export default function PricingSection() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-mastero-text-body">{feature}</span>
+                      <span className="text-sm md:text-base text-mastero-text-body">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="pt-6">
+                <div className="pt-4 md:pt-6">
                   <Button 
                     asChild 
                     className={`w-full ${
@@ -145,8 +145,8 @@ export default function PricingSection() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-12">
-          <p className="text-mastero-text-medium mb-4">
+        <div className="text-center mt-8 md:mt-12">
+          <p className="text-sm md:text-base text-mastero-text-medium mb-4 px-4">
             All plans include a 14-day free trial. No credit card required.
           </p>
           <Button variant="outline" asChild>
